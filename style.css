@@ -902,3 +902,196 @@ footer {
         right: 16px; bottom: 16px;
     }
 }
+
+/* =========================
+   REGIONAL HIERARCHY
+========================= */
+.hierarchy-section {
+    margin-top: 2rem;
+}
+
+.state-card {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1.5rem 2rem;
+    background: var(--gradient-primary);
+    border-radius: var(--radius);
+    color: white;
+    cursor: pointer;
+    box-shadow: var(--shadow-md);
+    transition: var(--transition);
+    position: relative;
+    overflow: hidden;
+}
+
+.state-card::after {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(0,191,255,0.15) 0%, transparent 70%);
+    opacity: 0;
+    transition: var(--transition);
+}
+
+.state-card:hover::after, .state-card.active::after {
+    opacity: 1;
+}
+
+.state-card:hover {
+    transform: translateY(-3px);
+    box-shadow: var(--shadow-lg);
+}
+
+.state-icon {
+    font-size: 2rem;
+    color: var(--accent);
+    background: rgba(255,255,255,0.1);
+    width: 60px;
+    height: 60px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 12px;
+}
+
+.state-info {
+    flex-grow: 1;
+    margin-left: 1.5rem;
+    z-index: 1;
+}
+
+.state-chevron {
+    font-size: 1.5rem;
+    transition: transform 0.4s ease;
+    z-index: 1;
+}
+
+.state-card.active .state-chevron {
+    transform: rotate(180deg);
+}
+
+.divisions-container {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.6s cubic-bezier(0.2, 0.8, 0.2, 1);
+    opacity: 0;
+    margin-top: 0;
+}
+
+.divisions-container.active {
+    opacity: 1;
+    margin-top: 2rem;
+}
+
+.divisions-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 1.5rem;
+}
+
+.division-card {
+    background: var(--bg-white);
+    border: 1px solid var(--border);
+    border-radius: var(--radius-sm);
+    box-shadow: var(--shadow-sm);
+    overflow: hidden;
+}
+
+.division-header {
+    padding: 1.25rem;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #F8FAFC;
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.division-header:hover {
+    background: #eef2f6;
+}
+
+.division-card.active .division-header {
+    background: rgba(0, 191, 255, 0.1);
+    border-bottom: 1px solid rgba(0, 191, 255, 0.2);
+}
+
+.division-card.active .division-header h5 {
+    color: var(--accent-dark);
+}
+
+.division-icon {
+    color: var(--accent);
+    transition: transform 0.3s ease;
+}
+
+.division-card.active .division-icon {
+    transform: rotate(45deg);
+}
+
+.district-container {
+    max-height: 0;
+    overflow: hidden;
+    background: var(--bg-white);
+    transition: max-height 0.4s ease-in-out;
+}
+
+.district-container.active {
+    padding: 1.2rem;
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.6rem;
+}
+
+.district-btn {
+    background: #ffffff;
+    border: 1px solid #CBD5E1;
+    border-radius: 999px;
+    padding: 0.5rem 1rem;
+    font-size: 0.85rem;
+    font-weight: 500;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: var(--transition);
+}
+
+.district-btn:hover {
+    background: var(--accent);
+    color: white;
+    border-color: var(--accent);
+    box-shadow: 0 4px 10px rgba(0, 191, 255, 0.2);
+}
+
+.district-page-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    gap: 1.5rem;
+    max-width: 900px;
+    margin: 0 auto;
+}
+.district-btn-large {
+    background: #ffffff;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 1.25rem;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--text-main);
+    cursor: pointer;
+    transition: var(--transition);
+    text-align: center;
+    box-shadow: var(--shadow-sm);
+    text-decoration: none;
+    display: block;
+}
+.district-btn-large:hover {
+    background: var(--gradient-primary);
+    color: white;
+    border-color: transparent;
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+}

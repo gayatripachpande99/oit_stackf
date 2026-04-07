@@ -68,3 +68,23 @@ document.addEventListener('DOMContentLoaded', () => {
     const animElements = document.querySelectorAll('.animate-on-scroll');
     animElements.forEach(el => observer.observe(el));
 });
+
+// Regional Analytics Hierarchy Logic
+document.addEventListener('DOMContentLoaded', () => {
+    const stateToggleBtn = document.getElementById('maharashtraToggle');
+    const divisionsContainer = document.getElementById('maharashtraDivisions');
+
+    if (stateToggleBtn && divisionsContainer) {
+        stateToggleBtn.addEventListener('click', () => {
+            stateToggleBtn.classList.toggle('active');
+            
+            if (stateToggleBtn.classList.contains('active')) {
+                divisionsContainer.classList.add('active');
+                divisionsContainer.style.maxHeight = divisionsContainer.scrollHeight + 800 + 'px';
+            } else {
+                divisionsContainer.classList.remove('active');
+                divisionsContainer.style.maxHeight = '0px';
+            }
+        });
+    }
+});

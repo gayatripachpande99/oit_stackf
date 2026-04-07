@@ -58,77 +58,96 @@
         </div>
     </section>
 
-    <!-- Service Detail Content -->
+    <!-- Service Detail Content (Focused on Regional Analytics) -->
     <section>
         <div class="container">
-            <div class="service-detail-content">
-                <!-- Main Content -->
-                <div class="service-main animate-on-scroll">
-                    <img src="https://images.unsplash.com/photo-1551288049-bebda4e38f71?q=80&w=2070&auto=format&fit=crop"
-                        alt="Political Data Analytics"
-                        style="width:100%; border-radius:var(--radius-lg); box-shadow:var(--shadow-md); margin-bottom:2rem;">
-
-                    <h2 style="color:var(--primary); margin-top:2rem;">Overview</h2>
-                    <p>In modern campaigns, intuition alone is not enough. Our Political Data Analytics service provides
-                        deep, actionable insights necessary for strategic superiority. By processing massive
-                        demographic, polling, and social media datasets, our analytical models allow your campaign to
-                        understand voter trends and focus efforts on pivotal demographic segments.</p>
-                    <p>We leverage advanced machine learning models and predictive analytics to forecast outcomes,
-                        tailor messaging, and optimize resource allocation.</p>
-
-                    <h3 style="color:var(--primary); margin-top:2rem;">Key Benefits</h3>
-                    <ul class="benefits-list">
-                        <li><i class="fa-solid fa-check-circle"></i> <strong>Targeted Messaging:</strong> Deliver the
-                            right message to the right audience at the right time.</li>
-                        <li><i class="fa-solid fa-check-circle"></i> <strong>Resource Optimization:</strong> Allocate
-                            your campaign budget efficiently based on predictive outcomes.</li>
-                        <li><i class="fa-solid fa-check-circle"></i> <strong>Real-Time Monitoring:</strong> Track voter
-                            sentiment dynamically as the campaign progresses.</li>
-                        <li><i class="fa-solid fa-check-circle"></i> <strong>Strategic Superiority:</strong> Predict
-                            opposing strategies and preemptively counteract them.</li>
-                    </ul>
-
-                    <h3 style="color:var(--primary); margin-top:2rem;">Technologies We Use</h3>
-                    <div class="tech-stack">
-                        <div class="tech-item"><i class="fa-brands fa-python" style="color:#3776AB;"></i> Python</div>
-                        <div class="tech-item"><i class="fa-solid fa-database" style="color:#336791;"></i> SQL</div>
-                        <div class="tech-item"><i class="fa-solid fa-chart-pie" style="color:#005A9E;"></i> PowerBI
-                        </div>
-                        <div class="tech-item"><i class="fa-solid fa-brain" style="color:#FF6F00;"></i> TensorFlow</div>
+            <div class="section-title animate-on-scroll">
+                <h2>Regional Analytics Focus</h2>
+                <p>Select a region below to drill down into specific administrative divisions and districts where our models provide granular insights.</p>
+            </div>
+            
+            <div class="hierarchy-section animate-on-scroll" style="max-width: 900px; margin: 0 auto;">
+                <!-- Maharashtra Card -->
+                <div class="state-card" id="maharashtraToggle">
+                    <div class="state-icon"><i class="fa-solid fa-map-location-dot"></i></div>
+                    <div class="state-info">
+                        <h4 style="margin-bottom:0.2rem; font-size:1.4rem; color:white;">Maharashtra</h4>
+                        <span style="color:rgba(255,255,255,0.8); font-size:0.95rem;">6 Administrative Divisions</span>
                     </div>
-                    <div class="tech-item"><i class="fa-solid fa-database" style="color:#336791;"></i> SQL</div>
-                    <div class="tech-item"><i class="fa-solid fa-chart-pie" style="color:#005A9E;"></i> PowerBI</div>
-                    <div class="tech-item"><i class="fa-solid fa-brain" style="color:#FF6F00;"></i> TensorFlow</div>
-                    <div class="tech-item"><i class="fa-brands fa-aws" style="color:#FF9900;"></i> AWS Analytics</div>
-                </div>
-            </div>
-
-            <!-- Sidebar -->
-            <div class="service-sidebar animate-on-scroll">
-                <div class="widget">
-                    <h3
-                        style="font-size:1.25rem; margin-bottom:1.5rem; border-bottom:2px solid var(--brand); padding-bottom:0.5rem; display:inline-block;">
-                        All Services</h3>
-                    <ul class="service-list">
-                        <li><a href="service-software.html" class="">Software Development</a></li>
-                        <li><a href="service-analytics.html" class="active">Political Data Analytics</a></li>
-                        <li><a href="service-campaign.html" class="">Campaign Management</a></li>
-                        <li><a href="service-surveys.html" class="">Political Surveys</a></li>
-                        <li><a href="service-training.html" class="">Corporate Training</a></li>
-                    </ul>
+                    <i class="fa-solid fa-chevron-down state-chevron"></i>
                 </div>
 
-                <div class="widget"
-                    style="background:var(--gradient-accent); color:white; border:none; box-shadow:var(--shadow-md);">
-                    <h3 style="color:white; font-size:1.4rem; margin-bottom:1rem;">Ready to Transform?</h3>
-                    <p style="color:rgba(255,255,255,0.9); margin-bottom:1.8rem; font-size:1.05rem;">Contact us today to
-                        discuss how our solutions can elevate your success.</p>
-                    <a href="contact.html" class="btn"
-                        style="width:100%; background:white; color:var(--accent); font-weight:700; border-radius:12px; font-size:1.1rem;">Request
-                        Service</a>
+                <!-- Divisions Container -->
+                <div class="divisions-container" id="maharashtraDivisions">
+                    <div class="divisions-grid">
+                        
+                        <!-- Division: Nashik -->
+                        <a href="nashik-division.html" style="text-decoration: none; color: inherit;">
+                            <div class="division-card" data-division="nashik">
+                                <div class="division-header">
+                                    <h5 style="margin-bottom:0; font-size:1.1rem;">Nashik Division</h5>
+                                    <i class="fa-solid fa-arrow-right division-icon"></i>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- Division: Konkan -->
+                        <a href="konkan-division.html" style="text-decoration: none; color: inherit;">
+                            <div class="division-card" data-division="konkan">
+                                <div class="division-header">
+                                    <h5 style="margin-bottom:0; font-size:1.1rem;">Konkan Division</h5>
+                                    <i class="fa-solid fa-arrow-right division-icon"></i>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- Division: Pune -->
+                        <a href="pune-division.html" style="text-decoration: none; color: inherit;">
+                            <div class="division-card" data-division="pune">
+                                <div class="division-header">
+                                    <h5 style="margin-bottom:0; font-size:1.1rem;">Pune Division</h5>
+                                    <i class="fa-solid fa-arrow-right division-icon"></i>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- Division: Aurangabad -->
+                        <a href="aurangabad-division.html" style="text-decoration: none; color: inherit;">
+                            <div class="division-card" data-division="aurangabad">
+                                <div class="division-header">
+                                    <h5 style="margin-bottom:0; font-size:1.1rem;">Aurangabad Division</h5>
+                                    <i class="fa-solid fa-arrow-right division-icon"></i>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- Division: Amravati -->
+                        <a href="amravati-division.html" style="text-decoration: none; color: inherit;">
+                            <div class="division-card" data-division="amravati">
+                                <div class="division-header">
+                                    <h5 style="margin-bottom:0; font-size:1.1rem;">Amravati Division</h5>
+                                    <i class="fa-solid fa-arrow-right division-icon"></i>
+                                </div>
+                            </div>
+                        </a>
+
+                        <!-- Division: Nagpur -->
+                        <a href="nagpur-division.html" style="text-decoration: none; color: inherit;">
+                            <div class="division-card" data-division="nagpur">
+                                <div class="division-header">
+                                    <h5 style="margin-bottom:0; font-size:1.1rem;">Nagpur Division</h5>
+                                    <i class="fa-solid fa-arrow-right division-icon"></i>
+                                </div>
+                            </div>
+                        </a>
+
+                    </div>
                 </div>
             </div>
-        </div>
+            
+            <div style="text-align: center; margin-top: 4rem;">
+                <a href="contact.html" class="btn btn-primary">Request Regional Analytics</a>
+            </div>
         </div>
     </section>
 
@@ -174,7 +193,8 @@
                         <li style="display:flex; gap:0.5rem; color:var(--text-muted);"><i
                                 class="fa-solid fa-location-dot" style="margin-top:5px; color:var(--brand-light);"></i>
                             <span>Flat No.307, 3rd Floor, Goldcliff Society, Parande Nagar, Alandi Road, Dighi, Pune-
-                                411015, Maharashtra<br>India</span></li>
+                                411015, Maharashtra<br>India</span>
+                        </li>
                         <li style="display:flex; gap:0.5rem; color:var(--text-muted);"><i class="fa-solid fa-phone"
                                 style="margin-top:5px; color:var(--brand-light);"></i> +91 8983461569</li>
                         <li style="display:flex; gap:0.5rem; color:var(--text-muted);"><i class="fa-solid fa-envelope"
