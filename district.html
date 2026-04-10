@@ -58,8 +58,8 @@
             </div>
 
             <div style="text-align: center; margin-top: 4rem;">
-                <!-- We use history.back() for a universal back button to whichever division the user came from -->
-                <button onclick="window.history.back()" class="btn" style="background:#f1f5f9; color:var(--text-main); margin-right:1rem; border:none; cursor:pointer;">← Back to Division</button>
+                <!-- We dynamically set href for a universal explicit back button to whichever division the user came from -->
+                <a id="dynamic-back-btn" href="#" class="btn" style="background:#f1f5f9; color:var(--text-main); margin-right:1rem; border:none; cursor:pointer; text-decoration:none;">← Back to Districts</a>
             </div>
         </div>
     </section>
@@ -70,12 +70,12 @@
                 <div class="footer-about">
                     <a href="index.html" class="logo" style="color:white;">
                         <i class="fa-solid fa-cube logo-icon" style="color:var(--accent);"></i>
-                        <span class="logo-text" style="color:white;">OITS</span>
+                        <span class="logo-text" style="color:white;">OIT_STACK</span>
                     </a>
                     <p>OnYX Integrated Tech Stack providing cutting edge strategies for business and political entities globally.</p>
                 </div>
             </div>
-            <div class="footer-bottom">&copy; 2026 OITS - OnYX Integrated Tech Stack. All Rights Reserved.</div>
+            <div class="footer-bottom">&copy; 2026 OIT_STACK - OnYX Integrated Tech Stack. All Rights Reserved.</div>
         </div>
     </footer>
     
@@ -94,11 +94,34 @@
 
             const data = districtData[districtId];
 
+            // Map district IDs to their division page
+            const divisionMap = {
+                "nandurbar": "nashik", "dhule": "nashik", "jalgaon": "nashik", "nashik": "nashik", "ahmednagar": "nashik",
+                "buldhana": "amravati", "akola": "amravati", "washim": "amravati", "amravati": "amravati", "yavatmal": "amravati",
+                "wardha": "nagpur", "nagpur": "nagpur", "bhandara": "nagpur", "gondia": "nagpur", "gadchiroli": "nagpur", "chandrapur": "nagpur",
+                "aurangabad": "aurangabad", "jalna": "aurangabad", "parbhani": "aurangabad", "hingoli": "aurangabad", "nanded": "aurangabad", "beed": "aurangabad", "latur": "aurangabad", "osmanabad": "aurangabad",
+                "mumbai-city": "konkan", "mumbai-suburban": "konkan", "thane": "konkan", "palghar": "konkan", "raigad": "konkan", "ratnagiri": "konkan", "sindhudurg": "konkan",
+                "pune": "pune", "satara": "pune", "sangli": "pune", "solapur": "pune", "kolhapur": "pune"
+            };
+
             if (data) {
                 // Populate Headers
                 document.getElementById('district-title').innerText = data.name + " District";
                 document.getElementById('district-name-subtitle').innerText = data.name;
                 document.title = data.name + " District | OIT_Stack";
+
+                // Setup Back Button to explicit division page
+                const divisionName = divisionMap[districtId] || "service-analytics";
+                const backBtn = document.getElementById('dynamic-back-btn');
+                if(backBtn) {
+                    if (divisionName === "service-analytics") {
+                        backBtn.href = "service-analytics.html";
+                    } else {
+                        backBtn.href = divisionName + "-division.html";
+                        // Optionally set the text to reflect the division name if requested, here we use generic 'Districts' as established.
+                        backBtn.innerText = "← Back to " + divisionName.charAt(0).toUpperCase() + divisionName.slice(1) + " Districts";
+                    }
+                }
 
                 // Populate Buttons
                 const container = document.getElementById('assembly-container');
