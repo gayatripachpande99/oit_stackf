@@ -1095,3 +1095,45 @@ footer {
     box-shadow: var(--shadow-lg);
     transform: translateY(-3px);
 }
+
+/* =========================
+   CANDIDATE DATA TABLE
+========================= */
+.table-container {
+  margin-top: 40px;
+  overflow-x: auto; /* Adds horizontal scrolling on smaller screens */
+  background: white;
+  border-radius: 8px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+.candidate-table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 600px; /* ensure table doesn't squish too much */
+}
+
+.candidate-table th,
+.candidate-table td {
+  padding: 12px 15px;
+  text-align: left;
+  border-bottom: 1px solid #e2e8f0;
+}
+
+.candidate-table th {
+  background-color: #f8fafc;
+  font-weight: 600;
+  color: #334155;
+}
+
+.candidate-table tbody tr:hover {
+  background-color: #f1f5f9;
+}
+
+/* Fallback messages style */
+#candidateTableContainer p {
+  padding: 20px;
+  font-size: 16px;
+  color: #475569;
+  text-align: center;
+}

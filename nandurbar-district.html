@@ -47,10 +47,15 @@
             <p style="text-align:center; max-width:700px; margin:0 auto 3rem;">View detailed analytical insights, polling data, and demographic summaries for the corresponding assembly constituency.</p>
 
             <div class="district-page-grid">
-                <a href="#" class="district-btn-large">1 - Akkalkuwa (ST)</a>
-                <a href="#" class="district-btn-large">2 - Shahada (ST)</a>
-                <a href="#" class="district-btn-large">3 - Nandurbar (ST)</a>
-                <a href="#" class="district-btn-large">4 - Nawapur (ST)</a>
+                <button class="district-btn-large constituency-btn" data-id="1">1 - Akkalkuwa (ST)</button>
+                <button class="district-btn-large constituency-btn" data-id="2">2 - Shahada (ST)</button>
+                <button class="district-btn-large constituency-btn" data-id="3">3 - Nandurbar (ST)</button>
+                <button class="district-btn-large constituency-btn" data-id="4">4 - Nawapur (ST)</button>
+            </div>
+
+            <!-- Table container where the JavaScript will insert data -->
+            <div id="candidateTableContainer" class="table-container">
+                <!-- Results will appear here when a button is clicked -->
             </div>
 
             <div style="text-align: center; margin-top: 4rem;">
@@ -74,5 +79,20 @@
         </div>
     </footer>
     <script src="script.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.querySelectorAll('.constituency-btn').forEach(button => {
+                button.addEventListener('click', function(e) {
+                    e.preventDefault();
+                    
+                    const constituencyId = this.getAttribute('data-id');
+                    if (constituencyId) {
+                        const assemblyName = this.innerText;
+                        window.location.href = `constituency-details.html?id=${encodeURIComponent(constituencyId)}&name=${encodeURIComponent(assemblyName)}`;
+                    }
+                });
+            });
+        });
+    </script>
 </body>
 </html>

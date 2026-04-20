@@ -55,6 +55,11 @@
                 <div class="district-page-grid" id="assembly-container">
                     <!-- Buttons will be injected here via JS -->
                 </div>
+                
+                <!-- Table container where the JavaScript will insert data -->
+                <div id="candidateTableContainer" class="table-container">
+                    <!-- Results will appear here when a button is clicked -->
+                </div>
             </div>
 
             <div style="text-align: center; margin-top: 4rem;">
@@ -126,11 +131,26 @@
                 // Populate Buttons
                 const container = document.getElementById('assembly-container');
                 data.assemblies.forEach(assembly => {
-                    const a = document.createElement('a');
-                    a.href = "#"; // Replace with actual analytics link when ready
-                    a.className = "district-btn-large";
-                    a.innerText = assembly;
-                    container.appendChild(a);
+                    const btn = document.createElement('button');
+                    btn.className = "district-btn-large constituency-btn";
+                    btn.innerText = assembly;
+                    
+                    // Extract ID, e.g. "1 - Akkalkuwa (ST)" -> "1"
+                    const idMatch = assembly.match(/^(\d+)\s*-/);
+                    if (idMatch) {
+                        btn.setAttribute('data-id', idMatch[1]);
+                    }
+
+                    // Add click event for fetching candidate data
+                    btn.addEventListener('click', function(e) {
+                        e.preventDefault();
+                        const constituencyId = this.getAttribute('data-id');
+                        if (constituencyId) {
+                            window.location.href = `constituency-details.html?id=${encodeURIComponent(constituencyId)}&name=${encodeURIComponent(assembly)}`;
+                        }
+                    });
+
+                    container.appendChild(btn);
                 });
             } else {
                 // Hide content, show error

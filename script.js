@@ -88,3 +88,77 @@ document.addEventListener('DOMContentLoaded', () => {
         });
     }
 });
+
+// Function to fetch and display constituency data
+async function loadConstituencyData(constituencyId) {
+  const tableContainer = document.getElementById('candidateTableContainer');
+  if (!tableContainer) return;
+  
+  // Show a "Loading" state
+  tableContainer.innerHTML = '<p>Loading candidates...</p>';
+
+  try {
+    // Call the local backend API
+    const response = await fetch(`http://localhost:3000/api/constituency/${constituencyId}`);
+    
+    if (!response.ok) {
+      throw new Error('Failed to fetch data');
+    }
+
+    const data = await response.json();
+    const candidates = data.candidates;
+
+    // Check if candidates array is empty
+    if (!candidates || candidates.length === 0) {
+      tableContainer.innerHTML = '<p>No candidate data found for this constituency.</p>';
+      return;
+    }
+
+    // Build the table HTML dynamically
+    let tableHtml = `
+      <table class="candidate-table">
+        <thead>
+          <tr>
+            <th>Candidate Name</th>
+            <th>Sex</th>
+            <th>Age</th>
+            <th>Category</th>
+            <th>Party</th>
+            <th>General</th>
+            <th>Postal</th>
+            <th>Total</th>
+            <th>Vote Percentage</th>
+          </tr>
+        </thead>
+        <tbody>
+    `;
+
+    candidates.forEach(candidate => {
+      tableHtml += `
+        <tr>
+          <td>${candidate.candidate_name || '-'}</td>
+          <td>${candidate.sex || '-'}</td>
+          <td>${candidate.age || '-'}</td>
+          <td>${candidate.category || '-'}</td>
+          <td>${candidate.party || '-'}</td>
+          <td>${candidate.general || '0'}</td>
+          <td>${candidate.postal || '0'}</td>
+          <td>${candidate.total || '0'}</td>
+          <td>${candidate.votes_percentage ? candidate.votes_percentage + '%' : '0%'}</td>
+        </tr>
+      `;
+    });
+
+    tableHtml += `
+        </tbody>
+      </table>
+    `;
+
+    // Render the final table into the container
+    tableContainer.innerHTML = tableHtml;
+
+  } catch (error) {
+    console.error('Error fetching constituency data:', error);
+    tableContainer.innerHTML = '<p style="color:red;">Error fetching data. Ensure your backend server is running on http://localhost:3000.</p>';
+  }
+}
