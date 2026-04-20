@@ -25,6 +25,14 @@ const pool = mysql.createPool({
   queueLimit: 0
 });
 
+app.get('/', (req, res) => {
+  res.send('Backend is running');
+});
+
+app.get('/api/health', (req, res) => {
+  res.json({ status: 'ok' });
+});
+
 // GET /api/constituency/:id
 app.get('/api/constituency/:id', async (req, res) => {
   const constituencyId = req.params.id;
