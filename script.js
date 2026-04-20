@@ -91,6 +91,9 @@ document.addEventListener('DOMContentLoaded', () => {
 
 // Function to fetch and display constituency data
 async function loadConstituencyData(constituencyId) {
+  // Update this URL to match your deployed Render/Railway backend
+  const BASE_URL = "https://your-backend.onrender.com";
+
   const tableContainer = document.getElementById('candidateTableContainer');
   if (!tableContainer) return;
   
@@ -98,8 +101,8 @@ async function loadConstituencyData(constituencyId) {
   tableContainer.innerHTML = '<p>Loading candidates...</p>';
 
   try {
-    // Call the local backend API
-    const response = await fetch(`http://localhost:3000/api/constituency/${constituencyId}`);
+    // Call the deployed backend API
+    const response = await fetch(`${BASE_URL}/api/constituency/${constituencyId}`);
     
     if (!response.ok) {
       throw new Error('Failed to fetch data');
@@ -159,6 +162,6 @@ async function loadConstituencyData(constituencyId) {
 
   } catch (error) {
     console.error('Error fetching constituency data:', error);
-    tableContainer.innerHTML = '<p style="color:red;">Error fetching data. Ensure your backend server is running on http://localhost:3000.</p>';
+    tableContainer.innerHTML = '<p style="color:red;">Unable to fetch data. Please try again later.</p>';
   }
 }
