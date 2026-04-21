@@ -117,6 +117,12 @@ async function loadConstituencyData(constituencyId) {
       return;
     }
 
+    // Set the record year title
+    const recordYearTitle = document.getElementById("recordYearTitle");
+    if (recordYearTitle) {
+      recordYearTitle.textContent = "Election Year: 2009";
+    }
+
     // Build the table HTML dynamically
     let tableHtml = `
       <table class="candidate-table">
