@@ -83,18 +83,15 @@ app.get('/api/constituency/:id', async (req, res) => {
       candidates: rows
     });
   } catch (error) {
-    console.error('Database query error:', {
+    console.error('FULL ERROR:', error);
+
+    res.status(500).json({
       message: error.message,
       code: error.code,
-      errno: error.errno,
-      sqlMessage: error.sqlMessage,
-      sqlState: error.sqlState,
-      stack: error.stack
+      sqlMessage: error.sqlMessage
     });
-    res.status(500).json({ error: 'Internal server error fetching constituency data' });
   }
-});
 
-app.listen(PORT, () => {
-  console.log(`Server is running on port ${PORT}`);
-});
+  app.listen(PORT, () => {
+    console.log(`Server is running on port ${PORT}`);
+  });
