@@ -1131,7 +1131,7 @@ footer {
 }
 
 /* Fallback messages style */
-#candidateTableContainer p {
+.table-container p {
   padding: 20px;
   font-size: 16px;
   color: #475569;
@@ -1139,14 +1139,14 @@ footer {
 }
 
 /* =========================
-   2009 RECORD YEAR HEADING
+   RECORD YEAR HEADING
 ========================= */
 .record-year-box {
     text-align: center;
     margin: 2rem 0 1.5rem;
 }
 
-#recordYearTitle {
+.record-year-box h3 {
     font-size: 1.4rem;
     font-weight: 700;
     color: var(--primary);

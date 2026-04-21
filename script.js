@@ -93,12 +93,17 @@ document.addEventListener('DOMContentLoaded', () => {
 async function loadConstituencyData(constituencyId) {
   // Update this URL to match your deployed Render/Railway backend
   const BASE_URL = "https://oitstackf-production.up.railway.app";
+  // const BASE_URL = "http://localhost:3000";
 
-  const tableContainer = document.getElementById('candidateTableContainer');
-  if (!tableContainer) return;
 
-  // Show a "Loading" state
-  tableContainer.innerHTML = '<p>Loading candidates...</p>';
+  const container2009 = document.getElementById('candidateTableContainer2009');
+  const container2014 = document.getElementById('candidateTableContainer2014');
+
+  if (!container2009 || !container2014) return;
+
+  // Show "Loading" states
+  container2009.innerHTML = '<p>Loading 2009 candidates...</p>';
+  container2014.innerHTML = '<p>Loading 2014 candidates...</p>';
 
   try {
     // Call the deployed backend API
@@ -109,65 +114,68 @@ async function loadConstituencyData(constituencyId) {
     }
 
     const data = await response.json();
-    const candidates = data.candidates;
 
-    // Check if candidates array is empty
-    if (!candidates || candidates.length === 0) {
-      tableContainer.innerHTML = '<p>No candidate data found for this constituency.</p>';
-      return;
-    }
+    // Render 2009 Table
+    renderTable(container2009, data.records_2009, false, "2009");
 
-    // Set the record year title
-    const recordYearTitle = document.getElementById("recordYearTitle");
-    if (recordYearTitle) {
-      recordYearTitle.textContent = "Election Year: 2009";
-    }
-
-    // Build the table HTML dynamically
-    let tableHtml = `
-      <table class="candidate-table">
-        <thead>
-          <tr>
-            <th>Candidate Name</th>
-            <th>Sex</th>
-            <th>Age</th>
-            <th>Category</th>
-            <th>Party</th>
-            <th>General</th>
-            <th>Postal</th>
-            <th>Total</th>
-            <th>Vote Percentage</th>
-          </tr>
-        </thead>
-        <tbody>
-    `;
-
-    candidates.forEach(candidate => {
-      tableHtml += `
-        <tr>
-          <td>${candidate.candidate_name || '-'}</td>
-          <td>${candidate.sex || '-'}</td>
-          <td>${candidate.age || '-'}</td>
-          <td>${candidate.category || '-'}</td>
-          <td>${candidate.party || '-'}</td>
-          <td>${candidate.general || '0'}</td>
-          <td>${candidate.postal || '0'}</td>
-          <td>${candidate.total || '0'}</td>
-          <td>${candidate.votes_percentage ? candidate.votes_percentage + '%' : '0%'}</td>
-        </tr>
-      `;
-    });
-
-    tableHtml += `
-        </tbody>
-      </table>
-    `;
-
-    // Render the final table into the container
-    tableContainer.innerHTML = tableHtml;
+    // Render 2014 Table
+    renderTable(container2014, data.records_2014, true, "2014");
 
   } catch (error) {
     console.error('Error fetching constituency data:', error);
-    tableContainer.innerHTML = '<p style="color:red;">Unable to fetch data. Please try again later.</p>';
+    const errorMsg = '<p style="color:red;">Unable to fetch data. Please try again later.</p>';
+    container2009.innerHTML = errorMsg;
+    container2014.innerHTML = errorMsg;
   }
+}
+
+// Reusable helper function to render tables
+function renderTable(container, candidates, showSymbol, year) {
+  if (!candidates || candidates.length === 0) {
+    container.innerHTML = `<p>No ${year} candidate data found.</p>`;
+    return;
+  }
+
+  let tableHtml = `
+    <table class="candidate-table">
+      <thead>
+        <tr>
+          <th>Candidate Name</th>
+          <th>Sex</th>
+          <th>Age</th>
+          <th>Category</th>
+          <th>Party</th>
+          ${showSymbol ? '<th>Symbol</th>' : ''}
+          <th>General</th>
+          <th>Postal</th>
+          <th>Total</th>
+          <th>Vote Percentage</th>
+        </tr>
+      </thead>
+      <tbody>
+  `;
+
+  candidates.forEach(candidate => {
+    tableHtml += `
+      <tr>
+        <td>${candidate.candidate_name || '-'}</td>
+        <td>${candidate.sex || '-'}</td>
+        <td>${candidate.age || '-'}</td>
+        <td>${candidate.category || '-'}</td>
+        <td>${candidate.party || '-'}</td>
+        ${showSymbol ? `<td>${candidate.symbol || '-'}</td>` : ''}
+        <td>${candidate.general || '0'}</td>
+        <td>${candidate.postal || '0'}</td>
+        <td>${candidate.total || '0'}</td>
+        <td>${candidate.votes_percentage ? candidate.votes_percentage + '%' : '0%'}</td>
+      </tr>
+    `;
+  });
+
+  tableHtml += `
+      </tbody>
+    </table>
+  `;
+
+  container.innerHTML = tableHtml;
 }
