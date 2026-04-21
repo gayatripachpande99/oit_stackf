@@ -40,16 +40,34 @@ app.get('/api/constituency/:id', async (req, res) => {
   try {
     // We filter out rows where candidate_name is NULL inline.
     const query = `
-      SELECT * FROM oit_stack_mh_mla_2009_001 WHERE constituency_number = ? AND candidate_name IS NOT NULL
-      UNION ALL
-      SELECT * FROM oit_stack_mh_mla_2009_002 WHERE constituency_number = ? AND candidate_name IS NOT NULL
-      UNION ALL
-      SELECT * FROM oit_stack_mh_mla_2009_003 WHERE constituency_number = ? AND candidate_name IS NOT NULL
-      UNION ALL
-      SELECT * FROM oit_stack_mh_mla_2009_004 WHERE constituency_number = ? AND candidate_name IS NOT NULL
-      UNION ALL
-      SELECT * FROM oit_stack_mh_mla_2009_005 WHERE constituency_number = ? AND candidate_name IS NOT NULL;
-    `;
+  SELECT constituency_number, candidate_name, sex, age, category, party, \`general\`, postal, \`total\`, votes_percentage
+  FROM oit_stack_mh_mla_2009_001
+  WHERE constituency_number = ? AND candidate_name IS NOT NULL
+
+  UNION ALL
+
+  SELECT constituency_number, candidate_name, sex, age, category, party, \`general\`, postal, \`total\`, votes_percentage
+  FROM oit_stack_mh_mla_2009_002
+  WHERE constituency_number = ? AND candidate_name IS NOT NULL
+
+  UNION ALL
+
+  SELECT constituency_number, candidate_name, sex, age, category, party, \`general\`, postal, \`total\`, votes_percentage
+  FROM oit_stack_mh_mla_2009_003
+  WHERE constituency_number = ? AND candidate_name IS NOT NULL
+
+  UNION ALL
+
+  SELECT constituency_number, candidate_name, sex, age, category, party, \`general\`, postal, \`total\`, votes_percentage
+  FROM oit_stack_mh_mla_2009_004
+  WHERE constituency_number = ? AND candidate_name IS NOT NULL
+
+  UNION ALL
+
+  SELECT constituency_number, candidate_name, sex, age, category, party, \`general\`, postal, \`total\`, votes_percentage
+  FROM oit_stack_mh_mla_2009_005
+  WHERE constituency_number = ? AND candidate_name IS NOT NULL
+`;
 
     // Passing the parameter 5 times for the 5 union queries
     const [rows] = await pool.query(query, [
@@ -65,11 +83,18 @@ app.get('/api/constituency/:id', async (req, res) => {
       candidates: rows
     });
   } catch (error) {
-    console.error('Database query error:', error);
+    console.error('Database query error:', {
+      message: error.message,
+      code: error.code,
+      errno: error.errno,
+      sqlMessage: error.sqlMessage,
+      sqlState: error.sqlState,
+      stack: error.stack
+    });
     res.status(500).json({ error: 'Internal server error fetching constituency data' });
   }
 });
 
 app.listen(PORT, () => {
-  console.log(`Server is running on http://localhost:${PORT}`);
+  console.log(`Server is running on port ${PORT}`);
 });
