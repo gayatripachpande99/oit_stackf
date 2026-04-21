@@ -92,7 +92,7 @@ document.addEventListener('DOMContentLoaded', () => {
 // Function to fetch and display constituency data
 async function loadConstituencyData(constituencyId) {
   // Update this URL to match your deployed Render/Railway backend
-  const BASE_URL = "oitstackf-production.up.railway.app";
+  const BASE_URL = "https://oitstackf-production.up.railway.app";
 
   const tableContainer = document.getElementById('candidateTableContainer');
   if (!tableContainer) return;
