@@ -98,12 +98,14 @@ async function loadConstituencyData(constituencyId) {
 
   const container2009 = document.getElementById('candidateTableContainer2009');
   const container2014 = document.getElementById('candidateTableContainer2014');
+  const container2019 = document.getElementById('candidateTableContainer2019');
 
-  if (!container2009 || !container2014) return;
+  if (!container2009 || !container2014 || !container2019) return;
 
   // Show "Loading" states
   container2009.innerHTML = '<p>Loading 2009 candidates...</p>';
   container2014.innerHTML = '<p>Loading 2014 candidates...</p>';
+  container2019.innerHTML = '<p>Loading 2019 candidates...</p>';
 
   try {
     // Call the deployed backend API
@@ -121,19 +123,35 @@ async function loadConstituencyData(constituencyId) {
     // Render 2014 Table
     renderTable(container2014, data.records_2014, true, "2014");
 
+    // Render 2019 Table
+    renderTable(container2019, data.records_2019, true, "2019");
+
   } catch (error) {
     console.error('Error fetching constituency data:', error);
     const errorMsg = '<p style="color:red;">Unable to fetch data. Please try again later.</p>';
     container2009.innerHTML = errorMsg;
     container2014.innerHTML = errorMsg;
+    container2019.innerHTML = errorMsg;
   }
 }
 
 // Reusable helper function to render tables
 function renderTable(container, candidates, showSymbol, year) {
+  const titleId = `recordYearTitle${year}`;
+  const titleElement = document.getElementById(titleId);
+
   if (!candidates || candidates.length === 0) {
-    container.innerHTML = `<p>No ${year} candidate data found.</p>`;
+    container.style.display = 'none';
+    if (titleElement && titleElement.parentElement) {
+      titleElement.parentElement.style.display = 'none';
+    }
     return;
+  }
+
+  // Ensure container and title are visible if data exists
+  container.style.display = 'block';
+  if (titleElement && titleElement.parentElement) {
+    titleElement.parentElement.style.display = 'block';
   }
 
   let tableHtml = `
