@@ -158,6 +158,7 @@ function renderTable(container, candidates, showSymbol, year) {
     <table class="candidate-table">
       <thead>
         <tr>
+          <th>Rank</th>
           <th>Candidate Name</th>
           <th>Sex</th>
           <th>Age</th>
@@ -176,6 +177,7 @@ function renderTable(container, candidates, showSymbol, year) {
   candidates.forEach(candidate => {
     tableHtml += `
       <tr>
+        <td>${candidate.rank_no || '-'}</td>
         <td>${candidate.candidate_name || '-'}</td>
         <td>${candidate.sex || '-'}</td>
         <td>${candidate.age || '-'}</td>
