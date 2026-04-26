@@ -347,7 +347,29 @@ header.scrolled .navbar {
 .hero-btns {
     display: flex;
     flex-wrap: wrap;
-    gap: 1rem;
+    gap: 1.25rem;
+    margin-top: 1rem;
+}
+
+.hero-btns .btn-outline {
+    background: rgba(255, 255, 255, 0.05);
+    border: 1px solid rgba(255, 255, 255, 0.2);
+    padding: 0.8rem 1.5rem;
+    font-size: 0.95rem;
+    transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+}
+
+.hero-btns .btn-outline:hover {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: white !important;
+    transform: translateY(-5px);
+    box-shadow: 0 10px 25px rgba(0, 191, 255, 0.3);
+}
+
+.hero-btns .btn-outline i {
+    margin-right: 0.5rem;
+    font-size: 1.1rem;
 }
 
 /* =========================
@@ -1156,4 +1178,92 @@ footer {
     border-radius: 8px;
     border: 1px solid #e2e8f0;
     box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.05);
+}
+
+/* =========================
+   SINGLE SCREEN HOME
+========================= */
+body.single-screen-home {
+    height: 100vh;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+}
+
+body.single-screen-home .hero {
+    flex: 1;
+    min-height: auto;
+    padding-top: 86px;
+    padding-bottom: 1rem;
+    display: flex;
+    align-items: center;
+}
+
+body.single-screen-home .hero-content {
+    padding-top: 0;
+    margin-top: -1rem;
+    text-align: center;
+    width: 100%;
+}
+
+body.single-screen-home .hero h1 {
+    font-size: 3.2rem;
+    margin-bottom: 2rem;
+    background: var(--gradient-accent);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    font-weight: 800;
+}
+
+body.single-screen-home .hero-btns {
+    gap: 1rem;
+    justify-content: center;
+}
+
+body.single-screen-home .hero-btns .btn-outline {
+    padding: 0.5rem 1rem;
+    font-size: 0.8rem;
+}
+
+body.single-screen-home .hero div[style*="margin-top: 3rem"] {
+    margin-top: 1.5rem !important;
+    margin-bottom: 1rem !important;
+}
+
+body.single-screen-home footer {
+    padding-top: 1rem;
+}
+
+body.single-screen-home .footer-top {
+    display: grid;
+    grid-template-columns: 1fr 1.5fr 1fr;
+    gap: 2rem;
+    margin-bottom: 1rem;
+    padding: 0 1.5rem;
+    align-items: flex-start;
+}
+
+body.single-screen-home .footer-about p,
+body.single-screen-home .footer-title,
+body.single-screen-home .footer-links li {
+    margin-bottom: 0.25rem;
+    font-size: 0.75rem;
+    line-height: 1.4;
+}
+
+body.single-screen-home .footer-title {
+    margin-bottom: 0.5rem;
+}
+
+body.single-screen-home .footer-bottom {
+    padding: 0.5rem 0;
+    font-size: 0.75rem;
+}
+
+body.single-screen-home .whatsapp-float {
+    width: 45px;
+    height: 45px;
+    font-size: 1.3rem;
+    right: 15px;
+    bottom: 15px;
 }
