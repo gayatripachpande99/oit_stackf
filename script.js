@@ -159,35 +159,49 @@ function renderTable(container, candidates, showSymbol, year) {
       <thead>
         <tr>
           <th>Rank</th>
-          <th>Candidate Name</th>
+          <th>Candidate</th>
           <th>Sex</th>
           <th>Age</th>
-          <th>Category</th>
+          <th>Cat</th>
           <th>Party</th>
           ${showSymbol ? '<th>Symbol</th>' : ''}
           <th>General</th>
           <th>Postal</th>
           <th>Total</th>
-          <th>Vote Percentage</th>
+          <th>Performance</th>
         </tr>
       </thead>
       <tbody>
   `;
 
   candidates.forEach(candidate => {
+    const isWinner = candidate.rank_no == 1;
+    const votePercent = parseFloat(candidate.votes_percentage) || 0;
+    const genderIcon = candidate.sex === 'Male' ? '<i class="fa-solid fa-mars" style="color: #3b82f6;"></i>' : 
+                      (candidate.sex === 'Female' ? '<i class="fa-solid fa-venus" style="color: #ec4899;"></i>' : '');
+    
     tableHtml += `
-      <tr>
-        <td>${candidate.rank_no || '-'}</td>
-        <td>${candidate.candidate_name || '-'}</td>
-        <td>${candidate.sex || '-'}</td>
-        <td>${candidate.age || '-'}</td>
-        <td>${candidate.category || '-'}</td>
-        <td>${candidate.party || '-'}</td>
-        ${showSymbol ? `<td>${candidate.symbol || '-'}</td>` : ''}
-        <td>${candidate.general || '0'}</td>
-        <td>${candidate.postal || '0'}</td>
-        <td>${candidate.total || '0'}</td>
-        <td>${candidate.votes_percentage ? candidate.votes_percentage + '%' : '0%'}</td>
+      <tr class="${isWinner ? 'winner-row' : ''}">
+        <td class="rank-cell">
+          <span class="rank-badge ${isWinner ? 'rank-winner' : ''}">${candidate.rank_no || '-'}</span>
+        </td>
+        <td class="candidate-name-cell">
+          <div class="candidate-name">${candidate.candidate_name || '-'}</div>
+        </td>
+        <td class="gender-cell">${genderIcon} <span>${candidate.sex || '-'}</span></td>
+        <td><span class="meta-data">${candidate.age || '-'}</span></td>
+        <td><span class="meta-data">${candidate.category || '-'}</span></td>
+        <td><span class="party-badge">${candidate.party || '-'}</span></td>
+        ${showSymbol ? `<td><span class="symbol-text">${candidate.symbol || '-'}</span></td>` : ''}
+        <td class="vote-number">${candidate.general.toLocaleString()}</td>
+        <td class="vote-number">${candidate.postal.toLocaleString()}</td>
+        <td class="vote-number"><strong>${candidate.total.toLocaleString()}</strong></td>
+        <td>
+          <div class="performance-data">
+            <div class="pie-chart" style="--percent: ${votePercent}%"></div>
+            <span class="vote-percent-text">${votePercent}%</span>
+          </div>
+        </td>
       </tr>
     `;
   });
