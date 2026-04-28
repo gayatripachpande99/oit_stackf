@@ -30,7 +30,10 @@
       <a href="#how-it-works">Process</a>
       <a href="#why-us">Why Us</a>
       <a href="#results">Results</a>
-      <a href="#contact" class="btn btn-primary" style="padding: 0.5rem 1.5rem;">Let's Talk</a>
+      <a href="#contact" class="btn btn-primary" style="padding: 0.5rem 1rem;">Let's Talk</a>
+    </div>
+    <div class="hamburger" id="hamburger">
+      <i class="fa-solid fa-bars"></i>
     </div>
   </nav>
 
@@ -297,6 +300,34 @@
       } else {
         nav.classList.remove('scrolled');
       }
+    });
+
+    // Mobile Menu Toggle
+    const hamburger = document.getElementById('hamburger');
+    const navLinks = document.querySelector('.nav-links');
+
+    if (hamburger) {
+      hamburger.addEventListener('click', () => {
+        navLinks.classList.toggle('active');
+        const icon = hamburger.querySelector('i');
+        if (navLinks.classList.contains('active')) {
+          icon.classList.remove('fa-bars');
+          icon.classList.add('fa-times');
+        } else {
+          icon.classList.remove('fa-times');
+          icon.classList.add('fa-bars');
+        }
+      });
+    }
+
+    // Close menu on link click
+    document.querySelectorAll('.nav-links a').forEach(link => {
+      link.addEventListener('click', () => {
+        navLinks.classList.remove('active');
+        const icon = hamburger.querySelector('i');
+        icon.classList.remove('fa-times');
+        icon.classList.add('fa-bars');
+      });
     });
   </script>
 </body>
