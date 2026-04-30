@@ -99,13 +99,15 @@ async function loadConstituencyData(constituencyId) {
   const container2009 = document.getElementById('candidateTableContainer2009');
   const container2014 = document.getElementById('candidateTableContainer2014');
   const container2019 = document.getElementById('candidateTableContainer2019');
+  const container2024 = document.getElementById('candidateTableContainer2024');
 
-  if (!container2009 || !container2014 || !container2019) return;
+  if (!container2009 || !container2014 || !container2019 || !container2024) return;
 
   // Show "Loading" states
   container2009.innerHTML = '<p>Loading 2009 candidates...</p>';
   container2014.innerHTML = '<p>Loading 2014 candidates...</p>';
   container2019.innerHTML = '<p>Loading 2019 candidates...</p>';
+  container2024.innerHTML = '<p>Loading 2024 candidates...</p>';
 
   try {
     // Call the deployed backend API
@@ -126,12 +128,16 @@ async function loadConstituencyData(constituencyId) {
     // Render 2019 Table
     renderTable(container2019, data.records_2019, true, "2019");
 
+    // Render 2024 Table
+    renderTable(container2024, data.records_2024, true, "2024");
+
   } catch (error) {
     console.error('Error fetching constituency data:', error);
     const errorMsg = '<p style="color:red;">Unable to fetch data. Please try again later.</p>';
     container2009.innerHTML = errorMsg;
     container2014.innerHTML = errorMsg;
     container2019.innerHTML = errorMsg;
+    container2024.innerHTML = errorMsg;
   }
 }
 

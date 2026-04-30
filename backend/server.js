@@ -91,6 +91,24 @@ app.get('/api/constituency/:id', async (req, res) => {
       FROM oit_stack_mh_mla_2019_004 WHERE constituency_number = ? AND candidate_name IS NOT NULL
     `;
 
+    const query2024 = `
+      WITH combined_2024 AS (
+        SELECT constituency_number, candidate_name, sex, age, category, party, symbol, \`general\`, postal, \`total\`, votes_polled_valid_nota
+        FROM oit_stack_mh_mla_2024_001 WHERE constituency_number = ? AND candidate_name IS NOT NULL
+        UNION ALL
+        SELECT constituency_number, candidate_name, sex, age, category, party, symbol, \`general\`, postal, \`total\`, votes_polled_valid_nota
+        FROM oit_stack_mh_mla_2024_002 WHERE constituency_number = ? AND candidate_name IS NOT NULL
+        UNION ALL
+        SELECT constituency_number, candidate_name, sex, age, category, party, symbol, \`general\`, postal, \`total\`, votes_polled_valid_nota
+        FROM oit_stack_mh_mla_2024_003 WHERE constituency_number = ? AND candidate_name IS NOT NULL
+      )
+      SELECT 
+        RANK() OVER (ORDER BY total DESC) as rank_no,
+        constituency_number, candidate_name, sex, age, category, party, symbol, \`general\`, postal, \`total\`, 
+        votes_polled_valid_nota as votes_percentage
+      FROM combined_2024
+    `;
+
     const [rows2009] = await pool.query(query2009, [
       constituencyId, constituencyId, constituencyId, constituencyId, constituencyId
     ]);
@@ -103,11 +121,16 @@ app.get('/api/constituency/:id', async (req, res) => {
       constituencyId, constituencyId, constituencyId, constituencyId
     ]);
 
+    const [rows2024] = await pool.query(query2024, [
+      constituencyId, constituencyId, constituencyId
+    ]);
+
     res.json({
       constituency_number: parseInt(constituencyId),
       records_2009: rows2009,
       records_2014: rows2014,
-      records_2019: rows2019
+      records_2019: rows2019,
+      records_2024: rows2024
     });
 
   } catch (error) {
