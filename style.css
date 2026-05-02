@@ -367,7 +367,19 @@ header.scrolled .navbar {
     box-shadow: 0 10px 25px rgba(0, 191, 255, 0.3);
 }
 
-.hero-btns .btn-outline i {
+/* Navbar Actions Hover */
+.login-link, .signup-link { 
+    transition: all 0.3s ease; 
+    border-radius: 8px; 
+    padding: 0.5rem 1rem; 
+}
+
+.login-link:hover, .signup-link:hover { 
+    background: #00BFFF; 
+    color: white !important; 
+}
+
+.btn-outline i {
     margin-right: 0.5rem;
     font-size: 1.1rem;
 }
