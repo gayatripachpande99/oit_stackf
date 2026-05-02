@@ -198,6 +198,45 @@ try {
   console.error('Error registering ChartDataLabels:', e);
 }
 
+// Party Color Mapping (Avoiding Green)
+const partyColorMap = {
+  'BJP': '#f97316', // Vibrant Orange
+  'INC': '#0ea5e9', // Bright Sky Blue (Updated from Royal Blue)
+  'NCP': '#fde047', // Vibrant Yellow
+  'NCP(SP)': '#7c3aed', // Vibrant Purple
+  'SHS': '#e11d48', // Vibrant Crimson
+  'SHUBT': '#ec4899', // Vibrant Pink
+  'BSP': '#4338ca', // Deep Indigo
+  'MNS': '#ea580c', // Dark Orange
+  'IND': '#d1d5db', // Light Gray
+  'OTHERS': '#cbd5e1' // Light Slate
+};
+
+function getPartyColor(party) {
+  if (!party) return partyColorMap['IND'];
+  const p = party.toUpperCase().replace(/[\(\)\s]/g, ''); // Remove parens and spaces
+  
+  if (p.includes('BJP')) return partyColorMap['BJP'];
+  if (p.includes('INC') || p.includes('CONGRESS')) return partyColorMap['INC'];
+  
+  // Prioritize NCPSP / NCP(SP) before general NCP
+  if (p.includes('NCPSP')) return partyColorMap['NCP(SP)'];
+  if (p.includes('NCP')) return partyColorMap['NCP'];
+  
+  if (p.includes('SHS') || p.includes('SHIV') || p.includes('SENA')) {
+    if (p.includes('UBT')) return partyColorMap['SHUBT'];
+    return partyColorMap['SHS'];
+  }
+  if (p.includes('BSP')) return partyColorMap['BSP'];
+  if (p.includes('MNS')) return partyColorMap['MNS'];
+  if (p === 'OTH' || p === 'OTHERS') return partyColorMap['OTHERS'];
+  
+  // Fallback to vibrant colors from the image (excluding green)
+  const fallbacks = ['#f43f5e', '#8b5cf6', '#3b82f6', '#f59e0b', '#06b6d4'];
+  const index = Math.abs(party.split('').reduce((a, b) => a + b.charCodeAt(0), 0)) % fallbacks.length;
+  return fallbacks[index];
+}
+
 function renderPieChart(canvasId, records, year) {
   console.log(`Attempting to render chart for ${year} on ${canvasId}`);
   if (!records || records.length === 0) {
@@ -215,11 +254,13 @@ function renderPieChart(canvasId, records, year) {
   let labels = topCandidates.map(c => c.candidate_name);
   let partyLabels = topCandidates.map(c => c.party || "IND");
   let dataPoints = topCandidates.map(c => parseFloat(c.votes_percentage || 0));
+  let backgroundColors = topCandidates.map(c => getPartyColor(c.party));
 
   if (parseFloat(othersPercentage) > 0.5) {
     labels.push("Others");
     partyLabels.push("OTH");
     dataPoints.push(parseFloat(othersPercentage));
+    backgroundColors.push(partyColorMap['OTHERS']);
   }
 
   const ctx = document.getElementById(canvasId).getContext('2d');
@@ -244,7 +285,7 @@ function renderPieChart(canvasId, records, year) {
       labels: labels,
       datasets: [{
         data: dataPoints,
-        backgroundColor: premiumColors,
+        backgroundColor: backgroundColors,
         borderWidth: 1.5,
         borderColor: '#ffffff',
         hoverOffset: 15

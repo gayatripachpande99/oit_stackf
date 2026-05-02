@@ -1551,15 +1551,31 @@ body.single-screen-home .whatsapp-float {
     border-radius: 1rem;
     border: 1px solid var(--border-color);
     text-align: center;
-    min-height: 350px;
+    min-height: 400px;
     display: flex;
     flex-direction: column;
     justify-content: center;
+    transition: transform 0.3s ease;
+}
+
+.chart-box:hover {
+    transform: translateY(-5px);
+    box-shadow: var(--shadow-md);
+}
+
+.chart-box.large-chart {
+    min-height: 480px;
+    border-color: var(--accent);
+    background: rgba(0, 191, 255, 0.02);
 }
 
 .chart-box canvas {
-    max-height: 250px;
+    max-height: 320px;
     width: 100% !important;
+}
+
+.chart-box.large-chart canvas {
+    max-height: 380px;
 }
 
 .chart-box h3 {
