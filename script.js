@@ -89,6 +89,9 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 });
 
+// Global variable to store constituency data for insights
+let currentConstituencyData = null;
+
 // Function to fetch and display constituency data
 async function loadConstituencyData(constituencyId) {
   // Update this URL to match your deployed Render/Railway backend
@@ -118,6 +121,7 @@ async function loadConstituencyData(constituencyId) {
     }
 
     const data = await response.json();
+    currentConstituencyData = data; // Store globally for insights
 
     // Render 2009 Table
     renderTable(container2009, data.records_2009, false, "2009");
@@ -131,6 +135,9 @@ async function loadConstituencyData(constituencyId) {
     // Render 2024 Table
     renderTable(container2024, data.records_2024, true, "2024");
 
+    // Initialize Insights Button
+    initInsights();
+
   } catch (error) {
     console.error('Error fetching constituency data:', error);
     const errorMsg = '<p style="color:red;">Unable to fetch data. Please try again later.</p>';
@@ -139,6 +146,162 @@ async function loadConstituencyData(constituencyId) {
     container2019.innerHTML = errorMsg;
     container2024.innerHTML = errorMsg;
   }
+}
+
+// Insights Logic
+let charts = {}; // Store chart instances to destroy them before re-rendering
+
+function initInsights() {
+  const modal = document.getElementById('insightsModal');
+  const btn = document.getElementById('insightsBtn');
+  const closeSpan = document.querySelector('.close-modal');
+
+  if (!btn || !modal) return;
+
+  btn.onclick = () => {
+    modal.style.display = "block";
+    setTimeout(() => {
+      renderAllCharts();
+    }, 100);
+  };
+
+  closeSpan.onclick = () => {
+    modal.style.display = "none";
+  };
+
+  window.onclick = (event) => {
+    if (event.target == modal) {
+      modal.style.display = "none";
+    }
+  };
+}
+
+function renderAllCharts() {
+  if (!currentConstituencyData) return;
+
+  const years = [2009, 2014, 2019, 2024];
+  years.forEach(year => {
+    const records = currentConstituencyData[`records_${year}`];
+    renderPieChart(`chart${year}`, records, year);
+  });
+}
+
+// Register Chart.js DataLabels plugin safely
+try {
+  if (typeof ChartDataLabels !== 'undefined') {
+    Chart.register(ChartDataLabels);
+    console.log('ChartDataLabels plugin registered successfully');
+  } else {
+    console.warn('ChartDataLabels plugin not found. Slices will not have labels.');
+  }
+} catch (e) {
+  console.error('Error registering ChartDataLabels:', e);
+}
+
+function renderPieChart(canvasId, records, year) {
+  console.log(`Attempting to render chart for ${year} on ${canvasId}`);
+  if (!records || records.length === 0) {
+    console.warn(`No records found for ${year}`);
+    return;
+  }
+
+  // Take top 5 candidates, others = 100% - sum(top 5)
+  const topCount = 5;
+  const topCandidates = records.slice(0, topCount);
+  
+  const topPercentageSum = topCandidates.reduce((sum, c) => sum + parseFloat(c.votes_percentage || 0), 0);
+  const othersPercentage = Math.max(0, 100 - topPercentageSum).toFixed(2);
+
+  let labels = topCandidates.map(c => c.candidate_name);
+  let partyLabels = topCandidates.map(c => c.party || "IND");
+  let dataPoints = topCandidates.map(c => parseFloat(c.votes_percentage || 0));
+
+  if (parseFloat(othersPercentage) > 0.5) {
+    labels.push("Others");
+    partyLabels.push("OTH");
+    dataPoints.push(parseFloat(othersPercentage));
+  }
+
+  const ctx = document.getElementById(canvasId).getContext('2d');
+  
+  if (charts[canvasId]) {
+    charts[canvasId].destroy();
+  }
+
+  // Light but clearly visible colors
+  const premiumColors = [
+    '#93c5fd', // Light Blue (600 -> 300)
+    '#86efac', // Light Green
+    '#fde047', // Light Yellow
+    '#fda4af', // Light Rose
+    '#c4b5fd', // Light Violet
+    '#cbd5e1'  // Light Slate (Others)
+  ];
+
+  charts[canvasId] = new Chart(ctx, {
+    type: 'pie', // Switched back to pie chart as requested
+    data: {
+      labels: labels,
+      datasets: [{
+        data: dataPoints,
+        backgroundColor: premiumColors,
+        borderWidth: 1.5,
+        borderColor: '#ffffff',
+        hoverOffset: 15
+      }]
+    },
+    options: {
+      responsive: true,
+      maintainAspectRatio: false,
+      plugins: {
+        legend: {
+          display: true,
+          position: 'bottom',
+          labels: {
+            color: '#000000', // Black as requested
+            usePointStyle: true,
+            pointStyle: 'circle',
+            padding: 15,
+            font: { family: "'Inter', sans-serif", size: 11, weight: '500' }
+          }
+        },
+        tooltip: {
+          backgroundColor: 'rgba(255, 255, 255, 0.95)',
+          titleColor: '#000',
+          bodyColor: '#000',
+          titleFont: { size: 14, weight: 'bold' },
+          bodyFont: { size: 13 },
+          padding: 15,
+          cornerRadius: 10,
+          displayColors: true,
+          borderColor: '#e2e8f0',
+          borderWidth: 1,
+          callbacks: {
+            label: function(context) {
+              const party = partyLabels[context.dataIndex];
+              return ` ${party}: ${context.raw}%`;
+            }
+          }
+        },
+        datalabels: {
+          color: '#000000', // Black labels on light slices
+          font: { weight: 'bold', size: 11 },
+          formatter: (value, ctx) => {
+            if (value < 5) return ''; 
+            return partyLabels[ctx.dataIndex];
+          },
+          anchor: 'center',
+          align: 'center'
+        }
+      },
+      animation: {
+        animateScale: true,
+        animateRotate: true,
+        duration: 1500,
+        easing: 'easeOutQuart'
+      }
+    }
+  });
 }
 
 // Reusable helper function to render tables

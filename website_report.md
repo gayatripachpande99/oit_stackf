@@ -18,7 +18,6 @@ The custom website for the **Organization for Innovative Technology Solutions (O
 ## 4. Site Structure
 A fully networked, comprehensive multi-page layout constructed for scalability:
 1. **Home ([index.html](file:///c:/Users/gayat/OneDrive/Desktop/new%20oits/index.html))**: A high-converting landing page featuring a dynamic splash Hero section, a core services preview grid, and a rich client testimonials tracker.
-2. **About ([about.html](file:///c:/Users/gayat/OneDrive/Desktop/new%20oits/about.html))**: Dedicated space articulating our mission, vision, and operational methodologies.
 3. **Services Hub ([services.html](file:///c:/Users/gayat/OneDrive/Desktop/new%20oits/services.html))**: An interactive grid cataloging all 5 core offerings.
 4. **Dedicated Service Deep-Dives (`service-*.html`)**: 5 fully distinct, SEO-optimized pages diving deep into each specific operational service:
    - *Software Development*
