@@ -387,8 +387,11 @@ function renderTable(container, candidates, showSymbol, year) {
   candidates.forEach(candidate => {
     const isWinner = candidate.rank_no == 1;
     const votePercent = parseFloat(candidate.votes_percentage) || 0;
-    const genderIcon = candidate.sex === 'Male' ? '<i class="fa-solid fa-mars" style="color: #3b82f6;"></i>' : 
-                      (candidate.sex === 'Female' ? '<i class="fa-solid fa-venus" style="color: #ec4899;"></i>' : '');
+    const sexValue = (candidate.sex || '').toUpperCase();
+    const isMale = sexValue === 'M' || sexValue === 'MALE';
+    const isFemale = sexValue === 'F' || sexValue === 'FEMALE';
+    const genderIcon = isMale ? '<i class="fa-solid fa-mars" style="color: #3b82f6;"></i>' : 
+                      (isFemale ? '<i class="fa-solid fa-venus" style="color: #ec4899;"></i>' : '');
     
     tableHtml += `
       <tr class="${isWinner ? 'winner-row' : ''}">
@@ -398,7 +401,7 @@ function renderTable(container, candidates, showSymbol, year) {
         <td class="candidate-name-cell">
           <div class="candidate-name">${candidate.candidate_name || '-'}</div>
         </td>
-        <td class="gender-cell">${genderIcon} <span>${candidate.sex || '-'}</span></td>
+        <td class="gender-cell">${genderIcon} <span>${isMale ? 'Male' : (isFemale ? 'Female' : (candidate.sex || '-'))}</span></td>
         <td><span class="meta-data">${candidate.age || '-'}</span></td>
         <td><span class="meta-data">${candidate.category || '-'}</span></td>
         <td><span class="party-badge">${candidate.party || '-'}</span></td>
