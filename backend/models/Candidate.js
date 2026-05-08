@@ -12,14 +12,22 @@ const CandidateSchema = new mongoose.Schema({
   postal: { type: Number, default: 0 },
   total: { type: Number, default: 0 },
   votes_percentage: { type: Number },
-  year: { type: Number, required: true }
+  votes_polled_valid_nota: { type: Number }, // For 2024 records
+  year: { type: Number }
 }, {
-  timestamps: true
+  strict: false // Allow for variations in collection schemas
 });
 
-// Create models for each year or a single model if they are merged
-// To be safe, we can use a function to get the model for a specific collection if needed,
-// but for now let's assume a single collection 'candidates' or yearly ones.
-// I'll export a function to get the model dynamically if they are in different collections.
+// Helper to get a model for a specific collection dynamically
+const getCandidateModel = (collectionName) => {
+  // Check if model already exists to avoid OverwriteModelError
+  if (mongoose.models[collectionName]) {
+    return mongoose.models[collectionName];
+  }
+  return mongoose.model(collectionName, CandidateSchema, collectionName);
+};
 
-module.exports = mongoose.model('Candidate', CandidateSchema);
+module.exports = {
+  CandidateSchema,
+  getCandidateModel
+};

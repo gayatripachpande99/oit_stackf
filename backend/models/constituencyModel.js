@@ -1,37 +1,51 @@
-const mongoose = require('mongoose');
+const { getCandidateModel } = require('./Candidate');
 
 const getConstituencyData = async (constituencyId) => {
   const id = parseInt(constituencyId);
-  const db = mongoose.connection.db;
+  
+  if (isNaN(id)) {
+    throw new Error('Invalid constituency ID');
+  }
 
   // Helper function to fetch from multiple collections and merge
   const fetchFromCollections = async (year, count, percentageField = 'votes_percentage') => {
     let allRecords = [];
-    for (let i = 1; i <= count; i++) {
-      const collectionName = `oit_stack_mh_mla_${year}_00${i}`;
-      const records = await db.collection(collectionName)
-        .find({ constituency_number: id, candidate_name: { $ne: null } })
-        .toArray();
-      
-      // Normalize field names if necessary (e.g., mapping votes_polled_valid_nota to votes_percentage)
-      const normalized = records.map(r => ({
-        ...r,
-        votes_percentage: r[percentageField] || r.votes_percentage
-      }));
-      
-      allRecords = allRecords.concat(normalized);
-    }
+    
+    try {
+      for (let i = 1; i <= count; i++) {
+        const collectionName = `oit_stack_mh_mla_${year}_00${i}`;
+        const Model = getCandidateModel(collectionName);
+        
+        const records = await Model.find({ 
+          constituency_number: id, 
+          candidate_name: { $ne: null } 
+        }).lean();
+        
+        // Normalize field names (e.g., mapping votes_polled_valid_nota to votes_percentage)
+        const normalized = records.map(r => ({
+          ...r,
+          votes_percentage: r[percentageField] || r.votes_percentage || 0
+        }));
+        
+        allRecords = allRecords.concat(normalized);
+      }
 
-    // Sort by total descending and add rank
-    return allRecords
-      .sort((a, b) => b.total - a.total)
-      .map((record, index) => ({
-        ...record,
-        rank_no: index + 1
-      }));
+      // Sort by total descending and add rank
+      return allRecords
+        .sort((a, b) => (b.total || 0) - (a.total || 0))
+        .map((record, index) => ({
+          ...record,
+          rank_no: index + 1
+        }));
+    } catch (err) {
+      console.error(`Error fetching data for year ${year}:`, err);
+      return []; // Return empty array on failure for a specific year
+    }
   };
 
   try {
+    console.log(`Fetching data for constituency: ${id}`);
+
     const [rows2009, rows2014, rows2019, rows2024] = await Promise.all([
       fetchFromCollections(2009, 5),
       fetchFromCollections(2014, 6),
@@ -46,7 +60,7 @@ const getConstituencyData = async (constituencyId) => {
       records_2024: rows2024
     };
   } catch (error) {
-    console.error('Error fetching MongoDB data from multiple collections:', error);
+    console.error('Critical error in constituencyModel:', error);
     throw error;
   }
 };

@@ -95,8 +95,7 @@ let currentConstituencyData = null;
 // Function to fetch and display constituency data
 async function loadConstituencyData(constituencyId) {
   // Update this URL to match your deployed Render/Railway backend
-  const BASE_URL = "https://oitstackf-production.up.railway.app";
-  // const BASE_URL = "http://localhost:3000";
+  const BASE_URL = "https://oit-stack-backend.onrender.com";
 
 
   const container2009 = document.getElementById('candidateTableContainer2009');
