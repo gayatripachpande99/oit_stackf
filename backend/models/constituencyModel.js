@@ -30,6 +30,24 @@ const getConstituencyData = async (constituencyId) => {
         allRecords = allRecords.concat(normalized);
       }
 
+      // De-duplicate records by candidate name and party
+      const uniqueMap = new Map();
+      
+      for (const record of allRecords) {
+        const key = `${record.candidate_name}-${record.party}`.toLowerCase().trim();
+        if (!uniqueMap.has(key)) {
+          uniqueMap.set(key, record);
+        } else {
+          // If duplicate exists, keep the one with higher total votes
+          const existing = uniqueMap.get(key);
+          if ((record.total || 0) > (existing.total || 0)) {
+            uniqueMap.set(key, record);
+          }
+        }
+      }
+
+      allRecords = Array.from(uniqueMap.values());
+
       // Sort by total descending and add rank
       return allRecords
         .sort((a, b) => (b.total || 0) - (a.total || 0))
