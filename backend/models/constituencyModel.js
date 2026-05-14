@@ -12,23 +12,25 @@ const getConstituencyData = async (constituencyId) => {
     let allRecords = [];
     
     try {
+      const promises = [];
       for (let i = 1; i <= count; i++) {
         const collectionName = `oit_stack_mh_mla_${year}_00${i}`;
         const Model = getCandidateModel(collectionName);
-        
-        const records = await Model.find({ 
+        promises.push(Model.find({ 
           constituency_number: id, 
           candidate_name: { $ne: null } 
-        }).lean();
-        
-        // Normalize field names (e.g., mapping votes_polled_valid_nota to votes_percentage)
+        }).lean());
+      }
+
+      const results = await Promise.all(promises);
+      
+      results.forEach(records => {
         const normalized = records.map(r => ({
           ...r,
           votes_percentage: r[percentageField] || r.votes_percentage || 0
         }));
-        
         allRecords = allRecords.concat(normalized);
-      }
+      });
 
       // De-duplicate records by candidate name and party
       const uniqueMap = new Map();
@@ -65,10 +67,10 @@ const getConstituencyData = async (constituencyId) => {
     console.log(`Fetching data for constituency: ${id}`);
 
     const [rows2009, rows2014, rows2019, rows2024] = await Promise.all([
-      fetchFromCollections(2009, 5),
-      fetchFromCollections(2014, 6),
-      fetchFromCollections(2019, 4),
-      fetchFromCollections(2024, 3, 'votes_polled_valid_nota')
+      fetchFromCollections(2009, 10),
+      fetchFromCollections(2014, 15),
+      fetchFromCollections(2019, 10),
+      fetchFromCollections(2024, 15, 'votes_polled_valid_nota')
     ]);
 
     return {
