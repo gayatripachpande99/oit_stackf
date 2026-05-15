@@ -21,9 +21,9 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 // API Routes
 app.use('/api', constituencyRoutes);
 
-// Root route
-app.get('/', (req, res) => {
-  res.send('Backend is running (MongoDB Migrated)');
+// Catch-all route to serve the frontend index.html for any other request
+app.get('*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
 
 // Start server
