@@ -15,8 +15,8 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
-// Serve static frontend files from parent directory
-app.use(express.static(path.join(__dirname, '../')));
+// Serve static frontend files from the frontend directory
+app.use(express.static(path.join(__dirname, '../frontend')));
 
 // API Routes
 app.use('/api', constituencyRoutes);
