@@ -15,6 +15,15 @@
 </head>
 
 <body>
+    <!-- Access Control -->
+    <script>
+        (function() {
+            const fileName = window.location.pathname.split('/').pop();
+            if (sessionStorage.getItem('access_' + fileName) !== 'true') {
+                window.location.href = 'constituency-login.html?target=' + fileName;
+            }
+        })();
+    </script>
     <!-- Loader -->
     <div class="loader-wrapper">
         <div class="loader"></div>
