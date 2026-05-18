@@ -4,6 +4,7 @@ const cors = require('cors');
 const path = require('path');
 const connectDB = require('./config/db');
 const constituencyRoutes = require('./routes/constituencyRoutes');
+const voterRoutes = require('./routes/voterRoutes');
 
 const app = express();
 const PORT = process.env.PORT || 3000;
@@ -20,6 +21,7 @@ app.use(express.static(path.join(__dirname, '../frontend')));
 
 // API Routes
 app.use('/api', constituencyRoutes);
+app.use('/api', voterRoutes);
 
 // Catch-all route to serve the frontend index.html for any other request
 app.get('*', (req, res) => {
