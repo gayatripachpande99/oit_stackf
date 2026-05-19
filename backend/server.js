@@ -32,3 +32,32 @@ app.get('*', (req, res) => {
 app.listen(PORT, () => {
   console.log(`Server is running on port ${PORT}`);
 });
+
+app.get("/api/voters", async(req, res)=>{
+
+    try{
+
+        const boothNumber = req.query.boothNumber;
+
+        let filter = {};
+
+        if(boothNumber){
+
+            filter.boothNumber = Number(boothNumber);
+
+        }
+
+        const voters = await Voter.find(filter);
+
+        res.json(voters);
+
+    }
+    catch(error){
+
+        res.status(500).json({
+            message : error.message
+        });
+
+    }
+
+});

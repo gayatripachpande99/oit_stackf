@@ -1601,3 +1601,72 @@ body.single-screen-home .whatsapp-float {
         grid-template-columns: 1fr;
     }
 }
+.booth-dropdown{
+
+    background-color: #0b1d4d;
+    color: white;
+
+    border: none;
+
+    padding: 8px 10px;
+
+    border-radius: 6px;
+
+    font-size: 15px;
+
+    width: 90px;
+
+    cursor: pointer;
+
+    outline: none;
+
+}
+
+/* Dropdown options */
+.booth-dropdown option{
+
+    background: white;
+    color: black;
+
+}
+.booth-header{
+
+    display: flex;
+
+    align-items: center;
+
+    justify-content: space-between;
+
+    gap: 10px;
+
+}
+
+.booth-dropdown{
+
+    background-color: #0b1d4d;
+
+    color: white;
+
+    border: 1px solid rgba(255,255,255,0.2);
+
+    padding: 6px 10px;
+
+    border-radius: 6px;
+
+    font-size: 14px;
+
+    cursor: pointer;
+
+    outline: none;
+
+    min-width: 85px;
+
+}
+
+.booth-dropdown option{
+
+    background: white;
+
+    color: black;
+
+}
