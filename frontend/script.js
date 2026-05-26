@@ -507,6 +507,9 @@ function initSiteAssistant() {
       </span>
     </button>
     <section class="chatbot-panel" aria-live="polite" aria-label="OIT assistant chat">
+      <button class="chatbot-panel-exit" type="button" aria-label="Exit chat bot">
+        <i class="fa-solid fa-xmark"></i>
+      </button>
       <div class="chatbot-header">
         <div class="chatbot-avatar" aria-hidden="true">
           <span class="chatbot-robot-face mini">
@@ -537,8 +540,6 @@ function initSiteAssistant() {
   document.body.appendChild(widget);
 
   const launcher = widget.querySelector('.chatbot-launcher');
-  const panel = widget.querySelector('.chatbot-panel');
-  const closeBtn = widget.querySelector('.chatbot-close');
   const messages = widget.querySelector('.chatbot-messages');
   const form = widget.querySelector('.chatbot-form');
   const input = form.querySelector('input');
@@ -556,7 +557,11 @@ function initSiteAssistant() {
 
   launcher.addEventListener('click', openBot);
   launcher.setAttribute('aria-expanded', 'false');
-  closeBtn.addEventListener('click', closeBot);
+  widget.addEventListener('click', event => {
+    if (event.target.closest('.chatbot-close, .chatbot-panel-exit')) {
+      closeBot();
+    }
+  });
 
   addBotActionMessage(messages, "Welcome to OIT_Stack. How may I help you?", getWelcomeActions());
 
