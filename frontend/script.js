@@ -12,6 +12,7 @@ window.addEventListener('load', () => {
 // Sticky Navbar
 const header = document.querySelector('header');
 window.addEventListener('scroll', () => {
+  if (!header) return;
   if (window.scrollY > 50) {
     header.classList.add('scrolled');
   } else {
@@ -429,6 +430,7 @@ function renderTable(container, candidates, showSymbol, year) {
 }
 const boothFilter = document.getElementById("boothFilter");
 
+if (boothFilter) {
 
 // Generate booth numbers
 for(let i = 1; i <= 437; i++){
@@ -461,3 +463,560 @@ boothFilter.addEventListener("change", async function(){
     displayVoters(data);
 
 });
+}
+
+// Site Assistant Chatbot
+const getApiBaseUrl = () => {
+  const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+  return isLocal ? "http://localhost:3000" : "https://oit-stack-backend.onrender.com";
+};
+
+document.addEventListener('DOMContentLoaded', () => {
+  initSiteAssistant();
+});
+
+function initSiteAssistant() {
+  if (document.querySelector('.chatbot-widget')) return;
+
+  const widget = document.createElement('div');
+  widget.className = 'chatbot-widget';
+  widget.innerHTML = `
+    <button class="chatbot-launcher" type="button" aria-label="Open OIT assistant">
+      <span class="chatbot-welcome-bubble" aria-hidden="true">
+        <strong>Welcome to OIT_Stack</strong>
+        <span>How may I help you?</span>
+      </span>
+      <span class="chatbot-dance-robot" aria-hidden="true">
+        <span class="astro-bot-head">
+          <span class="astro-bot-ear left"></span>
+          <span class="astro-bot-ear right"></span>
+          <span class="astro-bot-screen">
+            <span class="astro-bot-eye left"></span>
+            <span class="astro-bot-eye right"></span>
+            <span class="astro-bot-smile"></span>
+          </span>
+        </span>
+        <span class="astro-bot-arm left"></span>
+        <span class="astro-bot-arm right"></span>
+        <span class="astro-bot-body">
+          <span class="astro-bot-core"></span>
+        </span>
+        <span class="astro-bot-leg left"></span>
+        <span class="astro-bot-leg right"></span>
+        <span class="astro-bot-shadow"></span>
+      </span>
+    </button>
+    <section class="chatbot-panel" aria-live="polite" aria-label="OIT assistant chat">
+      <div class="chatbot-header">
+        <div class="chatbot-avatar" aria-hidden="true">
+          <span class="chatbot-robot-face mini">
+            <span class="chatbot-antenna"></span>
+            <span class="chatbot-eye left"></span>
+            <span class="chatbot-eye right"></span>
+            <span class="chatbot-smile"></span>
+          </span>
+        </div>
+        <div>
+          <h3>OIT Bot</h3>
+          <p>Records and service helper</p>
+        </div>
+        <button class="chatbot-close" type="button" aria-label="Close assistant">
+          <i class="fa-solid fa-xmark"></i>
+        </button>
+      </div>
+      <div class="chatbot-messages"></div>
+      <form class="chatbot-form">
+        <input type="text" placeholder="Enter service, contact, or constituency..." aria-label="Message OIT bot">
+        <button type="submit" aria-label="Send message">
+          <i class="fa-solid fa-paper-plane"></i>
+        </button>
+      </form>
+    </section>
+  `;
+
+  document.body.appendChild(widget);
+
+  const launcher = widget.querySelector('.chatbot-launcher');
+  const panel = widget.querySelector('.chatbot-panel');
+  const closeBtn = widget.querySelector('.chatbot-close');
+  const messages = widget.querySelector('.chatbot-messages');
+  const form = widget.querySelector('.chatbot-form');
+  const input = form.querySelector('input');
+
+  const openBot = () => {
+    widget.classList.add('is-open');
+    launcher.setAttribute('aria-expanded', 'true');
+    setTimeout(() => input.focus(), 120);
+  };
+
+  const closeBot = () => {
+    widget.classList.remove('is-open');
+    launcher.setAttribute('aria-expanded', 'false');
+  };
+
+  launcher.addEventListener('click', openBot);
+  launcher.setAttribute('aria-expanded', 'false');
+  closeBtn.addEventListener('click', closeBot);
+
+  addBotActionMessage(messages, "Welcome to OIT_Stack. How may I help you?", getWelcomeActions());
+
+  const pendingInsight = getStoredBotInsight();
+  if (pendingInsight) {
+    clearStoredBotInsight();
+    openBot();
+    addBotMessage(messages, pendingInsight);
+  }
+
+  form.addEventListener('submit', event => {
+    event.preventDefault();
+    const query = input.value.trim();
+    if (!query) return;
+
+    addUserMessage(messages, query);
+    input.value = '';
+    handleAssistantQuery(query, messages);
+  });
+}
+
+function addBotMessage(container, text) {
+  addChatMessage(container, text, 'bot');
+}
+
+function addBotActionMessage(container, text, actions) {
+  const message = document.createElement('div');
+  message.className = 'chatbot-message bot chatbot-action-message';
+
+  const body = document.createElement('p');
+  body.textContent = text;
+  message.appendChild(body);
+
+  const actionList = document.createElement('div');
+  actionList.className = 'chatbot-action-list';
+
+  actions.forEach(action => {
+    const link = document.createElement(action.query ? 'button' : 'a');
+    link.className = 'chatbot-action-link';
+    link.textContent = action.label;
+
+    if (action.query) {
+      link.type = 'button';
+      link.addEventListener('click', () => handleAssistantQuery(action.query, container));
+    } else {
+      link.href = action.href;
+    }
+
+    if (action.icon) {
+      const icon = document.createElement('i');
+      icon.className = action.icon;
+      link.prepend(icon);
+    }
+    actionList.appendChild(link);
+  });
+
+  message.appendChild(actionList);
+  container.appendChild(message);
+  container.scrollTop = container.scrollHeight;
+}
+
+function addUserMessage(container, text) {
+  addChatMessage(container, text, 'user');
+}
+
+function addChatMessage(container, text, type) {
+  const message = document.createElement('div');
+  message.className = `chatbot-message ${type}`;
+  message.textContent = text;
+  container.appendChild(message);
+  container.scrollTop = container.scrollHeight;
+}
+
+function setAssistantTyping(container, isTyping) {
+  let typing = container.querySelector('.chatbot-typing');
+  if (isTyping && !typing) {
+    typing = document.createElement('div');
+    typing.className = 'chatbot-message bot chatbot-typing';
+    typing.textContent = 'Checking the site data...';
+    container.appendChild(typing);
+    container.scrollTop = container.scrollHeight;
+  }
+  if (!isTyping && typing) {
+    typing.remove();
+  }
+}
+
+async function handleAssistantQuery(query, messages) {
+  const normalized = query.toLowerCase();
+
+  if (normalized.includes('insight') || normalized.includes('chart') || normalized.includes('pie')) {
+    await answerInsightQuery(query, messages);
+    return;
+  }
+
+  if (normalized.includes('service') || normalized.includes('software') || normalized.includes('campaign') || normalized.includes('training') || normalized.includes('survey') || normalized.includes('analytics')) {
+    addBotActionMessage(messages, "Choose a service to open directly:", getServiceActions());
+    return;
+  }
+
+  if (normalized.includes('contact') || normalized.includes('phone') || normalized.includes('email') || normalized.includes('address')) {
+    addBotActionMessage(messages, "You can contact OIT_Stack here:", [
+      { label: 'Open Contact Page', href: 'contact.html', icon: 'fa-solid fa-address-book' }
+    ]);
+    addBotMessage(messages, "Phone: +91 8983461569. Email: onkarholkar@oitstack.com.");
+    return;
+  }
+
+  if (normalized === 'records' || normalized === 'record' || normalized === 'constituency') {
+    addBotMessage(messages, "Please enter a constituency number or name. Example: 208, Vadgaon Sheri, or Kasba Peth.");
+    return;
+  }
+
+  const constituency = await resolveConstituencyFromQuery(query);
+  if (constituency) {
+    openConstituencyRecords(constituency, messages);
+    return;
+  }
+
+  if (normalized.includes('record') || normalized.includes('constituency') || /\b\d{1,3}\b/.test(normalized)) {
+    addBotMessage(messages, "Please enter a valid Maharashtra assembly constituency number from 1 to 288, or type the constituency name.");
+    return;
+  }
+
+  if (normalized.includes('voter') || normalized.includes('booth') || normalized.includes('elector')) {
+    addBotMessage(messages, "For voter data, open the voter list page and use the booth dropdown to filter records. You can also ask me for constituency records by typing a constituency number, for example: records 208.");
+    return;
+  }
+
+  if (normalized.includes('login') || normalized.includes('sign')) {
+    addBotMessage(messages, "Use Login or Sign Up from the top navigation. If you are accessing protected constituency dashboards, use the constituency login page for that dashboard.");
+    return;
+  }
+
+  addBotMessage(messages, "I can help with services, information queries, voter/booth data, contact details, and constituency records. For records, type a constituency number like records 215.");
+}
+
+function getWelcomeActions() {
+  return [
+    { label: 'Services', query: 'services', icon: 'fa-solid fa-list' },
+    { label: 'Records', query: 'records', icon: 'fa-solid fa-table' },
+    { label: 'Contact', query: 'contact', icon: 'fa-solid fa-address-book' }
+  ];
+}
+
+let constituencyIndexPromise = null;
+
+async function getConstituencyIndex() {
+  if (constituencyIndexPromise) return constituencyIndexPromise;
+
+  constituencyIndexPromise = (async () => {
+    const fallbackIndex = [
+      { id: '208', name: '208 - Vadgaon Sheri' },
+      { id: '215', name: '215 - Kasba Peth' }
+    ];
+
+    if (typeof districtData === 'object' && districtData) {
+      return buildConstituencyIndexFromDistrictData(districtData);
+    }
+
+    try {
+      const response = await fetch('constituencies.js');
+      if (!response.ok) throw new Error('Constituency list unavailable');
+      const source = await response.text();
+      const matches = [...source.matchAll(/"(\d{1,3})\s+-\s+([^"]+)"/g)];
+      const index = matches.map(match => ({
+        id: match[1],
+        name: `${match[1]} - ${match[2]}`
+      }));
+      return index.length ? index : fallbackIndex;
+    } catch (error) {
+      return fallbackIndex;
+    }
+  })();
+
+  return constituencyIndexPromise;
+}
+
+function buildConstituencyIndexFromDistrictData(data) {
+  return Object.values(data).flatMap(district => {
+    if (!Array.isArray(district.assemblies)) return [];
+    return district.assemblies.map(assembly => {
+      const match = assembly.match(/^(\d{1,3})\s+-\s+(.+)$/);
+      return match ? { id: match[1], name: assembly } : null;
+    }).filter(Boolean);
+  });
+}
+
+async function resolveConstituencyFromQuery(query) {
+  const idMatch = query.match(/\b([1-9]|[1-9]\d|1\d\d|2[0-8]\d)\b/);
+  const index = await getConstituencyIndex();
+
+  if (idMatch) {
+    const id = idMatch[1];
+    return index.find(item => item.id === id) || { id, name: getConstituencyName(id) };
+  }
+
+  const normalizedQuery = normalizeConstituencyText(query);
+  if (!normalizedQuery || normalizedQuery.length < 3) return null;
+
+  return index.find(item => normalizeConstituencyText(item.name).includes(normalizedQuery))
+    || index.find(item => normalizedQuery.includes(normalizeConstituencyText(item.name).replace(/^\d+\s+/, '')));
+}
+
+function normalizeConstituencyText(value) {
+  return value
+    .toLowerCase()
+    .replace(/\([^)]*\)/g, ' ')
+    .replace(/[^a-z0-9]+/g, ' ')
+    .replace(/\s+/g, ' ')
+    .trim();
+}
+
+function openConstituencyRecords(constituency, messages) {
+  const url = getRecordPageUrl(constituency.id, constituency.name);
+  addBotActionMessage(messages, `Opening ${constituency.name} records page.`, [
+    { label: 'Open Records Page', href: url, icon: 'fa-solid fa-table' }
+  ]);
+
+  setTimeout(() => {
+    window.location.href = url;
+  }, 450);
+}
+
+async function answerRecordQuery(query, messages) {
+  const idMatch = query.match(/\b([1-9]|[1-9]\d|1\d\d|2[0-8]\d)\b/);
+
+  if (!idMatch) {
+    addBotMessage(messages, "Please share a constituency number from 1 to 288. Example: records 208 for Vadgaon Sheri or records 215 for Kasba Peth.");
+    return;
+  }
+
+  const constituencyId = idMatch[1];
+  setAssistantTyping(messages, true);
+
+  try {
+    const response = await fetch(`${getApiBaseUrl()}/api/constituency/${constituencyId}`);
+    if (!response.ok) throw new Error('Unable to fetch constituency records');
+
+    const data = await response.json();
+    const latestYear = ['2024', '2019', '2014', '2009'].find(year => Array.isArray(data[`records_${year}`]) && data[`records_${year}`].length);
+    setAssistantTyping(messages, false);
+
+    if (!latestYear) {
+      addBotActionMessage(messages, `I found constituency ${constituencyId}, but no election records are available yet. You can still open the records page to check details.`, [
+        { label: 'Open Records Page', href: getRecordPageUrl(constituencyId), icon: 'fa-solid fa-table' }
+      ]);
+      return;
+    }
+
+    const records = data[`records_${latestYear}`];
+    const winner = records.find(candidate => Number(candidate.rank_no) === 1) || records[0];
+    const runnerUp = records.find(candidate => Number(candidate.rank_no) === 2);
+    const constituencyName = getConstituencyName(constituencyId);
+    const summaryParts = [
+      `${constituencyName} has ${records.length} records for ${latestYear}.`,
+      winner ? `Winner: ${winner.candidate_name || 'N/A'} (${winner.party || 'N/A'}) with ${formatNumber(winner.total)} votes.` : '',
+      runnerUp ? `Runner-up: ${runnerUp.candidate_name || 'N/A'} (${runnerUp.party || 'N/A'}) with ${formatNumber(runnerUp.total)} votes.` : '',
+    ].filter(Boolean);
+
+    addBotActionMessage(messages, summaryParts.join(' '), [
+      { label: 'Open Records Page', href: getRecordPageUrl(constituencyId), icon: 'fa-solid fa-table' }
+    ]);
+  } catch (error) {
+    setAssistantTyping(messages, false);
+    addBotActionMessage(messages, "I could not reach the records API right now, but you can still open the records page directly.", [
+      { label: 'Open Records Page', href: getRecordPageUrl(constituencyId), icon: 'fa-solid fa-table' }
+    ]);
+  }
+}
+
+async function answerInsightQuery(query, messages) {
+  const constituency = await resolveConstituencyFromQuery(query);
+
+  if (!constituency) {
+    addBotMessage(messages, "Please enter the constituency name or number for insights. Example: insights of Kasba Peth or insights 208.");
+    return;
+  }
+
+  setAssistantTyping(messages, true);
+
+  try {
+    const response = await fetch(`${getApiBaseUrl()}/api/constituency/${constituency.id}`);
+    if (!response.ok) throw new Error('Unable to fetch insight data');
+
+    const data = await response.json();
+    const summary = buildYearWiseInsightSummary(data, constituency);
+    const url = getInsightPageUrl(constituency.id, constituency.name);
+
+    setAssistantTyping(messages, false);
+    addBotActionMessage(messages, summary, [
+      { label: 'Open Insights', href: url, icon: 'fa-solid fa-chart-pie' }
+    ]);
+
+    setTimeout(() => {
+      storeBotInsight(summary);
+      window.location.href = url;
+    }, 900);
+  } catch (error) {
+    const url = getInsightPageUrl(constituency.id, constituency.name);
+    setAssistantTyping(messages, false);
+    addBotActionMessage(messages, `Opening ${constituency.name} insights. The records page will show the available pie charts.`, [
+      { label: 'Open Insights', href: url, icon: 'fa-solid fa-chart-pie' }
+    ]);
+
+    setTimeout(() => {
+      storeBotInsight(`Opening ${constituency.name} insights. The pie chart window will show charts; year-wise insight text will appear here in the bot when data is available.`);
+      window.location.href = url;
+    }, 900);
+  }
+}
+
+function getStoredBotInsight() {
+  try {
+    return window.sessionStorage ? window.sessionStorage.getItem('oitBotPendingInsight') : null;
+  } catch (error) {
+    return null;
+  }
+}
+
+function storeBotInsight(summary) {
+  try {
+    if (window.sessionStorage) {
+      window.sessionStorage.setItem('oitBotPendingInsight', summary);
+    }
+  } catch (error) {
+    // Bot still shows the insight before navigation if browser storage is unavailable.
+  }
+}
+
+function clearStoredBotInsight() {
+  try {
+    if (window.sessionStorage) {
+      window.sessionStorage.removeItem('oitBotPendingInsight');
+    }
+  } catch (error) {
+    // Ignore storage cleanup failures.
+  }
+}
+
+function buildYearWiseInsightSummary(data, constituency) {
+  const years = ['2009', '2014', '2019', '2024'];
+  const lines = years
+    .map(year => {
+      const records = data[`records_${year}`];
+      if (!Array.isArray(records) || !records.length) return null;
+
+      return `${year}: ${buildSimpleYearInsight(records)}`;
+    })
+    .filter(Boolean);
+
+  if (!lines.length) {
+    return `${constituency.name}: No simple insight is available yet because records are missing.`;
+  }
+
+  return `${constituency.name} simple election insights:\n${lines.join('\n')}`;
+}
+
+function buildSimpleYearInsight(records) {
+  const leader = records[0];
+  const runnerUp = records[1];
+  const third = records[2];
+  const leaderShare = parseFloat(leader?.votes_percentage) || 0;
+  const runnerShare = parseFloat(runnerUp?.votes_percentage) || 0;
+  const thirdShare = parseFloat(third?.votes_percentage) || 0;
+  const margin = Math.abs(leaderShare - runnerShare);
+  const topTwoShare = leaderShare + runnerShare;
+
+  if (!leader) return 'No clear result is available.';
+
+  let resultType = 'This looks like a close contest.';
+  if (margin >= 15) {
+    resultType = 'This looks like a comfortable win.';
+  } else if (margin >= 7) {
+    resultType = 'This looks like a clear but not one-sided win.';
+  } else if (margin < 3) {
+    resultType = 'This looks like a very tight fight.';
+  }
+
+  const mainLine = `${leader.candidate_name || 'The leading candidate'} from ${leader.party || 'N/A'} is ahead with about ${leaderShare.toFixed(1)}% votes.`;
+  const secondLine = runnerUp
+    ? `${runnerUp.candidate_name || 'The second candidate'} from ${runnerUp.party || 'N/A'} is next with about ${runnerShare.toFixed(1)}%, so the gap is about ${margin.toFixed(1)} percentage points.`
+    : '';
+  const votePattern = topTwoShare >= 80
+    ? 'Most voters are split mainly between the top two candidates.'
+    : thirdShare >= 8
+      ? `A third candidate also has a visible share of about ${thirdShare.toFixed(1)}%, so the vote is more divided.`
+      : 'Other candidates have a smaller share, so the main fight is between the top two.';
+
+  return [mainLine, secondLine, resultType, votePattern].filter(Boolean).join(' ');
+}
+
+function buildInsightSummary(data, constituency) {
+  const availableYears = ['2024', '2019', '2014', '2009']
+    .filter(year => Array.isArray(data[`records_${year}`]) && data[`records_${year}`].length);
+
+  if (!availableYears.length) {
+    return `${constituency.name} insights page is opening, but no chart records are available yet.`;
+  }
+
+  const latestYear = availableYears[0];
+  const latestRecords = data[`records_${latestYear}`];
+  const topCandidates = latestRecords.slice(0, 3);
+  const topShare = topCandidates.reduce((sum, candidate) => sum + (parseFloat(candidate.votes_percentage) || 0), 0);
+  const leader = topCandidates[0];
+  const runnerUp = topCandidates[1];
+  const margin = leader && runnerUp
+    ? Math.abs((parseFloat(leader.votes_percentage) || 0) - (parseFloat(runnerUp.votes_percentage) || 0)).toFixed(2)
+    : null;
+
+  const topText = topCandidates
+    .map(candidate => `${candidate.candidate_name || 'N/A'} (${candidate.party || 'N/A'}) ${candidate.votes_percentage || 0}%`)
+    .join(', ');
+
+  const yearText = availableYears.length > 1
+    ? `Charts are available for ${availableYears.reverse().join(', ')}.`
+    : `Chart is available for ${latestYear}.`;
+
+  return `${constituency.name} ${latestYear} pie insight: ${topText}. Top 3 share is ${topShare.toFixed(2)}%. ${margin ? `Leader margin is ${margin} percentage points. ` : ''}${yearText} Opening the Insights tab now.`;
+}
+
+function formatNumber(value) {
+  const number = Number(value);
+  if (!Number.isFinite(number)) return 'N/A';
+  return number.toLocaleString('en-IN');
+}
+
+function getServiceActions() {
+  return [
+    { label: 'Software Development', href: 'service-software.html', icon: 'fa-solid fa-code' },
+    { label: 'Data Analytics', href: 'service-analytics.html', icon: 'fa-solid fa-chart-line' },
+    { label: 'Campaign Management', href: 'service-campaign.html', icon: 'fa-solid fa-bullhorn' },
+    { label: 'Corporate Training', href: 'service-training.html', icon: 'fa-solid fa-users-viewfinder' },
+    { label: 'Political Surveys', href: 'service-surveys.html', icon: 'fa-solid fa-square-poll-vertical' }
+  ];
+}
+
+function getConstituencyName(constituencyId) {
+  const knownNames = {
+    '208': '208 - Vadgaon Sheri',
+    '215': '215 - Kasba Peth'
+  };
+
+  if (knownNames[constituencyId]) return knownNames[constituencyId];
+
+  if (typeof districtData === 'object' && districtData) {
+    for (const district of Object.values(districtData)) {
+      const match = district.assemblies.find(assembly => assembly.startsWith(`${constituencyId} - `));
+      if (match) return match;
+    }
+  }
+
+  return `Constituency ${constituencyId}`;
+}
+
+function getRecordPageUrl(constituencyId, constituencyName) {
+  const name = constituencyName || getConstituencyName(constituencyId);
+  return `constituency-details.html?id=${encodeURIComponent(constituencyId)}&name=${encodeURIComponent(name)}`;
+}
+
+function getInsightPageUrl(constituencyId, constituencyName) {
+  return `${getRecordPageUrl(constituencyId, constituencyName)}&insights=true`;
+}

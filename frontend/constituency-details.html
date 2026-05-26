@@ -148,7 +148,7 @@
 
     <script src="script.js"></script>
     <script>
-        document.addEventListener('DOMContentLoaded', () => {
+        document.addEventListener('DOMContentLoaded', async () => {
             // Extract the 'id' and 'name' from the URL
             const urlParams = new URLSearchParams(window.location.search);
             const constituencyId = urlParams.get('id');
@@ -164,7 +164,14 @@
 
                 // Call the existing function from script.js
                 if (typeof loadConstituencyData === 'function') {
-                    loadConstituencyData(constituencyId);
+                    await loadConstituencyData(constituencyId);
+
+                    if (urlParams.get('insights') === 'true') {
+                        setTimeout(() => {
+                            const insightsBtn = document.getElementById('insightsBtn');
+                            if (insightsBtn) insightsBtn.click();
+                        }, 250);
+                    }
                 } else {
                     document.getElementById('candidateTableContainer').innerHTML = "<p style='color:red;'>Error: Could not load the data fetcher.</p>";
                 }
