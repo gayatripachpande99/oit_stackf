@@ -482,10 +482,6 @@ function initSiteAssistant() {
   widget.className = 'chatbot-widget';
   widget.innerHTML = `
     <button class="chatbot-launcher" type="button" aria-label="Open OIT assistant">
-      <span class="chatbot-welcome-bubble" aria-hidden="true">
-        <strong>Welcome to OIT_Stack</strong>
-        <span>How may I help you?</span>
-      </span>
       <span class="chatbot-dance-robot" aria-hidden="true">
         <span class="astro-bot-head">
           <span class="astro-bot-ear left"></span>

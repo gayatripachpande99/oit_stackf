@@ -1701,72 +1701,6 @@ body.single-screen-home .whatsapp-float {
     transform: translateY(-4px) scale(1.04);
 }
 
-.chatbot-welcome-bubble {
-    position: absolute;
-    right: 74px;
-    bottom: 82px;
-    width: 210px;
-    padding: 0.95rem 1.05rem;
-    border-radius: 24px 24px 8px 24px;
-    background:
-        radial-gradient(circle at 18% 18%, rgba(255, 255, 255, 0.45) 0 9%, transparent 10%),
-        linear-gradient(135deg, #54c2ff 0%, #258cff 48%, #1268d7 100%);
-    color: #ffffff;
-    border: 1px solid rgba(255, 255, 255, 0.5);
-    box-shadow: 0 18px 38px rgba(31, 126, 234, 0.34), inset 0 1px 0 rgba(255, 255, 255, 0.45);
-    text-align: left;
-    pointer-events: none;
-    animation: chatbotBubbleFloat 2.2s ease-in-out infinite;
-    transition: opacity 0.2s ease, transform 0.2s ease;
-    overflow: visible;
-}
-
-.chatbot-welcome-bubble::after {
-    content: '';
-    position: absolute;
-    right: 16px;
-    bottom: -12px;
-    width: 22px;
-    height: 22px;
-    background: #1268d7;
-    clip-path: polygon(0 0, 100% 0, 100% 100%);
-}
-
-.chatbot-welcome-bubble::before {
-    content: '';
-    position: absolute;
-    right: -9px;
-    top: -9px;
-    width: 18px;
-    height: 18px;
-    border-radius: 50%;
-    background: #a7f542;
-    box-shadow: -190px 64px 0 -5px #67e8f9, -28px 102px 0 -6px #d9f99d;
-}
-
-.chatbot-welcome-bubble strong,
-.chatbot-welcome-bubble span {
-    display: block;
-    line-height: 1.25;
-}
-
-.chatbot-welcome-bubble strong {
-    font-size: 0.95rem;
-    font-weight: 800;
-    margin-bottom: 0.18rem;
-    letter-spacing: 0;
-}
-
-.chatbot-welcome-bubble span {
-    font-size: 0.88rem;
-    opacity: 0.95;
-}
-
-.chatbot-widget.is-open .chatbot-welcome-bubble {
-    opacity: 0;
-    transform: translateY(6px) scale(0.96);
-}
-
 .chatbot-widget.is-open .chatbot-launcher {
     position: fixed;
     right: 24px;
@@ -1996,11 +1930,6 @@ body.single-screen-home .whatsapp-float {
 @keyframes chatbotRightArm {
     0%, 100% { transform: rotate(-32deg); }
     50% { transform: rotate(10deg); }
-}
-
-@keyframes chatbotBubbleFloat {
-    0%, 100% { transform: translateY(0); }
-    50% { transform: translateY(-4px); }
 }
 
 .chatbot-robot-face {
@@ -2338,21 +2267,6 @@ body.single-screen-home .whatsapp-float {
     .chatbot-launcher {
         width: 76px;
         height: 88px;
-    }
-
-    .chatbot-welcome-bubble {
-        right: 58px;
-        bottom: 68px;
-        width: 170px;
-        padding: 0.75rem 0.85rem;
-    }
-
-    .chatbot-welcome-bubble strong {
-        font-size: 0.8rem;
-    }
-
-    .chatbot-welcome-bubble span {
-        font-size: 0.76rem;
     }
 
     .chatbot-panel {
