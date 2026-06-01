@@ -46,6 +46,12 @@ const userSchema = new mongoose.Schema(
     year: {
       type: String,
     },
+    studentId: {
+      type: String,
+    },
+    location: {
+      type: String,
+    },
     profileImage: {
       type: String,
       default: '',

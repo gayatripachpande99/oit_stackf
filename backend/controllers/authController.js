@@ -43,6 +43,8 @@ const register = async (req, res) => {
       college: user.college,
       branch: user.branch,
       year: user.year,
+      studentId: user.studentId,
+      location: user.location,
       profileImage: user.profileImage,
     };
 
@@ -105,6 +107,8 @@ const login = async (req, res) => {
       college: user.college,
       branch: user.branch,
       year: user.year,
+      studentId: user.studentId,
+      location: user.location,
       profileImage: user.profileImage,
     };
 
@@ -138,7 +142,7 @@ const getProfile = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   try {
-    const allowedFields = ['name', 'phone', 'college', 'branch', 'year', 'profileImage'];
+    const allowedFields = ['name', 'phone', 'college', 'branch', 'year', 'profileImage', 'studentId', 'location'];
     const updates = {};
 
     for (const field of allowedFields) {
