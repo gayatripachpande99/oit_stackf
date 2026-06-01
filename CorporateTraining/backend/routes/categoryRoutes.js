@@ -10,6 +10,7 @@ const {
   createSubcategory,
   updateSubcategory,
   deleteSubcategory,
+  bulkImportSubcategories,
 } = require('../controllers/categoryController');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
@@ -34,6 +35,7 @@ router.post('/', auth, admin, validate(categoryValidation), createCategory);
 router.put('/:id', auth, admin, updateCategory);
 router.delete('/:id', auth, admin, deleteCategory);
 
+router.post('/:categoryId/subcategories/bulk', auth, admin, bulkImportSubcategories);
 router.post('/:categoryId/subcategories', auth, admin, validate(subcategoryValidation), createSubcategory);
 router.put('/subcategories/:id', auth, admin, updateSubcategory);
 router.delete('/subcategories/:id', auth, admin, deleteSubcategory);

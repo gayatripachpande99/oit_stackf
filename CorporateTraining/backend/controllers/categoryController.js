@@ -201,6 +201,85 @@ const deleteSubcategory = async (req, res) => {
   }
 };
 
+const bulkImportSubcategories = async (req, res) => {
+  try {
+    const { categoryId } = req.params;
+    const { subcategories } = req.body;
+
+    if (!Array.isArray(subcategories) || subcategories.length === 0) {
+      return errorResponse(res, 400, 'Please provide an array of subcategories to import');
+    }
+
+    const category = await Category.findById(categoryId);
+    if (!category) {
+      return errorResponse(res, 404, 'Parent category not found');
+    }
+
+    const errors = [];
+    const validSubcategories = [];
+
+    const existingSubs = await Subcategory.find({ category: categoryId });
+    const existingSubNames = new Set(existingSubs.map(s => s.name.toLowerCase().trim()));
+
+    for (let i = 0; i < subcategories.length; i++) {
+      const item = subcategories[i];
+      const index = i + 1;
+      let name = '';
+      let description = '';
+      let isActive = true;
+
+      if (typeof item === 'string') {
+        name = item.trim();
+      } else if (item && typeof item === 'object') {
+        name = (item.name || '').trim();
+        description = item.description || '';
+        if (item.isActive !== undefined) {
+          isActive = !!item.isActive;
+        }
+      }
+
+      if (!name) {
+        errors.push(`Row ${index}: Subcategory name is required`);
+        continue;
+      }
+
+      const lowerName = name.toLowerCase();
+
+      if (existingSubNames.has(lowerName)) {
+        errors.push(`Row ${index}: Subcategory "${name}" already exists in this category`);
+        continue;
+      }
+
+      const duplicateInBatch = validSubcategories.some(x => x.name.toLowerCase() === lowerName);
+      if (duplicateInBatch) {
+        errors.push(`Row ${index}: Subcategory "${name}" is duplicated within the pasted list`);
+        continue;
+      }
+
+      validSubcategories.push({
+        name,
+        category: categoryId,
+        description,
+        isActive
+      });
+    }
+
+    if (errors.length > 0) {
+      return errorResponse(res, 400, 'Validation failed for some subcategories', errors);
+    }
+
+    const inserted = await Subcategory.insertMany(validSubcategories);
+
+    return successResponse(res, 201, `Successfully imported ${inserted.length} subcategories`, {
+      importedCount: inserted.length,
+      subcategories: inserted
+    });
+  } catch (error) {
+    console.error('Bulk subcategory import error:', error.message);
+    return errorResponse(res, 500, 'Server error during bulk subcategory import');
+  }
+};
+
 module.exports = {
   getCategories,
   getCategory,
@@ -210,6 +289,7 @@ module.exports = {
   getSubcategories,
   createSubcategory,
   updateSubcategory,
-  deleteSubcategory
+  deleteSubcategory,
+  bulkImportSubcategories
 };
 

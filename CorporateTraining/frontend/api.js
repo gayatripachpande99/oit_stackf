@@ -1,7 +1,7 @@
 // Global Configuration and API Utility
 const CONFIG = {
     API_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-        ? 'http://localhost:3000/api'
+        ? 'http://localhost:5000/api'
         : 'https://oit-stack-backend.onrender.com/api'
 };
 
@@ -22,9 +22,9 @@ const api = {
         window.location.href = 'login.html';
     },
 
-    // Generic Fetch Wrapper
+    // Generic Fetch Wrapper with auto port fallback for local dev
     async request(endpoint, options = {}) {
-        const url = `${CONFIG.API_URL}${endpoint}`;
+        let baseUrl = CONFIG.API_URL;
         
         const headers = {
             'Content-Type': 'application/json',
@@ -41,16 +41,43 @@ const api = {
             headers,
         };
 
-        try {
+        const attemptFetch = async (url) => {
             const response = await fetch(url, config);
-            const data = await response.json();
-
-            if (!response.ok) {
-                throw new Error(data.message || 'Something went wrong');
+            const contentType = response.headers.get('content-type') || '';
+            
+            if (!contentType.includes('application/json')) {
+                throw new SyntaxError('Response is not JSON (received HTML fallback)');
             }
-
+            
+            const data = await response.json();
+            if (!response.ok) {
+                const err = new Error(data.message || 'Something went wrong');
+                err.errors = data.errors || null;
+                throw err;
+            }
             return data;
+        };
+
+        try {
+            return await attemptFetch(`${baseUrl}${endpoint}`);
         } catch (error) {
+            const isLocal = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1';
+            const isJsonParseError = error instanceof SyntaxError || error.message.includes('Unexpected token') || error.message.includes('JSON');
+            const isNetworkError = error instanceof TypeError || error.name === 'TypeError';
+
+            if (isLocal && (isJsonParseError || isNetworkError)) {
+                const altBaseUrl = baseUrl.includes('5000') 
+                    ? baseUrl.replace('5000', '3000') 
+                    : baseUrl.replace('3000', '5000');
+                
+                console.warn(`API request to ${baseUrl} failed. Attempting auto-fallback to alternate local port: ${altBaseUrl}`);
+                try {
+                    return await attemptFetch(`${altBaseUrl}${endpoint}`);
+                } catch (retryError) {
+                    console.error('API Error after fallback attempt:', retryError);
+                    throw retryError;
+                }
+            }
             console.error('API Error:', error);
             throw error;
         }
@@ -131,7 +158,8 @@ const api = {
         getSubcategories: (id) => api.request(`/categories/${id}/subcategories`),
         createSubcategory: (id, data) => api.request(`/categories/${id}/subcategories`, { method: 'POST', body: JSON.stringify(data) }),
         updateSubcategory: (id, data) => api.request(`/categories/subcategories/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
-        deleteSubcategory: (id) => api.request(`/categories/subcategories/${id}`, { method: 'DELETE' })
+        deleteSubcategory: (id) => api.request(`/categories/subcategories/${id}`, { method: 'DELETE' }),
+        bulkImportSubcategories: (id, data) => api.request(`/categories/${id}/subcategories/bulk`, { method: 'POST', body: JSON.stringify(data) })
     },
 
     questions: {
