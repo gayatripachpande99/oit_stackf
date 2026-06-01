@@ -214,8 +214,18 @@
             empty.classList.add('hidden');
 
             if (currentTab === 'mcq') {
-                const targetCategory = categories.find(c => c.name.toLowerCase() === 'technical');
+                // Find category containing 'tech' or default to any category that contains 'mcq'
+                let targetCategory = categories.find(c => c.name.toLowerCase().includes('tech'));
+                if (!targetCategory) {
+                    targetCategory = categories.find(c => c.name.toLowerCase().includes('mcq'));
+                }
+                
                 let filteredTests = targetCategory ? tests.filter(t => t.category && t.category._id === targetCategory._id) : [];
+
+                if (filteredTests.length === 0) {
+                    // Fallback: If no specific matching category, show tests not in Math/Verbal/NonVerbal
+                    filteredTests = tests.filter(t => t.category && !['math', 'verbal', 'non verbal'].includes(t.category.name.toLowerCase()));
+                }
 
                 if (filteredTests.length === 0) {
                     empty.classList.remove('hidden');
