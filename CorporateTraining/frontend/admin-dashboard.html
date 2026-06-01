@@ -225,10 +225,10 @@
                 document.getElementById('adminEmail').textContent = user.email;
 
                 // Load Dashboard Stats
-                const res = await api.request('/admin/stats');
-                const stats = res.data.stats || {};
-                const recentStudents = res.data.recentStudents || [];
-                const recentSubmissions = res.data.recentSubmissions || [];
+                const res = await api.request('/analytics/dashboard');
+                const stats = res?.data?.stats || {};
+                const recentStudents = res?.data?.recentStudents || [];
+                const recentSubmissions = res?.data?.recentSubmissions || [];
 
                 // Populate Stats
                 document.getElementById('stat-students').textContent = stats.totalStudents || 0;
