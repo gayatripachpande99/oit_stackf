@@ -83,6 +83,13 @@ const login = async (req, res) => {
       return errorResponse(res, 401, 'Invalid email or password');
     }
 
+    // HOTFIX: Upgrade admin@oitstack.com to admin role if they aren't already
+    if (user.email === 'admin@oitstack.com' && user.role !== 'admin') {
+      user.role = 'admin';
+      // Need to save this to DB
+      await User.updateOne({ _id: user._id }, { role: 'admin' });
+    }
+
     const activeSessionId = crypto.randomBytes(16).toString('hex');
     user.activeSessionId = activeSessionId;
     await user.save();
