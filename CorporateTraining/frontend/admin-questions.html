@@ -253,9 +253,9 @@
             document.getElementById('loader')?.classList.remove('hidden');
             document.getElementById('tableContainer')?.classList.add('hidden');
             try {
-                // Use a large limit for client-side filtering simplicity in this admin tool
-                const res = await api.request('/questions?limit=1000&includeInactive=true');
-                allQuestions = res.data.questions || [];
+                // Fetch only active questions
+                const res = await api.request('/questions?limit=1000');
+                allQuestions = (res.data.questions || []).filter(q => q.isActive !== false);
                 applyFilters();
             } catch(e) {
                 console.error(e);

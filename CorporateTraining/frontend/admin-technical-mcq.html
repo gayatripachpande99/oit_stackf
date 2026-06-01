@@ -216,9 +216,9 @@
             document.getElementById('loader')?.classList.remove('hidden');
             document.getElementById('tableContainer')?.classList.add('hidden');
             try {
-                // Fetch all questions and filter client-side for category type === 'technical'
-                const res = await api.request('/questions?limit=1000&includeInactive=true');
-                const rawList = res.data.questions || [];
+                // Fetch only active questions
+                const res = await api.request('/questions?limit=1000');
+                const rawList = (res.data.questions || []).filter(q => q.isActive !== false);
                 
                 // Keep only those with category.type === 'technical'
                 allQuestions = rawList.filter(q => q.category?.type === 'technical');
