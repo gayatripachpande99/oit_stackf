@@ -97,6 +97,15 @@
                         </div>
 
                         <div class="mb-5">
+                            <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Phone Number</label>
+                            <div class="relative">
+                                <i data-lucide="phone" class="absolute left-4 top-3.5 w-5 h-5 text-slate-400"></i>
+                                <input id="phone" type="tel" placeholder="Enter your mobile number" class="w-full pl-12 pr-4 py-3.5 rounded-xl border border-slate-300 dark:border-slate-600 bg-white dark:bg-slate-800/50 text-slate-900 dark:text-white focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition-all">
+                            </div>
+                            <p id="err-phone" class="mt-1.5 text-sm text-red-500 hidden"></p>
+                        </div>
+
+                        <div class="mb-5">
                             <label class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-2">Password</label>
                             <div class="relative">
                                 <i data-lucide="lock" class="absolute left-4 top-3.5 w-5 h-5 text-slate-400"></i>
@@ -242,13 +251,15 @@
             let valid = true;
             const name = document.getElementById('name').value;
             const email = document.getElementById('email').value;
+            const phone = document.getElementById('phone').value;
             const password = document.getElementById('password').value;
             const confirm = document.getElementById('confirmPassword').value;
 
-            ['name', 'email', 'password', 'confirmPassword'].forEach(clearError);
+            ['name', 'email', 'phone', 'password', 'confirmPassword'].forEach(clearError);
 
             if (!name) { showError('name', 'Name required'); valid = false; }
             if (!email || !email.includes('@')) { showError('email', 'Valid email required'); valid = false; }
+            if (!phone) { showError('phone', 'Phone required'); valid = false; }
             if (password.length < 6) { showError('password', 'Min 6 chars'); valid = false; }
             if (password !== confirm) { showError('confirmPassword', 'Passwords do not match'); valid = false; }
 
@@ -283,6 +294,7 @@
             const formData = {
                 name: document.getElementById('name').value,
                 email: document.getElementById('email').value,
+                phone: document.getElementById('phone').value,
                 password: document.getElementById('password').value,
                 college: document.getElementById('college').value,
                 branch: document.getElementById('branch').value,

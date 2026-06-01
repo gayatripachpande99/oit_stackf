@@ -10,7 +10,7 @@ const { successResponse, errorResponse } = require('../utils/apiResponse');
 
 const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, phone, college, branch, year } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -18,7 +18,7 @@ const register = async (req, res) => {
     }
 
     const activeSessionId = crypto.randomBytes(16).toString('hex');
-    const user = await User.create({ name, email, password, activeSessionId });
+    const user = await User.create({ name, email, password, phone, college, branch, year, activeSessionId });
 
     await Leaderboard.create({ user: user._id });
 
@@ -38,6 +38,7 @@ const register = async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      phone: user.phone,
       role: user.role,
       college: user.college,
       branch: user.branch,
@@ -99,6 +100,7 @@ const login = async (req, res) => {
       _id: user._id,
       name: user.name,
       email: user.email,
+      phone: user.phone,
       role: user.role,
       college: user.college,
       branch: user.branch,
