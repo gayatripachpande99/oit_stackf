@@ -214,7 +214,7 @@
             empty.classList.add('hidden');
 
             if (currentTab === 'mcq') {
-                const targetCategory = categories.find(c => c.name.toLowerCase() === 'mcq');
+                const targetCategory = categories.find(c => c.name.toLowerCase() === 'technical');
                 let filteredTests = targetCategory ? tests.filter(t => t.category && t.category._id === targetCategory._id) : [];
 
                 if (filteredTests.length === 0) {
