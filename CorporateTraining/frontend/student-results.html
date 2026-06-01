@@ -165,7 +165,7 @@
 
         async function fetchStats() {
             try {
-                const allRes = await api.request('/results/my-results?limit=100');
+                const allRes = await api.request('/results/my?limit=100');
                 const allList = allRes.data.results || [];
 
                 let sumPct = 0;
@@ -193,7 +193,7 @@
             const categoryType = document.getElementById('categoryFilter').value;
             
             try {
-                const res = await api.request(`/results/my-results?page=${currentPage}&limit=10`);
+                const res = await api.request(`/results/my?page=${currentPage}&limit=10`);
                 let list = res.data.results || [];
 
                 if (categoryType) {

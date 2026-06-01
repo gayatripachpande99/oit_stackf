@@ -104,7 +104,7 @@ const api = {
     },
 
     results: {
-        getMy: (params = '') => api.request(`/results/my-results${params}`),
+        getMy: (params = '') => api.request(`/results/my${params}`),
         getOne: (id) => api.request(`/results/${id}`),
         getAll: (params = '') => api.request(`/results${params}`),
         saveAnswer: (resultId, data) => api.request(`/results/${resultId}/answer`, { method: 'PUT', body: JSON.stringify(data) })

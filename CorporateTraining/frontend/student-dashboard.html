@@ -263,8 +263,8 @@
                 document.getElementById('userEmailSidebar').textContent = user.email;
 
                 // Load Dashboard Data
-                const resultsRes = await api.request('/results/my-results?limit=5');
-                const allResultsRes = await api.request('/results/my-results?limit=100');
+                const resultsRes = await api.request('/results/my?limit=5');
+                const allResultsRes = await api.request('/results/my?limit=100');
                 const problemsRes = await api.request('/coding/problems?limit=100');
                 const leaderboardRes = await api.request('/leaderboard?limit=1');
 

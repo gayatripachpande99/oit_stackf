@@ -150,7 +150,7 @@
 
             try {
                 // Fetch recent test results for this testId
-                const historyRes = await api.request(`/results/my-results?testId=${testId}&limit=1`);
+                const historyRes = await api.request(`/results/my?testId=${testId}&limit=1`);
                 const resultsList = historyRes.data.results || [];
 
                 if (resultsList.length === 0) {
