@@ -4,7 +4,9 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Create/Edit Question</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+                </main>
+                    </main>
+        <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = { darkMode: 'class' }
     </script>
@@ -13,7 +15,7 @@
         <script src="api.js?v=2"></script>
 </head>
 <body class="bg-slate-50 dark:bg-[#0a0f1e] text-slate-900 dark:text-white font-sans overflow-hidden">
-    <div class="flex h-[100dvh]">
+    <div class="flex h-screen">
 
         <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 bg-slate-900 dark:bg-[#0d1117] border-r border-slate-800/60 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
             <div class="h-16 flex items-center justify-between px-5 border-b border-slate-800/60">
@@ -44,11 +46,17 @@
                 <a href="admin-questions.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
                     <i data-lucide="database" class="w-4 h-4 shrink-0"></i> Question Pool
                 </a>
+                <a href="admin-technical-mcq.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="terminal" class="w-4 h-4 shrink-0"></i> Technical MCQs
+                </a>
                 <a href="admin-tests.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
                     <i data-lucide="file-text" class="w-4 h-4 shrink-0"></i> Tests
                 </a>
                 <a href="admin-coding.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
                     <i data-lucide="code" class="w-4 h-4 shrink-0"></i> Coding Challenges
+                </a>
+                <a href="admin-interviews.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="mic" class="w-4 h-4 shrink-0"></i> Mock Interviews
                 </a>
                 <a href="admin-results.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
                     <i data-lucide="award" class="w-4 h-4 shrink-0"></i> Results
@@ -66,7 +74,7 @@
         </aside>
 
         <!-- Overlay for mobile sidebar -->
-        <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 hidden lg:hidden cursor-pointer"></div>
+        <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 hidden lg:hidden"></div>
 
         <!-- Main Content -->
         <div class="flex-1 lg:ml-64 flex flex-col min-w-0 h-full">
@@ -177,6 +185,9 @@
                                 <div id="errBox" class="hidden text-rose-500 text-xs font-bold mt-2"></div>
 
                                 <div class="flex justify-end gap-3 mt-2">
+                                    <button type="button" onclick="window.location.href='admin-questions.html'" class="px-6 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
+                                        Cancel
+                                    </button>
                                     <button type="submit" id="saveBtn" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md shadow-indigo-500/20 flex items-center gap-2">
                                         <i data-lucide="save" class="w-4 h-4"></i> Save Question
                                     </button>
@@ -215,10 +226,7 @@
                     </div>
                 </div>
             </main>
-        </div>
-    </div>
-
-    <script>
+        <script>
         lucide.createIcons();
 
         function toggleSidebar() {

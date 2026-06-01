@@ -201,10 +201,24 @@ const getInterviewHistory = async (req, res) => {
   }
 };
 
+const getAdminInterviewHistory = async (req, res) => {
+  try {
+    const history = await InterviewFeedback.find({})
+      .populate('user', 'name email branch studentId profileImage')
+      .sort({ completedAt: -1 });
+
+    return successResponse(res, 200, 'All student interview histories retrieved successfully', history);
+  } catch (error) {
+    console.error('Get admin interview history error:', error.message);
+    return errorResponse(res, 500, 'Server error retrieving all interview histories');
+  }
+};
+
 module.exports = {
   startInterview,
   sendAnswer,
   endInterview,
-  getInterviewHistory
+  getInterviewHistory,
+  getAdminInterviewHistory
 };
 
