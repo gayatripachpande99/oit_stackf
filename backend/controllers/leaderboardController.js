@@ -100,7 +100,7 @@ const updateLeaderboard = async (userId) => {
         codingScore,
         updatedAt: Date.now()
       },
-      { upsert: true, new: true }
+      { upsert: true, returnDocument: 'after' }
     );
 
     const allLeaderboards = await Leaderboard.find({}).sort({ totalScore: -1, updatedAt: 1 });

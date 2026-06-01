@@ -163,7 +163,7 @@ const updateProblem = async (req, res) => {
     const problem = await CodingProblem.findByIdAndUpdate(
       req.params.id,
       { $set: req.body },
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     );
 
     if (!problem) {
@@ -182,7 +182,7 @@ const deleteProblem = async (req, res) => {
     const problem = await CodingProblem.findByIdAndUpdate(
       req.params.id,
       { isActive: false },
-      { new: true }
+      { returnDocument: 'after' }
     );
 
     if (!problem) {

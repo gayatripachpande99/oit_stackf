@@ -139,7 +139,7 @@ const updateQuestion = async (req, res) => {
     const question = await Question.findByIdAndUpdate(
       req.params.id,
       { $set: req.body },
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     );
 
     if (!question) {
@@ -158,7 +158,7 @@ const deleteQuestion = async (req, res) => {
     const question = await Question.findByIdAndUpdate(
       req.params.id,
       { isActive: false },
-      { new: true }
+      { returnDocument: 'after' }
     );
 
     if (!question) {

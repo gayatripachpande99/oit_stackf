@@ -68,7 +68,7 @@ const updateCategory = async (req, res) => {
     const category = await Category.findByIdAndUpdate(
       req.params.id,
       { $set: req.body },
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     );
 
     if (!category) {
@@ -166,7 +166,7 @@ const updateSubcategory = async (req, res) => {
     const subcategory = await Subcategory.findByIdAndUpdate(
       req.params.id,
       { $set: req.body },
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     );
 
     if (!subcategory) {

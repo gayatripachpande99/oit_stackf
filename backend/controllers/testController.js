@@ -115,7 +115,7 @@ const updateTest = async (req, res) => {
     const test = await Test.findByIdAndUpdate(
       req.params.id,
       { $set: req.body },
-      { new: true, runValidators: true }
+      { returnDocument: 'after', runValidators: true }
     );
 
     if (!test) {
@@ -134,7 +134,7 @@ const deleteTest = async (req, res) => {
     const test = await Test.findByIdAndUpdate(
       req.params.id,
       { isActive: false },
-      { new: true }
+      { returnDocument: 'after' }
     );
 
     if (!test) {
