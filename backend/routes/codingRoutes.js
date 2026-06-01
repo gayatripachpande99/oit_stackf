@@ -26,14 +26,23 @@ const problemValidation = [
 router.use(auth);
 
 router.get('/problems', getProblems);
+router.get('/', getProblems);
+
 router.get('/problems/:id', getProblem);
+router.get('/:id', getProblem);
+
 router.post('/run', runCode);
 router.post('/submit', submitCode);
 router.get('/submissions/:problemId', getMySubmissions);
 
 router.post('/problems', admin, validate(problemValidation), createProblem);
+router.post('/', admin, validate(problemValidation), createProblem);
+
 router.put('/problems/:id', admin, updateProblem);
+router.put('/:id', admin, updateProblem);
+
 router.delete('/problems/:id', admin, deleteProblem);
+router.delete('/:id', admin, deleteProblem);
 
 module.exports = router;
 
