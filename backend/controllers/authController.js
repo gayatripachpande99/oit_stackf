@@ -409,6 +409,7 @@ module.exports = {
   register,
   login,
   getProfile,
+  getDashboardStats,
   updateProfile,
   forgotPassword,
   resetPassword,
