@@ -10,7 +10,7 @@ const { successResponse, errorResponse } = require('../utils/apiResponse');
 
 const register = async (req, res) => {
   try {
-    const { name, email, password, phone, college, branch, year } = req.body;
+    const { name, email, password, phone, college, branch, year, role } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -18,7 +18,10 @@ const register = async (req, res) => {
     }
 
     const activeSessionId = crypto.randomBytes(16).toString('hex');
-    const user = await User.create({ name, email, password, phone, college, branch, year, activeSessionId });
+    
+    // Only allow 'admin' role if explicitly provided, else defaults to student
+    const newRole = role === 'admin' ? 'admin' : 'student';
+    const user = await User.create({ name, email, password, phone, college, branch, year, role: newRole, activeSessionId });
 
     await Leaderboard.create({ user: user._id });
 
