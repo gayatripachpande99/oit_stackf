@@ -43,6 +43,18 @@ const api = {
 
         const attemptFetch = async (url) => {
             const response = await fetch(url, config);
+
+            // Auto logout if authentication token expires (returns 401 Unauthorized)
+            if (response.status === 401) {
+                console.warn('Authentication token has expired or is invalid. Performing auto-logout.');
+                const isAuthPage = window.location.pathname.endsWith('login.html') || window.location.pathname.endsWith('register.html');
+                if (!isAuthPage) {
+                    api.removeToken();
+                    window.location.href = 'login.html';
+                    return;
+                }
+            }
+
             const contentType = response.headers.get('content-type') || '';
             
             if (!contentType.includes('application/json')) {
@@ -184,3 +196,41 @@ const api = {
         getCategories: () => api.request('/analytics/categories')
     }
 };
+
+// Inactivity Auto-Logout Tracker (30 Minutes)
+(function() {
+    const INACTIVITY_TIMEOUT = 30 * 60 * 1000; // 30 minutes in ms
+    const CHECK_INTERVAL = 10000; // 10 seconds check interval
+    
+    const isAuthPage = window.location.pathname.endsWith('login.html') || window.location.pathname.endsWith('register.html');
+    if (isAuthPage) return;
+
+    // Initialize last active timestamp
+    if (!localStorage.getItem('lastActivity')) {
+        localStorage.setItem('lastActivity', Date.now());
+    }
+
+    const updateActivity = () => {
+        localStorage.setItem('lastActivity', Date.now());
+    };
+
+    // Track active interactions (mouse movement, keypress, click, scroll, touch)
+    const interactionEvents = ['mousemove', 'mousedown', 'keypress', 'touchstart', 'scroll', 'click'];
+    interactionEvents.forEach(evtName => {
+        window.addEventListener(evtName, updateActivity, { passive: true });
+    });
+
+    // Check periodically if inactivity exceeds threshold
+    setInterval(() => {
+        const token = localStorage.getItem('token');
+        if (!token) return; // Only track authenticated users
+
+        const lastActivity = parseInt(localStorage.getItem('lastActivity') || Date.now(), 10);
+        const idleDuration = Date.now() - lastActivity;
+
+        if (idleDuration >= INACTIVITY_TIMEOUT) {
+            console.warn('Auto logout triggered due to 30 minutes of inactivity.');
+            api.logout();
+        }
+    }, CHECK_INTERVAL);
+})();
