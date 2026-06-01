@@ -9,7 +9,8 @@ const {
   resetPassword,
   refreshAuthToken,
   logout,
-  logoutAll
+  logoutAll,
+  getDashboardStats
 } = require('../controllers/authController');
 const auth = require('../middleware/auth');
 const validate = require('../middleware/validate');
@@ -55,6 +56,7 @@ router.post('/logout-all', auth, logoutAll);
 
 router.get('/profile', auth, getProfile);
 router.put('/profile', auth, validate(profileValidation), updateProfile);
+router.get('/dashboard', auth, getDashboardStats);
 
 module.exports = router;
 

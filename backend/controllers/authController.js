@@ -140,6 +140,84 @@ const getProfile = async (req, res) => {
   }
 };
 
+const getDashboardStats = async (req, res) => {
+  try {
+    const mongoose = require('mongoose');
+    const Result = mongoose.model('Result');
+    const CodingSubmission = mongoose.model('CodingSubmission');
+
+    const userId = req.user._id;
+
+    const results = await Result.find({ user: userId }).populate('test').sort({ createdAt: -1 });
+    const codingSubmissions = await CodingSubmission.find({ user: userId, status: 'Accepted' }).populate('problem').sort({ createdAt: -1 });
+    const leaderboard = await Leaderboard.findOne({ user: userId });
+
+    const assessmentsTaken = results.length;
+    let avgScore = 0;
+    if (assessmentsTaken > 0) {
+      const totalScore = results.reduce((acc, curr) => acc + (curr.percentage || 0), 0);
+      avgScore = Math.round(totalScore / assessmentsTaken);
+    }
+
+    const codingProblemsSolved = codingSubmissions.length;
+    const rank = leaderboard ? leaderboard.rank || 0 : 0; // Or calculate actual rank if not stored
+
+    // Skill Progress: Aggregate by Test Category
+    const skillMap = {};
+    results.forEach(r => {
+      if (r.test && r.test.category) {
+        const cat = r.test.category.name || r.test.category; // Depending on if it's populated
+        if (!skillMap[cat]) {
+          skillMap[cat] = { total: 0, count: 0 };
+        }
+        skillMap[cat].total += r.percentage || 0;
+        skillMap[cat].count += 1;
+      }
+    });
+
+    const skillProgress = Object.keys(skillMap).map(skill => ({
+      skill,
+      progress: Math.round(skillMap[skill].total / skillMap[skill].count)
+    })).sort((a, b) => b.progress - a.progress).slice(0, 5);
+
+    // Recent Activity Timeline
+    const activities = [];
+    results.slice(0, 5).forEach(r => {
+      activities.push({
+        type: 'Assessment',
+        title: `Completed ${r.test ? r.test.title : 'Assessment'}`,
+        desc: `Scored ${r.percentage}%`,
+        date: r.createdAt
+      });
+    });
+    codingSubmissions.slice(0, 5).forEach(cs => {
+      activities.push({
+        type: 'Coding',
+        title: `Solved Coding Challenge`,
+        desc: cs.problem ? cs.problem.title : 'Problem solved successfully',
+        date: cs.createdAt
+      });
+    });
+
+    activities.sort((a, b) => new Date(b.date) - new Date(a.date));
+    const recentActivity = activities.slice(0, 4);
+
+    return successResponse(res, 200, 'Dashboard stats retrieved', {
+      stats: {
+        assessmentsTaken,
+        avgScore,
+        codingProblemsSolved,
+        rank
+      },
+      skillProgress,
+      recentActivity
+    });
+  } catch (error) {
+    console.error('Get dashboard stats error:', error.message);
+    return errorResponse(res, 500, 'Server error retrieving dashboard stats');
+  }
+};
+
 const updateProfile = async (req, res) => {
   try {
     const allowedFields = ['name', 'phone', 'college', 'branch', 'year', 'profileImage', 'studentId', 'location'];
