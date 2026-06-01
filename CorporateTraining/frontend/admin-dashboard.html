@@ -12,7 +12,8 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- API Config -->
-                </main>
+                </div>
+            </main>
         <script src="api.js"></script>
 </head>
 <body class="bg-slate-50 dark:bg-[#0a0f1e] text-slate-900 dark:text-white font-sans overflow-hidden">
@@ -90,8 +91,10 @@
             </header>
 
             <main class="flex-1 overflow-y-auto p-4 lg:p-6 bg-slate-50/50 dark:bg-[#0a0f1e]/50">
-
-                <h1 class="text-2xl font-black text-slate-800 dark:text-white">Admin Dashboard</h1>
+                <div class="max-w-7xl mx-auto flex flex-col gap-6 w-full">
+                    <!-- Page Title & Actions -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <h1 class="text-2xl font-black text-slate-800 dark:text-white">Admin Dashboard</h1>
                         <div class="flex flex-wrap items-center gap-3">
                             <button onclick="window.location.href='admin-test-create.html'" class="px-3 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-xs flex items-center gap-1.5 hover:from-blue-700 hover:to-indigo-700">
                                 <i data-lucide="plus-circle" class="w-4 h-4"></i> Create Test
