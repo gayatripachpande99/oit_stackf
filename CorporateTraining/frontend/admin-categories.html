@@ -201,38 +201,27 @@
 
     <!-- Subcategory Bulk Import Modal -->
     <div id="subBulkModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-lg overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col">
             <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-900/50">
-                <h3 class="font-bold text-lg text-slate-800 dark:text-white">Bulk Import Topics (JSON)</h3>
+                <h3 class="font-bold text-lg text-slate-800 dark:text-white">Bulk Import Topics</h3>
                 <button type="button" onclick="closeSubBulkModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
                     <i data-lucide="x" class="w-5 h-5"></i>
                 </button>
             </div>
             <form id="subBulkForm" class="p-6 flex flex-col gap-4">
                 <div class="bg-slate-50 dark:bg-slate-950 p-4 rounded-2xl border border-slate-100 dark:border-slate-800/80 text-xs text-slate-500 dark:text-slate-400 space-y-2">
-                    <p class="font-bold mb-1 text-slate-700 dark:text-slate-300">Supported JSON formats:</p>
-                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-3 font-mono text-[10px]">
-                        <div>
-                            <p class="font-sans font-bold text-indigo-500 dark:text-indigo-400 mb-1">Option A: Array of Strings</p>
-                            <pre class="bg-slate-100 dark:bg-slate-900/60 p-2 rounded border border-slate-200/50 dark:border-slate-800/50 overflow-x-auto">[
-  "Introduction to Java",
-  "OOPs Principles",
-  "Exception Handling"
-]</pre>
-                        </div>
-                        <div>
-                            <p class="font-sans font-bold text-indigo-500 dark:text-indigo-400 mb-1">Option B: Array of Objects</p>
-                            <pre class="bg-slate-100 dark:bg-slate-900/60 p-2 rounded border border-slate-200/50 dark:border-slate-800/50 overflow-x-auto">[
-  { "name": "Topic A" },
-  { "name": "Topic B" }
-]</pre>
-                        </div>
-                    </div>
+                    <p class="font-bold text-slate-700 dark:text-slate-300">How to use:</p>
+                    <p>Simply paste your list of subcategories below, writing **one topic name per line**. No JSON formatting or brackets are required!</p>
+                    <p class="font-bold text-indigo-500 dark:text-indigo-400 mt-2">Example format:</p>
+                    <pre class="bg-slate-100 dark:bg-slate-900/60 p-2.5 rounded border border-slate-200/50 dark:border-slate-800/50 font-mono text-[11px] overflow-x-auto">Introduction to Java
+OOPs Principles
+Exception Handling
+Java Collections Framework</pre>
                 </div>
 
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 mb-1.5">Paste JSON Array</label>
-                    <textarea id="subBulkInput" rows="8" required placeholder="Paste JSON here..." class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm font-mono focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all"></textarea>
+                    <label class="block text-xs font-bold text-slate-500 mb-1.5">Paste Topic Names (one per line)</label>
+                    <textarea id="subBulkInput" rows="8" required placeholder="Paste list of names here..." class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all"></textarea>
                 </div>
 
                 <div id="subBulkErrors" class="hidden text-rose-500 text-xs bg-rose-50 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/40 p-3 rounded-xl max-h-32 overflow-y-auto space-y-1">
@@ -505,17 +494,12 @@
             errorDiv.innerHTML = '';
             errorDiv.classList.add('hidden');
             
-            let parsed;
-            try {
-                parsed = JSON.parse(inputVal);
-            } catch (err) {
-                errorDiv.innerHTML = `<strong>JSON Parsing Error:</strong> ${err.message}. Please verify brackets, double quotes, and check that there are no trailing commas.`;
-                errorDiv.classList.remove('hidden');
-                return;
-            }
+            const parsed = inputVal.split('\n')
+                .map(line => line.trim())
+                .filter(line => line.length > 0);
 
-            if (!Array.isArray(parsed)) {
-                errorDiv.innerHTML = `<strong>Format Error:</strong> Content must be a JSON array (e.g. <code>["Topic A", "Topic B"]</code> or <code>[{"name": "Topic A"}]</code>).`;
+            if (parsed.length === 0) {
+                errorDiv.innerHTML = `<strong>Input Error:</strong> Please enter at least one topic name.`;
                 errorDiv.classList.remove('hidden');
                 return;
             }
