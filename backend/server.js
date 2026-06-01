@@ -32,6 +32,9 @@ const PORT = process.env.PORT || config.port || 3000;
 // Connect to MongoDB
 connectDB();
 
+// Trust proxy for rate limiting behind Render/Vercel
+app.set('trust proxy', 1);
+
 // Middleware
 app.use(helmet());
 app.use(cors({
