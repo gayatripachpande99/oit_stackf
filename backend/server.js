@@ -16,14 +16,22 @@ connectDB();
 app.use(cors());
 app.use(express.json());
 
-// Serve static frontend files from the frontend directory
+// Serve OIT_Stack main frontend
 app.use(express.static(path.join(__dirname, '../frontend')));
+
+// Serve CorporateTraining static frontend under /training
+app.use('/training', express.static(path.join(__dirname, '../CorporateTraining/frontend')));
 
 // API Routes
 app.use('/api', constituencyRoutes);
 app.use('/api', voterRoutes);
 
-// Catch-all route to serve the frontend index.html for any other request
+// CorporateTraining frontend catch-all
+app.get('/training/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../CorporateTraining/frontend/index.html'));
+});
+
+// Main frontend catch-all
 app.get('*', (req, res) => {
   res.sendFile(path.join(__dirname, '../frontend/index.html'));
 });
