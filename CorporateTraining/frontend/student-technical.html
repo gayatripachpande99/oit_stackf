@@ -6,174 +6,88 @@
     <title>OIT_STACK - Technical MCQ</title>
     <script src="https://cdn.tailwindcss.com"></script>
     <script>
-        tailwind.config = { darkMode: 'class' }
-    </script>
-    <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="api.js"></script>
-</head>
-<body class="bg-slate-50 text-slate-900 font-sans overflow-hidden">
-    
-    <div class="flex h-screen">
-        <!-- Main Navigation Sidebar -->
-        <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 bg-slate-900 border-r border-slate-800/60 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
-            <div class="h-16 flex items-center justify-between px-5 border-b border-slate-800/60">
-                <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
-                        <i data-lucide="zap" class="w-4 h-4 text-white"></i>
-                    </div>
-                    <div>
-                        <h1 class="font-bold text-white text-sm leading-none">OIT_STACK</h1>
-                        <p class="text-[10px] text-slate-500 font-medium mt-0.5">Student Portal</p>
-                    </div>
-                </div>
-            </div>
-            
-            <nav class="flex-1 py-3 px-3 overflow-y-auto space-y-0.5">
-                <a href="student-dashboard.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
-                    <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Dashboard
-                </a>
-                <a href="student-aptitude.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
-                    <i data-lucide="brain" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Aptitude Hub
-                </a>
-                <a href="student-technical.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium bg-blue-500/15 text-blue-400 border border-blue-500/20 group">
-                    <i data-lucide="terminal" class="w-4 h-4 shrink-0 text-blue-400"></i> Technical MCQ
-                    <span class="ml-auto w-1.5 h-1.5 rounded-full bg-blue-400"></span>
-                </a>
-                <a href="student-coding.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
-                    <i data-lucide="code" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Coding Challenges
-                </a>
-                <a href="student-interview-setup.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
-                    <i data-lucide="mic" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> AI Interview
-                </a>
-                <a href="student-leaderboard.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
-                    <i data-lucide="trophy" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Leaderboard
-                </a>
-                <a href="student-results.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
-                    <i data-lucide="clipboard-list" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> My Results
-                </a>
-                <a href="student-profile.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
-                    <i data-lucide="user" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Profile
-                </a>
-            </nav>
-        </aside>
-
-        <!-- Test App Layout -->
-        <div class="flex-1 lg:ml-64 flex min-w-0 h-full">
-            
-            <!-- Main Test Section -->
-            <div class="flex-1 flex flex-col border-r border-slate-200 bg-slate-50">
-                <!-- Header -->
-                <div class="bg-white border-b px-6 py-4 flex justify-between items-center shrink-0">
-                    <h2 class="font-bold text-xl">Technical MCQ Assessment</h2>
-                    <div class="flex items-center gap-2 bg-red-50 px-4 py-2 rounded-lg">
-                        <i data-lucide="clock" class="w-5 h-5 text-red-600"></i>
-                        <span class="font-bold text-red-600">59:45</span>
-                    </div>
-                </div>
-
-                <!-- Question Area -->
-                <div class="flex-1 p-8 overflow-y-auto bg-slate-50">
-                    <div class="mb-4 text-sm text-slate-500" id="questionCounter">
-                        Question 1 of 3
-                    </div>
-                    <div class="bg-white rounded-xl p-6 shadow-sm border">
-                        <h3 class="text-lg font-semibold mb-6" id="questionText">
-                            Loading...
-                        </h3>
-                        <div class="space-y-4" id="optionsContainer">
-                            <!-- Options injected here -->
-                        </div>
-                    </div>
-                </div>
-
-                <!-- Footer Controls -->
-                <div class="bg-white border-t p-4 flex justify-between shrink-0">
-                    <div class="flex gap-3">
-                        <button onclick="prevQuestion()" class="px-4 py-2 border rounded-lg flex items-center gap-2 hover:bg-slate-50 transition">
-                            <i data-lucide="chevron-left" class="w-[18px] h-[18px]"></i> Previous
-                        </button>
-                        <button onclick="clearResponse()" class="px-4 py-2 border rounded-lg flex items-center gap-2 hover:bg-slate-50 transition text-slate-700">
-                            <i data-lucide="trash-2" class="w-[18px] h-[18px]"></i> Clear Response
-                        </button>
-                        <button onclick="toggleReview()" id="reviewBtn" class="px-4 py-2 bg-yellow-500 text-white rounded-lg flex items-center gap-2 hover:bg-yellow-600 transition">
-                            <i data-lucide="flag" class="w-[18px] h-[18px]"></i> Mark Review
-                        </button>
-                    </div>
-                    <div class="flex gap-3">
-                        <button onclick="nextQuestion()" class="px-4 py-2 bg-indigo-600 text-white rounded-lg flex items-center gap-2 hover:bg-indigo-700 transition">
-                            Next <i data-lucide="chevron-right" class="w-[18px] h-[18px]"></i>
-                        </button>
-                        <button class="px-5 py-2 bg-green-600 text-white rounded-lg flex items-center gap-2 hover:bg-green-700 transition">
-                            <i data-lucide="check-circle" class="w-[18px] h-[18px]"></i> Submit Test
-                        </button>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Question Palette -->
-            <div class="w-80 bg-white p-5 shrink-0 overflow-y-auto border-l">
-                <h3 class="font-bold mb-4">Question Palette</h3>
-                
-                <!-- Legend -->
-                <div class="space-y-2 mb-6 text-sm">
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 bg-green-500 rounded"></div> Answered
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 bg-purple-500 rounded"></div> Review
-                    </div>
-                    <div class="flex items-center gap-2">
-                        <div class="w-4 h-4 bg-slate-300 rounded"></div> Not Answered
-                    </div>
-                </div>
-
-                <div class="grid grid-cols-5 gap-3" id="paletteGrid">
-                    <!-- Buttons injected here -->
-                </div>
-
-                <div class="mt-8">
-                    <h4 class="font-semibold mb-3">Progress</h4>
-                    <div class="w-full bg-slate-200 rounded-full h-3">
-                        <div id="progressBar" class="bg-green-500 h-3 rounded-full transition-all duration-300" style="width: 0%"></div>
-                    </div>
-                    <p class="text-sm text-slate-500 mt-2" id="progressText">
-                        0 / 3 Answered
-                    </p>
-                </div>
-            </div>
-
-        </div>
-    </div>
-
-    <script>
-        const questions = [
-            {
-                id: 1,
-                question: "What is the time complexity of Binary Search?",
-                options: ["O(n)", "O(log n)", "O(n log n)", "O(1)"]
-            },
-            {
-                id: 2,
-                question: "Which protocol is used for email?",
-                options: ["HTTP", "SMTP", "FTP", "TCP"]
-            },
-            {
-                id: 3,
-                question: "What is encapsulation?",
-                options: [
-                "Data hiding",
-                "Inheritance",
-                "Polymorphism",
-                "Abstraction"
-                ]
-            }
-        ];
-
+        let questions = [];
         let currentQuestion = 0;
         let answers = {};
         let review = [];
+        let testData = null;
+        let resultId = null;
+        let testId = null;
+        let timeLeft = 0;
+        let timerInterval = null;
+        let startTime = Date.now();
+
+        async function initTest() {
+            if (!api.getToken()) {
+                window.location.href = 'login.html';
+                return;
+            }
+
+            try {
+                // Fetch all tests to find a technical one
+                const testsRes = await api.request('/tests');
+                const allTests = testsRes.data || [];
+                
+                // Find a technical test
+                let targetTest = allTests.find(t => t.category && (t.category.name.toLowerCase().includes('tech') || t.category.name.toLowerCase().includes('mcq')));
+                
+                // Fallback to any test if no technical test found
+                if (!targetTest && allTests.length > 0) {
+                    targetTest = allTests[0];
+                }
+
+                if (!targetTest) {
+                    document.getElementById('questionText').innerText = "No technical tests available at the moment.";
+                    return;
+                }
+
+                testId = targetTest._id;
+                
+                // Start the test to get questions
+                const startRes = await api.request(`/tests/${testId}/start`, { method: 'POST' });
+                testData = startRes.data.test || startRes.data;
+                resultId = startRes.data.resultId || null;
+                
+                // Ensure questions array is populated
+                questions = testData.questions || [];
+                if (questions.length === 0) {
+                    document.getElementById('questionText').innerText = "This test has no questions.";
+                    return;
+                }
+
+                timeLeft = (testData.totalTime || 30) * 60;
+                
+                // Setup timer
+                startTimer();
+                
+                // Initial render
+                render();
+            } catch (error) {
+                console.error("Failed to load test:", error);
+                document.getElementById('questionText').innerText = "Error loading test. Please try again later.";
+            }
+        }
+
+        function startTimer() {
+            timerInterval = setInterval(() => {
+                if (timeLeft <= 0) {
+                    clearInterval(timerInterval);
+                    submitTest(true);
+                    return;
+                }
+                timeLeft--;
+                
+                const mins = Math.floor(timeLeft / 60).toString().padStart(2, '0');
+                const secs = (timeLeft % 60).toString().padStart(2, '0');
+                
+                const timerSpan = document.querySelector('.text-red-600.font-bold');
+                if (timerSpan) timerSpan.innerText = `${mins}:${secs}`;
+            }, 1000);
+        }
 
         function render() {
+            if (questions.length === 0) return;
+
             // Update Question counter
             document.getElementById('questionCounter').innerText = `Question ${currentQuestion + 1} of ${questions.length}`;
             
@@ -193,7 +107,7 @@
                 optsContainer.innerHTML += `
                     <label class="flex items-center gap-3 p-4 rounded-lg border cursor-pointer transition ${cssClass}">
                         <input type="radio" name="option" class="w-4 h-4 text-indigo-600" ${isSelected ? 'checked' : ''} onchange="handleAnswer(${index})">
-                        <span class="text-slate-700">${option}</span>
+                        <span class="text-slate-700 font-medium">${option}</span>
                     </label>
                 `;
             });
@@ -203,10 +117,10 @@
             paletteGrid.innerHTML = '';
             
             questions.forEach((q, index) => {
-                let colorClass = "bg-slate-200 text-slate-700";
+                let colorClass = "bg-slate-200 text-slate-700 hover:bg-slate-300";
                 
-                if (answers[index] !== undefined) colorClass = "bg-green-500 text-white";
-                if (review.includes(index)) colorClass = "bg-purple-500 text-white";
+                if (answers[index] !== undefined) colorClass = "bg-green-500 text-white hover:bg-green-600";
+                if (review.includes(index)) colorClass = "bg-purple-500 text-white hover:bg-purple-600";
                 if (currentQuestion === index) colorClass = "bg-indigo-600 text-white ring-2 ring-indigo-300";
 
                 paletteGrid.innerHTML += `
@@ -237,8 +151,18 @@
             lucide.createIcons();
         }
 
-        function handleAnswer(index) {
+        async function handleAnswer(index) {
             answers[currentQuestion] = index;
+            
+            // Background save to API
+            if (resultId && questions[currentQuestion]) {
+                const qId = questions[currentQuestion]._id;
+                api.request(`/results/${resultId}/answer`, {
+                    method: 'PUT',
+                    body: JSON.stringify({ questionId: qId, selectedAnswer: index, timeTaken: 0 })
+                }).catch(() => {});
+            }
+
             render();
         }
 
@@ -276,8 +200,50 @@
             render();
         }
 
+        async function submitTest(isAuto = false) {
+            if (!testId) return;
+            
+            if (!isAuto) {
+                const confirmSubmit = confirm("Are you sure you want to submit the test?");
+                if (!confirmSubmit) return;
+            }
+
+            clearInterval(timerInterval);
+            const totalTimeElapsed = Math.round((Date.now() - startTime) / 1000);
+
+            // Format answers for API
+            const payloadAnswers = questions.map((q, idx) => ({
+                question: q._id,
+                selectedAnswer: answers[idx] !== undefined ? answers[idx] : null,
+                timeTaken: 0
+            }));
+
+            try {
+                await api.request(`/tests/${testId}/submit`, {
+                    method: 'POST',
+                    body: JSON.stringify({
+                        resultId,
+                        answers: payloadAnswers,
+                        timeTaken: totalTimeElapsed,
+                        autoSubmitted: isAuto
+                    })
+                });
+                
+                alert('Test submitted successfully!');
+                window.location.href = 'student-dashboard.html';
+            } catch (err) {
+                console.error('Error submitting test:', err);
+                alert(err.message || 'Error submitting test');
+            }
+        }
+
+        // Attach submit function to button
         document.addEventListener('DOMContentLoaded', () => {
-            render();
+            const submitBtn = document.querySelector('button.bg-green-600');
+            if (submitBtn) {
+                submitBtn.onclick = () => submitTest(false);
+            }
+            initTest();
         });
     </script>
 </body>
