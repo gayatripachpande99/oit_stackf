@@ -277,7 +277,7 @@
             const search = document.getElementById('searchInput').value;
             
             try {
-                const res = await api.request(`/admin/users?page=${currentPage}&limit=10&search=${encodeURIComponent(search)}`);
+                const res = await api.request(`/users?page=${currentPage}&limit=10&search=${encodeURIComponent(search)}`);
                 const list = res.data.users || [];
                 totalPages = res.data.pagination.pages;
 
@@ -364,7 +364,7 @@
             btn.innerHTML = `<div class="animate-spin h-3.5 w-3.5 border-2 border-white border-t-transparent rounded-full mx-auto"></div>`;
 
             try {
-                await api.request(`/admin/users/${deleteId}`, { method: 'DELETE' });
+                await api.request(`/users/${deleteId}`, { method: 'DELETE' });
                 showToast('Student account deleted successfully.');
                 closeDeleteModal();
                 fetchStudents();
@@ -386,7 +386,7 @@
             document.getElementById('statsError').classList.add('hidden');
 
             try {
-                const res = await api.request(`/admin/users/${id}/stats`);
+                const res = await api.request(`/users/${id}/stats`);
                 const stats = res.data;
 
                 document.getElementById('stTests').textContent = `${stats.testsCompleted} Tests`;

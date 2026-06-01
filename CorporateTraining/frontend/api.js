@@ -78,22 +78,22 @@ const api = {
     },
 
     admin: {
-        getStats: () => api.request('/admin/stats'),
-        getUsers: (params = '') => api.request(`/admin/users${params}`),
-        deleteUser: (id) => api.request(`/admin/users/${id}`, { method: 'DELETE' }),
-        getUserStats: (id) => api.request(`/admin/users/${id}/stats`),
-        getTests: (params = '') => api.request(`/admin/tests${params}`),
-        getTest: (id) => api.request(`/admin/tests/${id}`),
-        createTest: (data) => api.request('/admin/tests', { method: 'POST', body: JSON.stringify(data) }),
-        updateTest: (id, data) => api.request(`/admin/tests/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
-        deleteTest: (id) => api.request(`/admin/tests/${id}`, { method: 'DELETE' }),
-        toggleTest: (id) => api.request(`/admin/tests/${id}/toggle`, { method: 'PATCH' }),
-        getCoding: (params = '') => api.request(`/admin/coding${params}`),
-        getCodingProblem: (id) => api.request(`/admin/coding/${id}`),
-        createCoding: (data) => api.request('/admin/coding', { method: 'POST', body: JSON.stringify(data) }),
-        updateCoding: (id, data) => api.request(`/admin/coding/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
-        deleteCoding: (id) => api.request(`/admin/coding/${id}`, { method: 'DELETE' }),
-        getCategories: (params = '') => api.request(`/admin/categories${params}`)
+        getStats: () => api.request('/analytics/dashboard'),
+        getUsers: (params = '') => api.request(`/users${params}`),
+        deleteUser: (id) => api.request(`/users/${id}`, { method: 'DELETE' }),
+        getUserStats: (id) => api.request(`/users/${id}/stats`),
+        getTests: (params = '') => api.request(`/tests${params}`),
+        getTest: (id) => api.request(`/tests/${id}`),
+        createTest: (data) => api.request('/tests', { method: 'POST', body: JSON.stringify(data) }),
+        updateTest: (id, data) => api.request(`/tests/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+        deleteTest: (id) => api.request(`/tests/${id}`, { method: 'DELETE' }),
+        toggleTest: (id) => api.request(`/tests/${id}/toggle`, { method: 'PATCH' }),
+        getCoding: (params = '') => api.request(`/coding${params}`),
+        getCodingProblem: (id) => api.request(`/coding/${id}`),
+        createCoding: (data) => api.request('/coding', { method: 'POST', body: JSON.stringify(data) }),
+        updateCoding: (id, data) => api.request(`/coding/${id}`, { method: 'PUT', body: JSON.stringify(data) }),
+        deleteCoding: (id) => api.request(`/coding/${id}`, { method: 'DELETE' }),
+        getCategories: (params = '') => api.request(`/categories${params}`)
     },
 
     tests: {

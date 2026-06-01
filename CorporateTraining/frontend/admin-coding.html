@@ -211,7 +211,7 @@
                 return;
             }
             try {
-                const catRes = await api.request('/admin/categories?type=coding');
+                const catRes = await api.request('/categories?type=coding');
                 const catSelect = document.getElementById('categoryFilter');
                 catRes.data.forEach(c => {
                     const opt = document.createElement('option');
@@ -241,7 +241,7 @@
             if (diff) query += `&difficulty=${diff}`;
 
             try {
-                const res = await api.request(`/admin/coding${query}`);
+                const res = await api.request(`/coding${query}`);
                 let list = res.data.problems || [];
 
                 if (search) {
@@ -324,7 +324,7 @@
             btn.innerHTML = `<div class="animate-spin h-3.5 w-3.5 border-2 border-white border-t-transparent rounded-full mx-auto"></div>`;
 
             try {
-                await api.request(`/admin/coding/${deleteId}`, { method: 'DELETE' });
+                await api.request(`/coding/${deleteId}`, { method: 'DELETE' });
                 showToast('Coding challenge deleted successfully.');
                 closeDeleteModal();
                 fetchProblems();
