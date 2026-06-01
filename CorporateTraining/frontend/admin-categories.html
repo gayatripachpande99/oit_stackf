@@ -264,7 +264,7 @@
                                 <i data-lucide="folder" class="w-5 h-5"></i>
                             </div>
                             <div>
-                                <h4 class="font-extrabold text-slate-800 dark:text-white text-sm">${cat.name}</h4>
+                                <h4 class="font-extrabold text-slate-800 dark:text-white text-sm flex items-center gap-2">${cat.name} <span class="text-[9px] font-mono text-slate-400 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" title="Click to copy ID" onclick="navigator.clipboard.writeText('${cat._id}'); event.stopPropagation(); alert('Category ID copied!');">ID: ${cat._id}</span></h4>
                                 <p class="text-[10px] text-slate-400 capitalize mt-0.5">${cat.type} Type</p>
                             </div>
                         </div>
@@ -310,7 +310,7 @@
                     const tbody = document.getElementById('subList');
                     tbody.innerHTML = subcategories.map(sub => `
                     <tr class="hover:bg-slate-50/20">
-                        <td class="px-6 py-3 font-extrabold text-slate-700 dark:text-slate-200">${sub.name}</td>
+                        <td class="px-6 py-3 font-extrabold text-slate-700 dark:text-slate-200">${sub.name} <span class="ml-2 text-[9px] font-mono text-slate-400 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" title="Click to copy ID" onclick="navigator.clipboard.writeText('${sub._id}'); event.stopPropagation(); alert('Subcategory ID copied!');">ID: ${sub._id}</span></td>
                         <td class="px-6 py-3 text-right">
                             <button onclick="openSubModal('${sub._id}')" class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-white mr-1">
                                 <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>

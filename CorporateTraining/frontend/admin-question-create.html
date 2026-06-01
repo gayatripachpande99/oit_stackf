@@ -274,7 +274,7 @@
                 const catRes = await api.request('/categories');
                 const catSelect = document.getElementById('category');
                 catRes.data.forEach(c => {
-                    catSelect.innerHTML += `<option value="${c._id}">${c.name}</option>`;
+                    catSelect.innerHTML += `<option value="${c._id}">${c.name} (ID: ${c._id})</option>`;
                 });
 
                 if (isEdit) {
