@@ -224,7 +224,7 @@
         });
 
         async function loadCategories() {
-            document.getElementById('loader').classList.remove('hidden');
+            document.getElementById('loader')?.classList.remove('hidden');
             document.getElementById('catContent').classList.add('hidden');
             try {
                 const res = await api.request('/categories');
@@ -240,7 +240,7 @@
                     loadSubcategories(activeParent);
                 }
 
-                document.getElementById('loader').classList.add('hidden');
+                document.getElementById('loader')?.classList.add('hidden');
                 document.getElementById('catContent').classList.remove('hidden');
                 document.getElementById('catContent').classList.add('grid');
             } catch(e) {

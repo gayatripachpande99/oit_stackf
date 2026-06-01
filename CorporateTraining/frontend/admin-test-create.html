@@ -259,9 +259,9 @@
                 await loadTest();
             } else {
                 renderSections();
-                document.getElementById('loader').classList.add('hidden');
-                document.getElementById('content').classList.remove('hidden');
-                document.getElementById('content').classList.add('flex');
+                document.getElementById('loader')?.classList.add('hidden');
+                document.getElementById('content')?.classList.remove('hidden');
+                document.getElementById('content')?.classList.add('flex');
             }
         });
 
@@ -284,9 +284,9 @@
                     }));
                 }
                 renderSections();
-                document.getElementById('loader').classList.add('hidden');
-                document.getElementById('content').classList.remove('hidden');
-                document.getElementById('content').classList.add('flex');
+                document.getElementById('loader')?.classList.add('hidden');
+                document.getElementById('content')?.classList.remove('hidden');
+                document.getElementById('content')?.classList.add('flex');
             } catch(e) {
                 showToast('Failed to load test', 'error');
                 setTimeout(() => window.location.href = 'admin-tests.html', 1500);

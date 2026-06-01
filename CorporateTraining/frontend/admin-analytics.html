@@ -248,7 +248,7 @@
                 renderTests(testRes.data);
                 renderCategories(catRes.data);
 
-                document.getElementById('loader').classList.add('hidden');
+                document.getElementById('loader')?.classList.add('hidden');
                 document.getElementById('analyticsContent').classList.remove('hidden');
             } catch(e) {
                 console.error(e);

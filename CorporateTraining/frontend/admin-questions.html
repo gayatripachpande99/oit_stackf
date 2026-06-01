@@ -243,8 +243,8 @@
         });
 
         async function fetchQuestions() {
-            document.getElementById('loader').classList.remove('hidden');
-            document.getElementById('tableContainer').classList.add('hidden');
+            document.getElementById('loader')?.classList.remove('hidden');
+            document.getElementById('tableContainer')?.classList.add('hidden');
             try {
                 // Use a large limit for client-side filtering simplicity in this admin tool
                 const res = await api.request('/questions?limit=1000&includeInactive=true');
@@ -254,8 +254,8 @@
                 console.error(e);
                 alert("Error loading questions");
             } finally {
-                document.getElementById('loader').classList.add('hidden');
-                document.getElementById('tableContainer').classList.remove('hidden');
+                document.getElementById('loader')?.classList.add('hidden');
+                document.getElementById('tableContainer')?.classList.remove('hidden');
             }
         }
 

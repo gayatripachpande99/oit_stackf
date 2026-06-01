@@ -241,8 +241,8 @@
         });
 
         async function fetchResults() {
-            document.getElementById('loader').classList.remove('hidden');
-            document.getElementById('tableContainer').classList.add('hidden');
+            document.getElementById('loader')?.classList.remove('hidden');
+            document.getElementById('tableContainer')?.classList.add('hidden');
 
             const search = document.getElementById('searchInput').value;
             const testId = document.getElementById('testFilter').value;
@@ -316,8 +316,8 @@
             } catch(e) {
                 console.error(e);
             } finally {
-                document.getElementById('loader').classList.add('hidden');
-                document.getElementById('tableContainer').classList.remove('hidden');
+                document.getElementById('loader')?.classList.add('hidden');
+                document.getElementById('tableContainer')?.classList.remove('hidden');
             }
         }
 

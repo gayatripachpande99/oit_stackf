@@ -335,9 +335,9 @@
                     }
                 }
 
-                document.getElementById('loader').classList.add('hidden');
-                document.getElementById('content').classList.remove('hidden');
-                document.getElementById('content').classList.add('flex');
+                document.getElementById('loader')?.classList.add('hidden');
+                document.getElementById('content')?.classList.remove('hidden');
+                document.getElementById('content')?.classList.add('flex');
 
             } catch (err) {
                 showToast(err.message || 'Failed to load students list', 'error');
