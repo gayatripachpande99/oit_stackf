@@ -1,8 +1,8 @@
 // Global Configuration and API Utility
 const CONFIG = {
     API_URL: window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
-        ? 'http://localhost:5000/api'
-        : '/api'
+        ? 'http://localhost:3000/api'
+        : 'https://oit-stack-backend.onrender.com/api'
 };
 
 // Global API Utility
