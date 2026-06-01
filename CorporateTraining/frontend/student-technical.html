@@ -61,7 +61,7 @@
         <div class="flex-1 lg:ml-64 flex min-w-0 h-full">
             
             <!-- Main Test Section -->
-            <div class="flex-1 flex flex-col border-r border-slate-200">
+            <div class="flex-1 flex flex-col border-r border-slate-200 bg-slate-50">
                 <!-- Header -->
                 <div class="bg-white border-b px-6 py-4 flex justify-between items-center shrink-0">
                     <h2 class="font-bold text-xl">Technical MCQ Assessment</h2>
@@ -92,7 +92,7 @@
                         <button onclick="prevQuestion()" class="px-4 py-2 border rounded-lg flex items-center gap-2 hover:bg-slate-50 transition">
                             <i data-lucide="chevron-left" class="w-[18px] h-[18px]"></i> Previous
                         </button>
-                        <button onclick="clearResponse()" class="px-4 py-2 border rounded-lg flex items-center gap-2 hover:bg-slate-50 transition text-red-600 border-red-200 hover:bg-red-50">
+                        <button onclick="clearResponse()" class="px-4 py-2 border rounded-lg flex items-center gap-2 hover:bg-slate-50 transition text-slate-700">
                             <i data-lucide="trash-2" class="w-[18px] h-[18px]"></i> Clear Response
                         </button>
                         <button onclick="toggleReview()" id="reviewBtn" class="px-4 py-2 bg-yellow-500 text-white rounded-lg flex items-center gap-2 hover:bg-yellow-600 transition">
@@ -111,7 +111,7 @@
             </div>
 
             <!-- Question Palette -->
-            <div class="w-80 bg-white p-5 shrink-0 overflow-y-auto">
+            <div class="w-80 bg-white p-5 shrink-0 overflow-y-auto border-l">
                 <h3 class="font-bold mb-4">Question Palette</h3>
                 
                 <!-- Legend -->
@@ -193,7 +193,7 @@
                 optsContainer.innerHTML += `
                     <label class="flex items-center gap-3 p-4 rounded-lg border cursor-pointer transition ${cssClass}">
                         <input type="radio" name="option" class="w-4 h-4 text-indigo-600" ${isSelected ? 'checked' : ''} onchange="handleAnswer(${index})">
-                        <span class="text-slate-700 font-medium">${option}</span>
+                        <span class="text-slate-700">${option}</span>
                     </label>
                 `;
             });
@@ -203,10 +203,10 @@
             paletteGrid.innerHTML = '';
             
             questions.forEach((q, index) => {
-                let colorClass = "bg-slate-200 text-slate-700 hover:bg-slate-300";
+                let colorClass = "bg-slate-200 text-slate-700";
                 
-                if (answers[index] !== undefined) colorClass = "bg-green-500 text-white hover:bg-green-600";
-                if (review.includes(index)) colorClass = "bg-purple-500 text-white hover:bg-purple-600";
+                if (answers[index] !== undefined) colorClass = "bg-green-500 text-white";
+                if (review.includes(index)) colorClass = "bg-purple-500 text-white";
                 if (currentQuestion === index) colorClass = "bg-indigo-600 text-white ring-2 ring-indigo-300";
 
                 paletteGrid.innerHTML += `
