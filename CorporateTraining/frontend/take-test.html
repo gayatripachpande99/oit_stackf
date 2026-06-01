@@ -168,6 +168,7 @@
         let startTime = Date.now();
         let questionStartTime = Date.now();
         let isFullscreen = false;
+        let tabSwitchCount = 0;
 
         document.addEventListener('DOMContentLoaded', async () => {
             if (!api.getToken() || !testId) {
@@ -181,6 +182,26 @@
                 questions = test.questions || [];
                 timeLeft = (test.totalTime || 30) * 60;
 
+                const savedKey = `test_taking_${testId}`;
+                const savedState = localStorage.getItem(savedKey);
+                if (savedState) {
+                    try {
+                        const parsed = JSON.parse(savedState);
+                        answers = parsed.answers || {};
+                        currentIndex = parsed.currentIndex || 0;
+
+                        const elapsed = Math.round((Date.now() - parsed.timestamp) / 1000);
+                        const remaining = parsed.timeLeft - elapsed;
+                        if (remaining > 0) {
+                            timeLeft = remaining;
+                        } else {
+                            timeLeft = 0;
+                        }
+                    } catch (e) {
+                        console.error('Error loading saved test state:', e);
+                    }
+                }
+
                 document.getElementById('loader').classList.add('hidden');
                 document.getElementById('testContainer').classList.remove('hidden');
                 document.getElementById('testName').textContent = test.name;
@@ -192,7 +213,28 @@
                 showToast(err.message || 'Failed to start test', 'error');
                 setTimeout(() => window.location.href = 'student-dashboard.html', 2000);
             }
+
+            document.addEventListener('visibilitychange', handleVisibilityChange);
+            window.addEventListener('beforeunload', handleBeforeUnload);
         });
+
+        function handleBeforeUnload(e) {
+            e.preventDefault();
+            e.returnValue = 'Are you sure you want to leave? Your exam progress will be lost.';
+            return e.returnValue;
+        }
+
+        function handleVisibilityChange() {
+            if (document.visibilityState === 'hidden') {
+                tabSwitchCount += 1;
+                if (tabSwitchCount >= 3) {
+                    showToast('Test auto-submitted due to multiple tab switches!', 'error');
+                    submitTest(true);
+                } else {
+                    showToast(`Warning: Do not switch tabs! (Violation ${tabSwitchCount}/3)`, 'error');
+                }
+            }
+        }
 
         function startTimer() {
             timerInterval = setInterval(() => {
@@ -203,6 +245,12 @@
                 }
                 timeLeft--;
                 
+                if (timeLeft === 300) {
+                    showToast('Only 5 minutes left!', 'error');
+                } else if (timeLeft === 60) {
+                    showToast('1 minute left! Your test will be auto-submitted shortly.', 'error');
+                }
+
                 const mins = Math.floor(timeLeft / 60).toString().padStart(2, '0');
                 const secs = (timeLeft % 60).toString().padStart(2, '0');
                 const timeEl = document.getElementById('timeRemaining');
@@ -212,6 +260,15 @@
                 if (timeLeft < 300) {
                     timerBlock.className = "flex items-center gap-2.5 px-4 py-2 rounded-2xl border font-black text-sm transition-all duration-300 bg-rose-50 border-rose-200 text-rose-600 dark:bg-rose-950/20 dark:border-rose-900/30 dark:text-rose-400 animate-pulse";
                 }
+
+                const savedKey = `test_taking_${testId}`;
+                const stateToSave = {
+                    answers,
+                    currentIndex,
+                    timeLeft,
+                    timestamp: Date.now()
+                };
+                localStorage.setItem(savedKey, JSON.stringify(stateToSave));
             }, 1000);
         }
 
@@ -370,8 +427,12 @@
                 clearInterval(timerInterval);
                 if (document.fullscreenElement) document.exitFullscreen();
                 
+                localStorage.removeItem(`test_taking_${testId}`);
+                document.removeEventListener('visibilitychange', handleVisibilityChange);
+                window.removeEventListener('beforeunload', handleBeforeUnload);
+
                 showToast('Test submitted successfully!');
-                setTimeout(() => window.location.href = 'student-dashboard.html', 1500); // Usually redirects to results page, but going back to dashboard for now
+                setTimeout(() => window.location.href = `test-result.html?id=${testId}`, 1500);
 
             } catch (err) {
                 showToast(err.message || 'Error submitting test', 'error');
