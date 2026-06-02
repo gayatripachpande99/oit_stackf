@@ -12,6 +12,81 @@
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- CSS -->
     <link rel="stylesheet" href="style.css?v=light-theme">
+    <style>
+        body {
+            background-image: url('assets/service-training-back.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            background-attachment: fixed;
+            min-height: 100vh;
+            display: flex;
+            flex-direction: column;
+        }
+
+        header {
+            background: rgba(10, 25, 47, 0.4) !important;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
+            backdrop-filter: blur(12px) !important;
+            -webkit-backdrop-filter: blur(12px) !important;
+        }
+
+        .logo-text {
+            color: #ffffff !important;
+        }
+
+        header .logo div span:last-child {
+            color: rgba(255, 255, 255, 0.5) !important;
+        }
+
+        .nav-links li a {
+            color: rgba(255, 255, 255, 0.8) !important;
+        }
+
+        .nav-links li a:not(.btn):hover,
+        .nav-links li a.active:not(.btn) {
+            color: #00BFFF !important;
+        }
+
+        .hamburger i {
+            color: #ffffff !important;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+
+        .cta-card {
+            background: rgba(255, 255, 255, 0.08) !important;
+            backdrop-filter: blur(20px) !important;
+            -webkit-backdrop-filter: blur(20px) !important;
+            border: 1px solid rgba(255, 255, 255, 0.15) !important;
+            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3) !important;
+            border-radius: 24px !important;
+            transition: transform 0.4s ease, box-shadow 0.4s ease !important;
+        }
+
+        .cta-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 191, 255, 0.2) !important;
+        }
+
+        .cta-pill {
+            background: rgba(255, 255, 255, 0.12) !important;
+            border: 1px solid rgba(255, 255, 255, 0.1) !important;
+            backdrop-filter: blur(10px);
+            transition: all 0.3s ease;
+        }
+
+        .cta-pill:hover {
+            background: rgba(255, 255, 255, 0.22) !important;
+            border-color: rgba(255, 255, 255, 0.25) !important;
+            transform: translateY(-2px);
+        }
+    </style>
 </head>
 
 <body>
@@ -45,26 +120,26 @@
     </header>
 
     <!-- Main Content -->
-    <main class="container" style="min-height: 100vh; padding-top: 90px; padding-bottom: 2rem; display: flex; align-items: center; justify-content: center;">
+    <main class="container" style="min-height: 100vh; padding-top: 120px; padding-bottom: 4rem; display: flex; align-items: center; justify-content: center;">
         <!-- Training Portal CTA -->
-        <div style="width: 100%; max-width: 800px; padding:3rem; background:var(--gradient-accent); border-radius:var(--radius-lg); box-shadow:var(--shadow-lg); text-align:center;">
-            <h3 style="color:white; font-size:2rem; margin-bottom:1rem;">Ready to Start Training?</h3>
-            <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-bottom:2.5rem;">
-                <div style="display:flex; align-items:center; gap:0.5rem; background:rgba(255,255,255,0.15); padding:0.75rem 1.25rem; border-radius:8px; color:white; font-weight:500;">
+        <div class="cta-card" style="width: 100%; max-width: 800px; padding:3.5rem 3rem; text-align:center;">
+            <h3 style="color:white; font-size:2.25rem; font-weight:800; margin-bottom:2.5rem; text-shadow: 0 2px 10px rgba(0,0,0,0.15);">Ready to Start Training?</h3>
+            <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-bottom:3rem;">
+                <div class="cta-pill" style="display:flex; align-items:center; gap:0.5rem; padding:0.75rem 1.25rem; border-radius:8px; color:white; font-weight:500;">
                     <i class="fa-solid fa-clipboard-list"></i> Aptitude Tests
                 </div>
-                <div style="display:flex; align-items:center; gap:0.5rem; background:rgba(255,255,255,0.15); padding:0.75rem 1.25rem; border-radius:8px; color:white; font-weight:500;">
+                <div class="cta-pill" style="display:flex; align-items:center; gap:0.5rem; padding:0.75rem 1.25rem; border-radius:8px; color:white; font-weight:500;">
                     <i class="fa-solid fa-code"></i> Coding Challenges
                 </div>
-                <div style="display:flex; align-items:center; gap:0.5rem; background:rgba(255,255,255,0.15); padding:0.75rem 1.25rem; border-radius:8px; color:white; font-weight:500;">
+                <div class="cta-pill" style="display:flex; align-items:center; gap:0.5rem; padding:0.75rem 1.25rem; border-radius:8px; color:white; font-weight:500;">
                     <i class="fa-solid fa-microphone"></i> Mock Interviews
                 </div>
-                <div style="display:flex; align-items:center; gap:0.5rem; background:rgba(255,255,255,0.15); padding:0.75rem 1.25rem; border-radius:8px; color:white; font-weight:500;">
+                <div class="cta-pill" style="display:flex; align-items:center; gap:0.5rem; padding:0.75rem 1.25rem; border-radius:8px; color:white; font-weight:500;">
                     <i class="fa-solid fa-trophy"></i> Leaderboard
                 </div>
             </div>
-            <a href="CorporateTraining/frontend/login.html" class="btn" style="background:white; color:var(--accent); font-weight:700; font-size:1.1rem; padding:1rem 2.5rem; border-radius:12px; display:inline-block; transition: transform 0.3s ease, box-shadow 0.3s ease;" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 10px 20px rgba(0,0,0,0.15)'" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='none'">
-                <i class="fa-solid fa-rocket" style="margin-right:0.5rem;"></i>Launch Training Portal
+            <a href="CorporateTraining/frontend/login.html" class="btn" style="background:white; color:#0f172a; font-weight:700; font-size:1.1rem; padding:1.1rem 3rem; border-radius:14px; display:inline-flex; align-items:center; gap:0.75rem; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 30px rgba(0,0,0,0.25), 0 0 20px rgba(255,255,255,0.4)'; this.style.background='#f8fafc';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 25px rgba(0, 0, 0, 0.15)'; this.style.background='white';">
+                <i class="fa-solid fa-rocket" style="color:#00BFFF;"></i>Launch Training Portal
             </a>
         </div>
     </main>
