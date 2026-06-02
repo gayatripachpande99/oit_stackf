@@ -26,8 +26,10 @@
             background-size: cover;
             background-position: center;
             opacity: 1;
-            filter: brightness(0.5);
             z-index: 1;
+        }
+        .dark .left-panel-bg::before {
+            filter: brightness(0.5);
         }
         .left-panel-bg::after {
             content: '';
