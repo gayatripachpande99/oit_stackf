@@ -9,47 +9,27 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- CSS -->
     <link rel="stylesheet" href="style.css?v=light-theme">
+    
     <style>
         body {
-            background-image: url('assets/service-training-back.png');
-            background-size: cover;
-            background-position: center;
-            background-repeat: no-repeat;
-            background-attachment: fixed;
+            background: #eef1f6;
             min-height: 100vh;
             display: flex;
             flex-direction: column;
         }
 
         header {
-            background: rgba(10, 25, 47, 0.4) !important;
-            border-bottom: 1px solid rgba(255, 255, 255, 0.08) !important;
-            backdrop-filter: blur(12px) !important;
-            -webkit-backdrop-filter: blur(12px) !important;
-        }
-
-        .logo-text {
-            color: #ffffff !important;
-        }
-
-        header .logo div span:last-child {
-            color: rgba(255, 255, 255, 0.5) !important;
-        }
-
-        .nav-links li a {
-            color: rgba(255, 255, 255, 0.8) !important;
-        }
-
-        .nav-links li a:not(.btn):hover,
-        .nav-links li a.active:not(.btn) {
-            color: #00BFFF !important;
-        }
-
-        .hamburger i {
-            color: #ffffff !important;
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.8) !important;
+            backdrop-filter: blur(16px) !important;
+            -webkit-backdrop-filter: blur(16px) !important;
+            border-bottom: 1px solid rgba(10, 25, 47, 0.06) !important;
         }
 
         main {
@@ -57,34 +37,176 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            padding: 120px 24px 60px;
         }
 
-        .cta-card {
-            background: rgba(255, 255, 255, 0.08) !important;
-            backdrop-filter: blur(20px) !important;
-            -webkit-backdrop-filter: blur(20px) !important;
-            border: 1px solid rgba(255, 255, 255, 0.15) !important;
-            box-shadow: 0 20px 50px rgba(0, 0, 0, 0.3) !important;
-            border-radius: 24px !important;
-            transition: transform 0.4s ease, box-shadow 0.4s ease !important;
+        .training-section {
+            width: 100%;
+            max-width: 1350px;
+            border-radius: 35px;
+            overflow: hidden;
+            padding: 70px 50px;
+            position: relative;
+            background-image: url('assets/service-training-back.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            box-shadow: 0 25px 50px rgba(0,0,0,.15);
         }
 
-        .cta-card:hover {
+        .training-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.1) 0%, rgba(15, 23, 42, 0.35) 100%);
+            z-index: 1;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .heading {
+            text-align: center;
+            color: white;
+        }
+
+        .heading h1 {
+            font-size: 70px;
+            font-weight: 800;
+            margin-bottom: 15px;
+        }
+
+        .heading h1 span {
+            color: #2fd3ff;
+        }
+
+        .heading p {
+            font-size: 28px;
+            opacity: .9;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 60px;
+        }
+
+        .card {
+            background: white;
+            border-radius: 22px;
+            padding: 28px;
+            display: flex;
+            align-items: center;
+            gap: 18px;
+            transition: .3s;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-8px);
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.12), 0 0 15px rgba(0, 191, 255, 0.1);
+        }
+
+        .icon {
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 34px;
+            flex-shrink: 0;
+        }
+
+        .blue {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .green {
+            background: #d1fae5;
+            color: #10b981;
+        }
+
+        .purple {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        .gold {
+            background: #fef3c7;
+            color: #f59e0b;
+        }
+
+        .card-content h3 {
+            font-size: 22px;
+            color: #12245d;
+            margin-bottom: 8px;
+            font-weight: 700;
+        }
+
+        .card-content p {
+            color: #5b6480;
+            font-size: 18px;
+        }
+
+        .leaderboard {
+            width: 370px;
+            margin: 30px auto 0;
+        }
+
+        .launch-btn {
+            display: flex;
+            justify-content: center;
+            margin-top: 45px;
+        }
+
+        .launch-btn button {
+            border: none;
+            padding: 24px 80px;
+            border-radius: 22px;
+            cursor: pointer;
+            background: linear-gradient(90deg, #5145ff, #18d4ff);
+            color: white;
+            font-size: 24px;
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: .3s;
+            box-shadow: 0 10px 25px rgba(81, 69, 255, 0.3);
+        }
+
+        .launch-btn button:hover {
             transform: translateY(-5px);
-            box-shadow: 0 30px 60px rgba(0, 0, 0, 0.4), 0 0 30px rgba(0, 191, 255, 0.2) !important;
+            box-shadow: 0 15px 30px rgba(0, 0, 0, .25), 0 0 20px rgba(81, 69, 255, 0.4);
         }
 
-        .cta-pill {
-            background: rgba(255, 255, 255, 0.12) !important;
-            border: 1px solid rgba(255, 255, 255, 0.1) !important;
-            backdrop-filter: blur(10px);
-            transition: all 0.3s ease;
+        @media(max-width: 1100px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .leaderboard {
+                margin: 25px auto 0;
+            }
         }
 
-        .cta-pill:hover {
-            background: rgba(255, 255, 255, 0.22) !important;
-            border-color: rgba(255, 255, 255, 0.25) !important;
-            transform: translateY(-2px);
+        @media(max-width: 1000px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+            .heading h1 {
+                font-size: 45px;
+            }
+            .heading p {
+                font-size: 20px;
+            }
+            .leaderboard {
+                width: 100%;
+            }
         }
     </style>
 </head>
@@ -112,39 +234,82 @@
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="contact.html">Contact</a></li>
-                  <li> <a href="/training/index.html"> Training Portal</a></li>
-
+                <li><a href="/training/index.html"> Training Portal</a></li>
             </ul>
             <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
         </div>
     </header>
 
     <!-- Main Content -->
-    <main class="container" style="min-height: 100vh; padding-top: 120px; padding-bottom: 4rem; display: flex; align-items: center; justify-content: center;">
-        <!-- Training Portal CTA -->
-        <div class="cta-card" style="width: 100%; max-width: 800px; padding:3.5rem 3rem; text-align:center;">
-            <h3 style="color:white; font-size:2.25rem; font-weight:800; margin-bottom:2.5rem; text-shadow: 0 2px 10px rgba(0,0,0,0.15);">Ready to Start Training?</h3>
-            <div style="display:flex; flex-wrap:wrap; justify-content:center; gap:1rem; margin-bottom:3rem;">
-                <div class="cta-pill" style="display:flex; align-items:center; gap:0.5rem; padding:0.75rem 1.25rem; border-radius:8px; color:white; font-weight:500;">
-                    <i class="fa-solid fa-clipboard-list"></i> Aptitude Tests
+    <main>
+        <section class="training-section">
+            <div class="content">
+                <div class="heading">
+                    <h1>
+                        Ready to Start
+                        <span>Training?</span>
+                    </h1>
+                    <p>
+                        Choose your path, challenge yourself, and track your progress.
+                    </p>
                 </div>
-                <div class="cta-pill" style="display:flex; align-items:center; gap:0.5rem; padding:0.75rem 1.25rem; border-radius:8px; color:white; font-weight:500;">
-                    <i class="fa-solid fa-code"></i> Coding Challenges
+
+                <div class="cards">
+                    <div class="card">
+                        <div class="icon blue">
+                            <i class="fa-solid fa-clipboard-check"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Aptitude Tests</h3>
+                            <p>Test your analytical skills</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="icon green">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Coding Challenges</h3>
+                            <p>Solve real-world problems</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="icon purple">
+                            <i class="fa-solid fa-user-tie"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Mock Interviews</h3>
+                            <p>Practice & improve confidence</p>
+                        </div>
+                    </div>
                 </div>
-                <div class="cta-pill" style="display:flex; align-items:center; gap:0.5rem; padding:0.75rem 1.25rem; border-radius:8px; color:white; font-weight:500;">
-                    <i class="fa-solid fa-microphone"></i> Mock Interviews
+
+                <div class="card leaderboard">
+                    <div class="icon gold">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Leaderboard</h3>
+                        <p>See how you rank</p>
+                    </div>
                 </div>
-                <div class="cta-pill" style="display:flex; align-items:center; gap:0.5rem; padding:0.75rem 1.25rem; border-radius:8px; color:white; font-weight:500;">
-                    <i class="fa-solid fa-trophy"></i> Leaderboard
+
+                <div class="launch-btn">
+                    <a href="CorporateTraining/frontend/login.html" style="text-decoration: none;">
+                        <button type="button">
+                            <i class="fa-solid fa-rocket"></i>
+                            Launch Training Portal
+                        </button>
+                    </a>
                 </div>
             </div>
-            <a href="CorporateTraining/frontend/login.html" class="btn" style="background:white; color:#0f172a; font-weight:700; font-size:1.1rem; padding:1.1rem 3rem; border-radius:14px; display:inline-flex; align-items:center; gap:0.75rem; transition: all 0.3s ease; box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);" onmouseover="this.style.transform='translateY(-3px)'; this.style.boxShadow='0 15px 30px rgba(0,0,0,0.25), 0 0 20px rgba(255,255,255,0.4)'; this.style.background='#f8fafc';" onmouseout="this.style.transform='translateY(0)'; this.style.boxShadow='0 10px 25px rgba(0, 0, 0, 0.15)'; this.style.background='white';">
-                <i class="fa-solid fa-rocket" style="color:#00BFFF;"></i>Launch Training Portal
-            </a>
-        </div>
+        </section>
     </main>
 
     <!-- Scripts -->
     <script src="script.js"></script>
 </body>
+
 </html>
