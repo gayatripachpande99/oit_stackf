@@ -216,6 +216,10 @@
 
             document.addEventListener('visibilitychange', handleVisibilityChange);
             window.addEventListener('beforeunload', handleBeforeUnload);
+            window.addEventListener('copy', handleCopyPaste);
+            window.addEventListener('cut', handleCopyPaste);
+            window.addEventListener('paste', handleCopyPaste);
+            window.addEventListener('contextmenu', preventContextMenu);
         });
 
         function handleBeforeUnload(e) {
@@ -234,6 +238,16 @@
                     showToast(`Warning: Do not switch tabs! (Violation ${tabSwitchCount}/3)`, 'error');
                 }
             }
+        }
+
+        function handleCopyPaste(e) {
+            e.preventDefault();
+            showToast('Copy/Paste attempt detected! Test auto-submitted.', 'error');
+            submitTest(true);
+        }
+
+        function preventContextMenu(e) {
+            e.preventDefault();
         }
 
         function startTimer() {
@@ -430,6 +444,10 @@
                 localStorage.removeItem(`test_taking_${testId}`);
                 document.removeEventListener('visibilitychange', handleVisibilityChange);
                 window.removeEventListener('beforeunload', handleBeforeUnload);
+                window.removeEventListener('copy', handleCopyPaste);
+                window.removeEventListener('cut', handleCopyPaste);
+                window.removeEventListener('paste', handleCopyPaste);
+                window.removeEventListener('contextmenu', preventContextMenu);
 
                 showToast('Test submitted successfully!');
                 setTimeout(() => window.location.href = `test-result.html?id=${testId}`, 1500);
