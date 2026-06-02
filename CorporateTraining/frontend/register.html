@@ -99,7 +99,7 @@
     </nav>
 
     <div class="flex-1 flex overflow-hidden">
-        <div class="hidden lg:flex lg:w-1/2 xl:w-[55%] relative overflow-hidden bg-gradient-to-br from-[#0f172a] via-[#1e1b4b] to-[#2e1065]">
+        <div class="hidden lg:flex lg:w-1/2 xl:w-[55%] relative overflow-hidden bg-gradient-to-br from-[#111827] via-[#1E293B] to-[#312E81]">
             <div class="absolute top-20 right-20 w-72 h-72 bg-cyan-400/20 rounded-full blur-3xl animate-pulse"></div>
             <div class="absolute bottom-20 left-20 w-96 h-96 bg-indigo-400/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s"></div>
 
@@ -122,7 +122,7 @@
                 
                 <div class="space-y-4 max-w-sm">
                     <div class="flex items-center gap-4">
-                        <div id="ind-1" class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm bg-white text-blue-600 shadow-lg transition-all">1</div>
+                        <div id="ind-1" class="w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm bg-white text-indigo-600 shadow-lg transition-all">1</div>
                         <div>
                             <p id="ind-text-1" class="font-semibold text-sm text-white">Create Account</p>
                             <p id="ind-desc-1" class="text-xs text-blue-200">Set up your credentials</p>
@@ -228,7 +228,7 @@
                             <p id="err-confirmPassword" class="mt-1.5 text-sm text-red-500 hidden"></p>
                         </div>
 
-                        <button type="button" onclick="goToStep2()" class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold flex items-center justify-center gap-2">
+                        <button type="button" onclick="goToStep2()" class="w-full py-3.5 px-6 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 text-white font-semibold flex items-center justify-center gap-2 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0">
                             <span>Continue</span>
                             <i data-lucide="arrow-right" class="w-5 h-5"></i>
                         </button>
@@ -282,7 +282,7 @@
                             <button type="button" onclick="goToStep1()" class="flex-1 py-3.5 px-6 rounded-xl border-2 border-slate-200 dark:border-slate-700 text-slate-700 dark:text-slate-300 font-semibold hover:border-blue-500 hover:text-blue-600 flex items-center justify-center gap-2">
                                 <i data-lucide="arrow-left" class="w-5 h-5"></i> Back
                             </button>
-                            <button id="submitBtn" type="submit" class="flex-[2] py-3.5 px-6 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 text-white font-semibold flex items-center justify-center gap-2 disabled:opacity-70">
+                            <button id="submitBtn" type="submit" class="flex-[2] py-3.5 px-6 rounded-xl bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-indigo-600 hover:via-purple-600 hover:to-pink-600 shadow-lg shadow-indigo-500/25 hover:shadow-indigo-500/40 text-white font-semibold flex items-center justify-center gap-2 disabled:opacity-70 transition-all duration-300 transform hover:-translate-y-0.5 active:translate-y-0">
                                 <span id="btnText" class="flex items-center gap-2"><i data-lucide="user-plus" class="w-5 h-5"></i> Create Account</span>
                                 <div id="btnSpinner" class="hidden animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
                             </button>
@@ -368,7 +368,7 @@
                 document.getElementById('stepTitle').textContent = 'Complete Profile';
                 document.getElementById('stepDesc').textContent = 'Tell us a bit about your academic background';
                 
-                document.getElementById('ind-2').className = 'w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm bg-white text-blue-600 shadow-lg transition-all';
+                document.getElementById('ind-2').className = 'w-10 h-10 rounded-full flex items-center justify-center font-bold text-sm bg-white text-indigo-600 shadow-lg transition-all';
                 document.getElementById('ind-text-2').className = 'font-semibold text-sm text-white';
                 document.getElementById('ind-desc-2').className = 'text-xs text-blue-200';
             }
