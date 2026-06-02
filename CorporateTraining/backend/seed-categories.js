@@ -1,8 +1,6 @@
 const mongoose = require('mongoose');
-const dotenv = require('dotenv');
 const Category = require('./models/Category');
-
-dotenv.config();
+const config = require('./config/env');
 
 const categories = [
   // Aptitude
@@ -20,7 +18,7 @@ const categories = [
 
 const seedCategories = async () => {
   try {
-    await mongoose.connect(process.env.MONGODB_URI, {
+    await mongoose.connect(config.mongoUri, {
       useNewUrlParser: true,
       useUnifiedTopology: true,
     });

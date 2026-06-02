@@ -4,7 +4,7 @@ dotenv.config();
 module.exports = {
   port: process.env.PORT || 5000,
   nodeEnv: process.env.NODE_ENV || 'development',
-  mongoUri: process.env.MONGODB_URI || 'mongodb://localhost:27017/mce-placement-portal',
+  mongoUri: process.env.CORPORATE_MONGODB_URI || process.env.MONGODB_URI || 'mongodb://localhost:27017/corporate-training-portal',
   jwtSecret: process.env.JWT_SECRET || 'default_jwt_secret_change_me',
   jwtExpire: process.env.JWT_EXPIRE || '7d',
   openaiApiKey: process.env.OPENAI_API_KEY || '',
