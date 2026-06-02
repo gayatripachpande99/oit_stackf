@@ -142,12 +142,23 @@
                                         </select>
                                     </div>
                                     <div class="flex flex-col gap-1.5">
-                                        <label class="text-[10px] font-black uppercase tracking-wider text-slate-400">Duration (mins)</label>
+                                        <label class="text-[10px] font-black uppercase tracking-wider text-slate-400">Test Time / Duration (mins)</label>
                                         <input type="number" id="tTime" value="30" required min="1" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
                                     </div>
                                     <div class="flex flex-col gap-1.5">
                                         <label class="text-[10px] font-black uppercase tracking-wider text-slate-400">Passing Marks</label>
                                         <input type="number" id="tPass" value="10" required min="0" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 border-t border-slate-100 dark:border-slate-800 pt-4">
+                                    <div class="flex flex-col gap-1.5">
+                                        <label class="text-[10px] font-black uppercase tracking-wider text-slate-400">Start Test Time (Optional)</label>
+                                        <input type="datetime-local" id="tStartDate" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                                    </div>
+                                    <div class="flex flex-col gap-1.5">
+                                        <label class="text-[10px] font-black uppercase tracking-wider text-slate-400">End Test Time (Optional)</label>
+                                        <input type="datetime-local" id="tEndDate" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
                                     </div>
                                 </div>
                             </div>
@@ -360,6 +371,16 @@
             }
         });
 
+        function formatDateForInput(date) {
+            const pad = (n) => String(n).padStart(2, '0');
+            const year = date.getFullYear();
+            const month = pad(date.getMonth() + 1);
+            const day = pad(date.getDate());
+            const hours = pad(date.getHours());
+            const minutes = pad(date.getMinutes());
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
+
         async function loadTest() {
             try {
                 const res = await api.request(`/tests/${testId}`);
@@ -376,6 +397,15 @@
                 document.getElementById('tNegativeMarking').checked = test.negativeMarking === true;
                 document.getElementById('tNegativeValue').value = test.negativeMarkValue || 0;
                 toggleNegativeValue();
+
+                if (test.startDate) {
+                    const sDate = new Date(test.startDate);
+                    document.getElementById('tStartDate').value = formatDateForInput(sDate);
+                }
+                if (test.endDate) {
+                    const eDate = new Date(test.endDate);
+                    document.getElementById('tEndDate').value = formatDateForInput(eDate);
+                }
 
                 // If saved test has questions, let's pre-load them in a manual section to edit
                 if(test.questions && test.questions.length > 0) {
@@ -830,6 +860,13 @@
                 const negMarking = document.getElementById('tNegativeMarking').checked;
                 const negValue = negMarking ? parseFloat(document.getElementById('tNegativeValue').value) || 0 : 0;
 
+                const startDateVal = document.getElementById('tStartDate').value;
+                const endDateVal = document.getElementById('tEndDate').value;
+
+                if (startDateVal && endDateVal && new Date(startDateVal) >= new Date(endDateVal)) {
+                    throw new Error('Start Test Time must be earlier than End Test Time.');
+                }
+
                 const payload = {
                     name: document.getElementById('tName').value.trim(),
                     description: document.getElementById('tDescription').value.trim(),
@@ -844,7 +881,9 @@
                     randomizeQuestions: randomize,
                     shuffleOptions: shuffle,
                     negativeMarking: negMarking,
-                    negativeMarkValue: negValue
+                    negativeMarkValue: negValue,
+                    startDate: startDateVal ? new Date(startDateVal).toISOString() : null,
+                    endDate: endDateVal ? new Date(endDateVal).toISOString() : null
                 };
 
                 if (isEdit) {
