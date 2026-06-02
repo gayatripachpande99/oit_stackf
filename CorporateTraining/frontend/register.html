@@ -11,6 +11,23 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <script src="api.js?v=2"></script>
     <style>
+        .left-panel-bg::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: url('../image/Login-back.png');
+            background-size: cover;
+            background-position: center;
+            opacity: 1;
+            z-index: 1;
+        }
+        .left-panel-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(2, 18, 59, 0.3) 0%, rgba(2, 18, 59, 0.6) 100%);
+            z-index: 2;
+        }
         .circles {
             position: absolute;
             top: 0;
@@ -99,18 +116,8 @@
     </nav>
 
     <div class="flex-1 flex overflow-hidden">
-        <div class="hidden lg:flex lg:w-1/2 xl:w-[55%] relative overflow-hidden bg-gradient-to-br from-[#111827] via-[#1E293B] to-[#312E81]">
-            <div class="absolute top-20 right-20 w-72 h-72 bg-cyan-400/20 rounded-full blur-3xl animate-pulse"></div>
-            <div class="absolute bottom-20 left-20 w-96 h-96 bg-indigo-400/20 rounded-full blur-3xl animate-pulse" style="animation-delay: 1s"></div>
-
-            <div class="relative z-10 flex flex-col justify-center px-12 xl:px-20 text-white w-full">
-                <div class="flex items-center gap-3 mb-12">
-                    <img src="./image/logo.jpg" alt="OIT_STACK" class="w-14 h-14 object-cover rounded-2xl shadow-lg" />
-                    <div>
-                        <h1 class="text-2xl font-bold tracking-tight">OIT_STACK</h1>
-                        <p class="text-blue-200 text-sm">Your gateway to success</p>
-                    </div>
-                </div>
+        <div class="hidden lg:flex lg:w-1/2 xl:w-[55%] relative overflow-hidden bg-gradient-to-br from-[#02123b] via-[#0033a8] to-[#005cff] left-panel-bg flex-col justify-center px-12 xl:px-20 text-white">
+            <div class="relative z-10 flex flex-col justify-center text-white w-full">
 
                 <h2 class="text-4xl xl:text-5xl font-extrabold leading-tight mb-6">
                     Start Your
