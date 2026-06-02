@@ -25,8 +25,15 @@
             background: url('../image/Login-back.png');
             background-size: cover;
             background-position: center;
-            opacity: .35;
+            opacity: 1;
             z-index: 1;
+        }
+        .left-panel-bg::after {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(2, 18, 59, 0.3) 0%, rgba(2, 18, 59, 0.6) 100%);
+            z-index: 2;
         }
         .circles {
             position: absolute;
@@ -120,14 +127,6 @@
     <div class="flex-1 flex overflow-hidden">
         <!-- LEFT PANEL -->
         <div class="hidden lg:flex lg:w-1/2 xl:w-[55%] relative overflow-hidden bg-gradient-to-br from-[#02123b] via-[#0033a8] to-[#005cff] left-panel-bg flex-col justify-center px-12 xl:px-20 text-white">
-            <!-- Logo inside left panel -->
-            <div class="relative z-10 flex items-center gap-3 mb-10">
-                <img src="./image/logo.jpg" alt="OIT_STACK" class="w-14 h-14 object-cover rounded-2xl shadow-lg" />
-                <div>
-                    <h2 class="text-2xl font-bold tracking-tight">OIT_STACK</h2>
-                </div>
-            </div>
-
             <!-- Hero Content -->
             <div class="relative z-10">
                 <h1 class="text-4xl xl:text-5xl font-black leading-tight mb-5">
@@ -190,7 +189,7 @@
         </div>
 
         <!-- RIGHT PANEL -->
-        <div class="w-full lg:w-1/2 xl:w-[45%] flex flex-col items-center justify-start p-6 sm:p-8 lg:p-12 overflow-y-auto relative pt-10 sm:pt-16 lg:pt-20 pb-12 bg-[#f8fbff] dark:bg-slate-900">
+        <div class="w-full lg:w-1/2 xl:w-[45%] flex flex-col items-center justify-center p-6 sm:p-8 lg:p-12 overflow-y-auto relative bg-[#f8fbff] dark:bg-slate-900">
             <!-- Background Moving Boxes Animation -->
             <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
                 <ul class="circles">
