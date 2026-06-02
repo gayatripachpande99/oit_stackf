@@ -15,26 +15,158 @@
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- Custom API and Logic -->
     <script src="api.js?v=2"></script>
+    <style>
+        .circles {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            overflow: hidden;
+            pointer-events: none;
+            margin: 0;
+            padding: 0;
+        }
+        .circles li {
+            position: absolute;
+            display: block;
+            list-style: none;
+            width: 20px;
+            height: 20px;
+            background: linear-gradient(135deg, rgba(59, 130, 246, 0.06) 0%, rgba(147, 51, 234, 0.06) 100%);
+            animation: animateBox 25s linear infinite;
+            bottom: -150px;
+            border-radius: 8px;
+            border: 1px solid rgba(59, 130, 246, 0.12);
+            box-shadow: 0 4px 30px rgba(0, 0, 0, 0.02);
+            backdrop-filter: blur(1px);
+            transition: background-color 0.3s, border-color 0.3s;
+        }
+        .dark .circles li {
+            background: linear-gradient(135deg, rgba(96, 165, 250, 0.04) 0%, rgba(192, 132, 252, 0.04) 100%);
+            border-color: rgba(96, 165, 250, 0.08);
+        }
+        
+        .circles li:nth-child(1) {
+            left: 25%;
+            width: 80px;
+            height: 80px;
+            animation-delay: 0s;
+        }
+        .circles li:nth-child(2) {
+            left: 10%;
+            width: 30px;
+            height: 30px;
+            animation-delay: 2s;
+            animation-duration: 12s;
+        }
+        .circles li:nth-child(3) {
+            left: 70%;
+            width: 20px;
+            height: 20px;
+            animation-delay: 4s;
+        }
+        .circles li:nth-child(4) {
+            left: 40%;
+            width: 60px;
+            height: 60px;
+            animation-delay: 0s;
+            animation-duration: 18s;
+        }
+        .circles li:nth-child(5) {
+            left: 65%;
+            width: 25px;
+            height: 25px;
+            animation-delay: 0s;
+        }
+        .circles li:nth-child(6) {
+            left: 75%;
+            width: 110px;
+            height: 110px;
+            animation-delay: 3s;
+        }
+        .circles li:nth-child(7) {
+            left: 35%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 7s;
+        }
+        .circles li:nth-child(8) {
+            left: 50%;
+            width: 25px;
+            height: 25px;
+            animation-delay: 15s;
+            animation-duration: 45s;
+        }
+        .circles li:nth-child(9) {
+            left: 20%;
+            width: 15px;
+            height: 15px;
+            animation-delay: 2s;
+            animation-duration: 35s;
+        }
+        .circles li:nth-child(10) {
+            left: 85%;
+            width: 150px;
+            height: 150px;
+            animation-delay: 0s;
+            animation-duration: 11s;
+        }
+
+        @keyframes animateBox {
+            0% {
+                transform: translateY(0) rotate(0deg);
+                opacity: 0;
+            }
+            10% {
+                opacity: 1;
+            }
+            90% {
+                opacity: 1;
+            }
+            100% {
+                transform: translateY(-120dvh) rotate(720deg);
+                opacity: 0;
+                border-radius: 50%;
+            }
+        }
+    </style>
 </head>
-<body class="h-[100dvh] overflow-hidden bg-slate-50 dark:bg-slate-950 flex flex-col font-sans transition-colors duration-300">
+<body class="relative h-[100dvh] overflow-hidden bg-slate-50 dark:bg-slate-950 flex flex-col font-sans transition-colors duration-300">
     
+    <!-- Background Moving Boxes Animation -->
+    <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
+        <ul class="circles">
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+            <li></li>
+        </ul>
+    </div>
+
     <!-- Navbar -->
-    <nav class="h-14 shrink-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/60 flex items-center justify-between px-6">
+    <nav class="relative z-10 h-14 shrink-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/60 flex items-center justify-between px-6">
         <div class="flex items-center gap-2.5">
             <img src="./image/logo.jpg" alt="OIT_STACK" class="w-12 h-12 object-cover rounded-lg shadow-sm" />
             <span class="font-bold text-slate-900 dark:text-white text-lg">OIT_STACK</span>
         </div>
         <div class="flex items-center gap-2">
             <a href="/" class="text-sm font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors mr-4">Home</a>
-          <button onclick="toggleTheme()" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400">
-            <i data-lucide="moon" class="w-4 h-4 dark:hidden"></i>
-            <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
-        </button>
+            <button onclick="toggleTheme()" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400">
+                <i data-lucide="moon" class="w-4 h-4 dark:hidden"></i>
+                <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+            </button>
         </div>
     </nav>
 
     <!-- Main Content -->
-    <div class="flex-1 flex flex-col items-center justify-center p-4">
+    <div class="relative z-10 flex-1 flex flex-col items-center justify-center p-4">
         <div class="w-full max-w-md">
             
             <!-- Toast Notification Container -->
