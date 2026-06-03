@@ -18,6 +18,9 @@ const CandidateSchema = new mongoose.Schema({
   strict: false // Allow for variations in collection schemas
 });
 
+CandidateSchema.index({ constituency_number: 1, candidate_name: 1 });
+CandidateSchema.index({ constituency_number: 1, total: -1 });
+
 // Helper to get a model for a specific collection dynamically
 const getCandidateModel = (collectionName) => {
   // Check if model already exists to avoid OverwriteModelError

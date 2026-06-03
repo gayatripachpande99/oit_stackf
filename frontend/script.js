@@ -428,42 +428,7 @@ function renderTable(container, candidates, showSymbol, year) {
 
   container.innerHTML = tableHtml;
 }
-const boothFilter = document.getElementById("boothFilter");
-
-if (boothFilter) {
-
-// Generate booth numbers
-for(let i = 1; i <= 437; i++){
-
-    const option = document.createElement("option");
-
-    option.value = i;
-
-    option.textContent = i;
-
-    boothFilter.appendChild(option);
-
-}
-boothFilter.addEventListener("change", async function(){
-
-    const boothNumber = this.value;
-
-    let url = "http://localhost:5000/api/voters";
-
-    if(boothNumber){
-
-        url += `?boothNumber=${boothNumber}`;
-
-    }
-
-    const response = await fetch(url);
-
-    const data = await response.json();
-
-    displayVoters(data);
-
-});
-}
+// Voter filtering and listing is handled dynamically within voters-list.html
 
 // Site Assistant Chatbot
 const getApiBaseUrl = () => {

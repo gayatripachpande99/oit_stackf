@@ -5,6 +5,11 @@ const voterSchema = new mongoose.Schema({
     // We let MongoDB handle the flexible schema
 }, { strict: false, collection: 'voters' });
 
+voterSchema.index({ boothNumber: 1 });
+voterSchema.index({ segment: 1 });
+voterSchema.index({ ward: 1 });
+voterSchema.index({ area: 1 });
+
 // Create a separate connection specifically pointing to 'electionDB' database where the user actually added the records
 const voterDbUri = (process.env.MONGODB_URI || '').includes('/oit_stack')
     ? process.env.MONGODB_URI.replace('/oit_stack', '/electionDB')

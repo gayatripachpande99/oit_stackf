@@ -367,6 +367,96 @@ console.log("CURRENT SEGMENT:", segment);
 
 
     // ===============================
+    // FETCH VOTERS DATA
+    // ===============================
+    async function fetchVoters(boothNum = "") {
+        const tableBody = document.getElementById("tableBody");
+        tableBody.innerHTML = `
+            <tr>
+                <td colspan="5" style="text-align:center; padding:30px;">
+                    <i class="fa-solid fa-spinner fa-spin" style="margin-right: 8px;"></i> Fetching voters...
+                </td>
+            </tr>
+        `;
+
+        try {
+            const BASE_URL = window.location.hostname === 'localhost' || window.location.hostname === '127.0.0.1'
+                ? "http://localhost:3000"
+                : "https://oit-stack-backend.onrender.com";
+
+            let fetchUrl = `${BASE_URL}/api/voters`;
+            const params = [];
+            if (segment) {
+                params.push(`segment=${encodeURIComponent(segment)}`);
+            }
+            if (boothNum) {
+                params.push(`boothNumber=${encodeURIComponent(boothNum)}`);
+            }
+            if (params.length > 0) {
+                fetchUrl += `?${params.join("&")}`;
+            }
+
+            console.log("Fetching voters from:", fetchUrl);
+            const response = await fetch(fetchUrl);
+            if (!response.ok) throw new Error("Failed to fetch voters");
+
+            const result = await response.json();
+            const voters = result.data || [];
+
+            if (voters.length === 0) {
+                tableBody.innerHTML = `
+                    <tr>
+                        <td colspan="5" style="text-align:center; padding:30px; color: var(--text-muted);">
+                            No voter records found for this selection.
+                        </td>
+                    </tr>
+                `;
+                return;
+            }
+
+            let rowsHtml = "";
+            voters.forEach(voter => {
+                const gender = (voter.gender || voter.sex || "").toUpperCase();
+                let genderClass = "gender-other";
+                let genderIcon = "";
+                if (gender.startsWith("M")) {
+                    genderClass = "gender-male";
+                    genderIcon = '<i class="fa-solid fa-mars"></i>';
+                } else if (gender.startsWith("F")) {
+                    genderClass = "gender-female";
+                    genderIcon = '<i class="fa-solid fa-venus"></i>';
+                }
+
+                rowsHtml += `
+                    <tr>
+                        <td><strong>Booth ${voter.boothNumber || voter.booth || "-"}</strong></td>
+                        <td>${voter.srNumber || voter.serialNumber || voter.sr_no || "-"}</td>
+                        <td><strong>${voter.name || voter.voter_name || voter.candidate_name || "-"}</strong></td>
+                        <td>${voter.age || "-"}</td>
+                        <td>
+                            <span class="gender-badge ${genderClass}">
+                                ${genderIcon} ${voter.gender || voter.sex || "-"}
+                            </span>
+                        </td>
+                    </tr>
+                `;
+            });
+
+            tableBody.innerHTML = rowsHtml;
+        } catch (error) {
+            console.error("Error fetching voters:", error);
+            tableBody.innerHTML = `
+                <tr>
+                    <td colspan="5" style="text-align:center; padding:30px; color:red;">
+                        Failed to load voter registry. Please try again.
+                    </td>
+                </tr>
+            `;
+        }
+    }
+
+
+    // ===============================
     // FILTER EVENT
     // ===============================
 
