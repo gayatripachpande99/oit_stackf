@@ -1,6 +1,6 @@
 # OIT_Stack - OnYX Integrated Tech Stack
 
-![OIT_Stack Banner](frontend/assets/Logo2.png)
+![OIT_Stack Banner](assets/Logo2.png)
 
 ## Overview
 **OIT_Stack** is a full-stack platform designed for enterprise consulting and strategic political analytics. It features a modern frontend for data visualization and a robust Node.js/MongoDB backend for handling complex election datasets.
@@ -18,11 +18,8 @@ oits-project/
 │   ├── .env.example        # Template for environment variables
 │   ├── package.json        # Backend dependencies
 │   └── server.js           # Main entry point
-├── frontend/               # Client-side Application
-│   ├── assets/             # Images, logos, and media
-│   ├── css/                # Stylesheets
-│   ├── js/                 # Client-side logic
-│   └── *.html              # Web pages
+├── assets/                 # Images, logos, and media (frontend assets)
+├── *.html, *.css, *.js     # Frontend web pages and assets at the root
 ├── docs/                   # Project documentation
 ├── .gitignore              # Git ignore rules
 ├── README.md               # Project overview and setup
@@ -64,7 +61,7 @@ oits-project/
 ### Frontend Setup
 The frontend is served automatically by the backend at `http://localhost:3000`. 
 
-Alternatively, you can open `frontend/index.html` directly in a browser or use a live server extension.
+Alternatively, you can open `index.html` directly in a browser or use a live server extension.
 
 ## Deployment
 The project is configured for deployment on **Render**.

@@ -83,8 +83,8 @@ app.get('/api/health', (req, res) => {
   res.json({ status: 'ok', timestamp: new Date().toISOString() });
 });
 
-// Serve static frontend files from the frontend directory
-app.use(express.static(path.join(__dirname, '../frontend')));
+// Serve static frontend files from the root directory
+app.use(express.static(path.join(__dirname, '../')));
 
 // Serve CorporateTraining static frontend under /training
 app.use('/training', express.static(path.join(__dirname, '../CorporateTraining/frontend')));
@@ -96,7 +96,7 @@ app.get('/training/*', (req, res) => {
 
 // Catch-all route to serve the frontend index.html for any other request (for client-side routing)
 app.get('*', (req, res) => {
-  res.sendFile(path.join(__dirname, '../frontend/index.html'));
+  res.sendFile(path.join(__dirname, '../index.html'));
 });
 
 app.use(errorHandler);
