@@ -8,6 +8,10 @@
     {
       "src": "frontend/**",
       "use": "@vercel/static"
+    },
+    {
+      "src": "CorporateTraining/frontend/**",
+      "use": "@vercel/static"
     }
   ],
   "rewrites": [
