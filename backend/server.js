@@ -19,9 +19,17 @@ app.use(express.json());
 // Serve static frontend files from the frontend directory
 app.use(express.static(path.join(__dirname, '../frontend')));
 
+// Serve CorporateTraining static frontend under /training
+app.use('/training', express.static(path.join(__dirname, '../CorporateTraining/frontend')));
+
 // API Routes
 app.use('/api', constituencyRoutes);
 app.use('/api', voterRoutes);
+
+// CorporateTraining frontend catch-all
+app.get('/training/*', (req, res) => {
+  res.sendFile(path.join(__dirname, '../CorporateTraining/frontend/index.html'));
+});
 
 // Catch-all route to serve the frontend index.html for any other request
 app.get('*', (req, res) => {

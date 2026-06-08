@@ -16,6 +16,10 @@
       "destination": "backend/server.js"
     },
     {
+      "source": "/training/:path*",
+      "destination": "CorporateTraining/frontend/:path*"
+    },
+    {
       "source": "/(.*)",
       "destination": "frontend/$1"
     }
