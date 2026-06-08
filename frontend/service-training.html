@@ -9,9 +9,235 @@
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
         rel="stylesheet">
     <!-- Font Awesome -->
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <!-- CSS -->
     <link rel="stylesheet" href="style.css?v=light-theme">
+    
+    <style>
+        body {
+            background: #eef1f6;
+            min-height: 100vh;
+            min-height: 100dvh;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+        }
+
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            z-index: 1000;
+            background: rgba(255, 255, 255, 0.8) !important;
+            backdrop-filter: blur(16px) !important;
+            -webkit-backdrop-filter: blur(16px) !important;
+            border-bottom: 1px solid rgba(10, 25, 47, 0.06) !important;
+        }
+
+        main {
+            flex: 1;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            padding: 86px 24px 24px;
+        }
+
+        .training-section {
+            width: 100%;
+            max-width: 1100px;
+            border-radius: 35px;
+            overflow: hidden;
+            padding: 4.5vh 5vw;
+            position: relative;
+            background-image: url('assets/service-training-back.png');
+            background-size: cover;
+            background-position: center;
+            background-repeat: no-repeat;
+            box-shadow: 0 25px 50px rgba(0,0,0,.15);
+        }
+
+        .training-section::before {
+            content: '';
+            position: absolute;
+            inset: 0;
+            background: linear-gradient(135deg, rgba(15, 23, 42, 0.1) 0%, rgba(15, 23, 42, 0.35) 100%);
+            z-index: 1;
+        }
+
+        .content {
+            position: relative;
+            z-index: 2;
+        }
+
+        .heading {
+            text-align: center;
+            color: white;
+        }
+
+        .heading h1 {
+            font-size: clamp(32px, 5vh, 60px);
+            font-weight: 800;
+            margin-bottom: 8px;
+            line-height: 1.1;
+            color: white;
+        }
+
+        .heading h1 span {
+            color: #2fd3ff;
+        }
+
+        .heading p {
+            font-size: clamp(16px, 2.2vh, 22px);
+            opacity: .9;
+        }
+
+        .cards {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            margin-top: 3.5vh;
+        }
+
+        .card {
+            background: white;
+            border-radius: 20px;
+            padding: 2.5vh 24px;
+            display: flex;
+            align-items: center;
+            gap: 16px;
+            transition: .3s;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.05);
+        }
+
+        .card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 20px 35px rgba(0, 0, 0, 0.12), 0 0 15px rgba(0, 191, 255, 0.1);
+        }
+
+        .icon {
+            width: clamp(50px, 6vh, 70px);
+            height: clamp(50px, 6vh, 70px);
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: clamp(20px, 2.8vh, 28px);
+            flex-shrink: 0;
+        }
+
+        .blue {
+            background: #dbeafe;
+            color: #2563eb;
+        }
+
+        .green {
+            background: #d1fae5;
+            color: #10b981;
+        }
+
+        .purple {
+            background: #ede9fe;
+            color: #7c3aed;
+        }
+
+        .gold {
+            background: #fef3c7;
+            color: #f59e0b;
+        }
+
+        .card-content h3 {
+            font-size: clamp(16px, 2.2vh, 20px);
+            color: #12245d;
+            margin-bottom: 4px;
+            font-weight: 700;
+        }
+
+        .card-content p {
+            color: #5b6480;
+            font-size: clamp(13px, 1.8vh, 16px);
+        }
+
+        .leaderboard {
+            width: 370px;
+            margin: 2.2vh auto 0;
+        }
+
+        .launch-btn {
+            display: flex;
+            justify-content: center;
+            margin-top: 3.5vh;
+        }
+
+        .launch-btn button {
+            border: none;
+            padding: 1.8vh 60px;
+            border-radius: 18px;
+            cursor: pointer;
+            background: linear-gradient(90deg, #5145ff, #18d4ff);
+            color: white;
+            font-size: clamp(16px, 2.2vh, 20px);
+            font-weight: 700;
+            display: flex;
+            align-items: center;
+            gap: 15px;
+            transition: .3s;
+            box-shadow: 0 10px 25px rgba(81, 69, 255, 0.3);
+        }
+
+        .launch-btn button:hover {
+            transform: translateY(-4px);
+            box-shadow: 0 15px 30px rgba(0, 0, 0, .25), 0 0 20px rgba(81, 69, 255, 0.4);
+        }
+
+        @media(max-width: 1100px) {
+            .cards {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            .leaderboard {
+                margin: 2vh auto 0;
+            }
+        }
+
+        @media(max-width: 1000px) {
+            .cards {
+                grid-template-columns: 1fr;
+            }
+            .heading h1 {
+                font-size: 36px;
+            }
+            .heading p {
+                font-size: 18px;
+            }
+            .leaderboard {
+                width: 100%;
+            }
+        }
+
+        @media(max-width: 640px) {
+            main {
+                padding: 76px 12px 16px;
+            }
+            .training-section {
+                border-radius: 20px;
+                padding: 24px 16px;
+            }
+            .heading h1 {
+                font-size: 28px;
+            }
+            .card {
+                padding: 16px;
+                gap: 12px;
+                border-radius: 16px;
+            }
+            .launch-btn button {
+                width: 100%;
+                justify-content: center;
+                padding: 14px 20px;
+                font-size: 16px;
+                border-radius: 12px;
+            }
+        }
+    </style>
 </head>
 
 <body>
@@ -37,160 +263,76 @@
             <ul class="nav-links">
                 <li><a href="index.html">Home</a></li>
                 <li><a href="contact.html">Contact</a></li>
+                <li><a href="/training/index.html"> Training Portal</a></li>
             </ul>
             <div class="hamburger"><i class="fa-solid fa-bars"></i></div>
         </div>
     </header>
 
-    <!-- Page Header -->
-    <section class="page-header"
-        style="background: url('https://images.unsplash.com/photo-1524178232363-1fb2b075b655?q=80&w=2070&auto=format&fit=crop') center/cover; position:relative; overflow:hidden;">
-        <div style="position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(15,23,42,0.85); z-index:0;">
-        </div>
-        <div class="container animate-on-scroll" style="position:relative; z-index:1;">
-            <h1>Corporate Training</h1>
-            <p style="font-size:1.25rem; color:rgba(255,255,255,0.9); max-width:600px; margin:0 auto;">Empowering your
-                human capital via comprehensive tech and strategy outfitting.</p>
-        </div>
-    </section>
+    <!-- Main Content -->
+    <main>
+        <section class="training-section">
+            <div class="content">
+                <div class="heading">
+                    <h1>
+                        Ready to Start
+                        <span>Training?</span>
+                    </h1>
+                </div>
 
-    <!-- Service Detail Content -->
-    <section>
-        <div class="container">
-            <div class="service-detail-content">
-                <!-- Main Content -->
-                <div class="service-main animate-on-scroll">
-                    <img src="https://images.unsplash.com/photo-1552664730-d307ca884978?q=80&w=2070&auto=format&fit=crop"
-                        alt="Corporate Training"
-                        style="width:100%; border-radius:var(--radius-lg); box-shadow:var(--shadow-md); margin-bottom:2rem;">
-
-                    <h2 style="color:var(--primary); margin-top:2rem;">Overview</h2>
-                    <p>Your organization's technological potential is directly proportional to your team’s ability to
-                        harness it. Our Corporate Training modules are designed to bridge the digital gap, modernizing
-                        traditional workforces with highly functional understanding of new-era operational tools, data
-                        literacy, and agile methodologies.</p>
-                    <p>We go beyond standard textbook tutorials. We analyze your teams' daily friction points and
-                        conduct active workshop simulations so skills translate immediately into enhanced productivity.
-                    </p>
-
-                    <h3 style="color:var(--primary); margin-top:2rem;">Key Benefits</h3>
-                    <ul class="benefits-list">
-                        <li><i class="fa-solid fa-check-circle"></i> <strong>Data Literacy:</strong> Teach managers to
-                            read analytics dashboards without data science backgrounds.</li>
-                        <li><i class="fa-solid fa-check-circle"></i> <strong>Agile Pacing:</strong> Transform slow
-                            corporate bureaucracy into rapid-sprint delivery teams.</li>
-                        <li><i class="fa-solid fa-check-circle"></i> <strong>Tailored Workshops:</strong> Software
-                            training specific strictly to tools purchased/used by your enterprise.</li>
-                        <li><i class="fa-solid fa-check-circle"></i> <strong>Security Posture:</strong> Advanced
-                            phishing and basic cyber-hygiene training for human-layer security.</li>
-                    </ul>
-
-                    <h3 style="color:var(--primary); margin-top:2rem;">Technologies We Use</h3>
-                    <div class="tech-stack">
-                        <div class="tech-item"><i class="fa-brands fa-microsoft" style="color:#00A4EF;"></i> M365 Suite
+                <div class="cards">
+                    <div class="card">
+                        <div class="icon blue">
+                            <i class="fa-solid fa-clipboard-check"></i>
                         </div>
-                        <div class="tech-item"><i class="fa-brands fa-jira" style="color:#0052CC;"></i> Jira Software
-                        </div>
-                        <div class="tech-item"><i class="fa-solid fa-shield" style="color:#F25022;"></i> CyberSec Sims
+                        <div class="card-content">
+                            <h3>Aptitude Tests</h3>
+                            <p>Test your analytical skills</p>
                         </div>
                     </div>
-                    <div class="tech-item"><i class="fa-solid fa-database" style="color:#336791;"></i> SQL</div>
-                    <div class="tech-item"><i class="fa-solid fa-chart-pie" style="color:#005A9E;"></i> PowerBI</div>
-                    <div class="tech-item"><i class="fa-solid fa-brain" style="color:#FF6F00;"></i> TensorFlow</div>
-                    <div class="tech-item"><i class="fa-brands fa-aws" style="color:#FF9900;"></i> AWS Analytics</div>
-                </div>
-            </div>
 
-            <!-- Sidebar -->
-            <div class="service-sidebar animate-on-scroll">
-                <div class="widget">
-                    <h3
-                        style="font-size:1.25rem; margin-bottom:1.5rem; border-bottom:2px solid var(--brand); padding-bottom:0.5rem; display:inline-block;">
-                        All Services</h3>
-                    <ul class="service-list">
-                        <li><a href="service-software.html" class="">Software Development</a></li>
-                        <li><a href="service-analytics.html" class="">Political Data Analytics</a></li>
-                        <li><a href="service-campaign.html" class="">Campaign Management</a></li>
-                        <li><a href="service-surveys.html" class="">Political Surveys</a></li>
-                        <li><a href="service-training.html" class="active">Corporate Training</a></li>
-                    </ul>
+                    <div class="card">
+                        <div class="icon green">
+                            <i class="fa-solid fa-code"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Coding Challenges</h3>
+                            <p>Solve real-world problems</p>
+                        </div>
+                    </div>
+
+                    <div class="card">
+                        <div class="icon purple">
+                            <i class="fa-solid fa-user-tie"></i>
+                        </div>
+                        <div class="card-content">
+                            <h3>Mock Interviews</h3>
+                            <p>Practice & improve confidence</p>
+                        </div>
+                    </div>
                 </div>
 
-                <div class="widget"
-                    style="background:var(--gradient-accent); color:white; border:none; box-shadow:var(--shadow-md);">
-                    <h3 style="color:white; font-size:1.4rem; margin-bottom:1rem;">Ready to Transform?</h3>
-                    <p style="color:rgba(255,255,255,0.9); margin-bottom:1.8rem; font-size:1.05rem;">Contact us today to
-                        discuss how our solutions can elevate your success.</p>
-                    <a href="contact.html" class="btn"
-                        style="width:100%; background:white; color:var(--accent); font-weight:700; border-radius:12px; font-size:1.1rem;">Request
-                        Service</a>
+                <div class="card leaderboard">
+                    <div class="icon gold">
+                        <i class="fa-solid fa-trophy"></i>
+                    </div>
+                    <div class="card-content">
+                        <h3>Leaderboard</h3>
+                        <p>See how you rank</p>
+                    </div>
                 </div>
-            </div>
-        </div>
-        </div>
-    </section>
 
-    <!-- Footer -->
-    <footer>
-        <div class="container">
-            <div class="footer-top">
-                <div class="footer-about">
-                    <a href="index.html" class="logo" style="color:white;">
-                        <i class="fa-solid fa-cube logo-icon" style="color:var(--accent);"></i>
-                        <span class="logo-text" style="color:white;">OIT_STACK</span>
+                <div class="launch-btn">
+                    <a href="CorporateTraining/frontend/login.html" style="text-decoration: none;">
+                        <button type="button">
+                            <i class="fa-solid fa-rocket"></i>
+                            Launch Training Portal
+                        </button>
                     </a>
-                    <p>OnYX Integrated Tech Stack providing cutting edge strategies for business and political entities
-                        globally.</p>
-                    <div class="social-links">
-                        <a href="#" class="social-link"><i class="fa-brands fa-linkedin-in"></i></a>
-                        <a href="#" class="social-link"><i class="fa-brands fa-twitter"></i></a>
-                        <a href="#" class="social-link"><i class="fa-brands fa-facebook-f"></i></a>
-                        <a href="https://www.instagram.com/oit_stack?igsh=MTJ6Z29pdWJ3N2g3eg==" class="social-link" target="_blank"><i class="fa-brands fa-instagram"></i></a>
-                    </div>
-                </div>
-                <div>
-                    <h4 class="footer-title">Quick Links</h4>
-                    <ul class="footer-links">
-                        <li><a href="index.html">Home</a></li>
-                        <li><a href="services.html">Services</a></li>
-                        <li><a href="contact.html">Contact</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="footer-title">Services</h4>
-                    <ul class="footer-links">
-                        <li><a href="services.html">Software Development</a></li>
-                        <li><a href="services.html">Political Data Analytics</a></li>
-                        <li><a href="services.html">Campaign Management</a></li>
-                        <li><a href="services.html">Corporate Training</a></li>
-                        <li><a href="services.html">Political Surveys</a></li>
-                    </ul>
-                </div>
-                <div>
-                    <h4 class="footer-title">Contact Us</h4>
-                    <ul class="footer-links">
-                        <li style="display:flex; gap:0.5rem; color:var(--text-muted);"><i
-                                class="fa-solid fa-location-dot" style="margin-top:5px; color:var(--brand-light);"></i>
-                            <span>Flat No.307, 3rd Floor, Goldcliff Society, Parande Nagar, Alandi Road, Dighi, Pune-
-                                411015, Maharashtra<br>India</span></li>
-                        <li style="display:flex; gap:0.5rem; color:var(--text-muted);"><i class="fa-solid fa-phone"
-                                style="margin-top:5px; color:var(--brand-light);"></i> +91 8983461569</li>
-                        <li style="display:flex; gap:0.5rem; color:var(--text-muted);"><i class="fa-solid fa-envelope"
-                                style="margin-top:5px; color:var(--brand-light);"></i> onkarholkar@oitstack.com
-                        </li>
-                    </ul>
                 </div>
             </div>
-            <div class="footer-bottom">
-                &copy; 2026 OIT_STACK - OnYX Integrated Tech Stack. All Rights Reserved.
-            </div>
-        </div>
-    </footer>
-
-    <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/918983461569" class="whatsapp-float" target="_blank" title="Chat with us on WhatsApp">
-        <i class="fa-brands fa-whatsapp"></i>
-    </a>
+        </section>
+    </main>
 
     <!-- Scripts -->
     <script src="script.js"></script>
