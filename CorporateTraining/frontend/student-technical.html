@@ -150,7 +150,7 @@
             
             try {
                 const res = await api.request('/categories');
-                const cats = res.data || [];
+                const cats = (res.data || []).filter(c => c.type === 'technical');
                 const catSelect = document.getElementById('categorySelect');
                 cats.forEach(c => {
                     categoriesMap[c.name.toLowerCase()] = c._id;
@@ -188,7 +188,7 @@
             const difficulty = document.getElementById('difficultySelect').value;
 
             try {
-                let url = '/tests?';
+                let url = '/tests?type=technical&';
                 if(category) url += `category=${category}&`;
                 if(difficulty) url += `difficulty=${difficulty}&`;
 

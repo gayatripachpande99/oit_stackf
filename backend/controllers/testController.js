@@ -2,12 +2,13 @@ const Test = require('../models/Test');
 const Question = require('../models/Question');
 const Result = require('../models/Result');
 const User = require('../models/User');
+const Category = require('../models/Category');
 const { updateLeaderboard } = require('./leaderboardController');
 const { successResponse, errorResponse } = require('../utils/apiResponse');
 
 const getTests = async (req, res) => {
   try {
-    const { category, subcategory, difficulty } = req.query;
+    const { category, subcategory, difficulty, type } = req.query;
     const filter = { isActive: true };
 
     if (req.user && req.user.role === 'admin') {
@@ -18,6 +19,11 @@ const getTests = async (req, res) => {
         { startDate: null },
         { startDate: { $lte: new Date() } }
       ];
+    }
+
+    if (type) {
+      const matchingCats = await Category.find({ type });
+      filter.category = { $in: matchingCats.map(c => c._id) };
     }
 
     if (category) filter.category = category;

@@ -180,11 +180,11 @@
 
                 // Load Categories
                 const catRes = await api.request('/categories');
-                categories = catRes.data;
+                categories = (catRes.data || []).filter(c => c.type === 'aptitude');
 
                 // Load all tests initially
-                const testRes = await api.request('/tests');
-                tests = testRes.data;
+                const testRes = await api.request('/tests?type=aptitude');
+                tests = testRes.data || [];
 
                 renderTests();
             } catch (error) {
