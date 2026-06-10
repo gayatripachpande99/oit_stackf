@@ -232,7 +232,45 @@
 
         function renderTests(tests) {
             const grid = document.getElementById('testsGrid');
-            grid.innerHTML = tests.map(test => `
+            grid.innerHTML = tests.map(test => {
+                const isEnded = test.endDate && new Date(test.endDate) < new Date();
+                const attempt = test.userResult;
+
+                let actionBlock = '';
+                if (attempt) {
+                    actionBlock = `
+                        <div class="flex flex-col gap-2 bg-slate-50 dark:bg-slate-800/40 p-3 rounded-2xl border border-slate-100 dark:border-slate-800/60">
+                            <div class="flex items-center justify-between text-xs font-bold">
+                                <span class="text-slate-400 uppercase text-[9px] tracking-wide">Your Score</span>
+                                <span class="text-slate-800 dark:text-white font-extrabold">${attempt.obtainedMarks} / ${attempt.totalMarks} (${Math.round(attempt.percentage)}%)</span>
+                            </div>
+                            <div class="flex items-center justify-between text-xs font-bold border-t border-slate-100 dark:border-slate-800/40 pt-1.5 mt-0.5">
+                                <span class="text-slate-400 uppercase text-[9px] tracking-wide">Result</span>
+                                <span class="${attempt.passed ? 'text-emerald-500' : 'text-rose-500'}">${attempt.passed ? 'PASSED' : 'FAILED'}</span>
+                            </div>
+                        </div>
+                        <button onclick="window.location.href='test-result.html?id=${test._id}'" class="w-full py-2.5 rounded-xl border border-blue-500/30 text-blue-500 hover:bg-blue-600 hover:text-white font-bold text-xs transition-colors flex items-center justify-center gap-1.5">
+                            <i data-lucide="eye" class="w-4 h-4"></i> View Report
+                        </button>
+                    `;
+                } else if (isEnded) {
+                    actionBlock = `
+                        <div class="text-center py-2.5 px-3 rounded-2xl bg-rose-50 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/30 text-rose-500 text-xs font-bold leading-none">
+                            Test Time Ended
+                        </div>
+                        <button disabled class="w-full py-2.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 font-bold text-xs cursor-not-allowed">
+                            Closed
+                        </button>
+                    `;
+                } else {
+                    actionBlock = `
+                        <button onclick="window.location.href='test-start.html?id=${test._id}'" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-lg shadow-blue-500/20 transition-colors">
+                            View Details & Start
+                        </button>
+                    `;
+                }
+
+                return `
                 <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800/80 hover:border-blue-500/30 transition-all p-6 flex flex-col justify-between shadow-sm">
                     <div>
                         <div class="flex justify-between items-start gap-2 mb-3">
@@ -273,12 +311,11 @@
                             </div>
                         </div>
 
-                        <button onclick="window.location.href='test-start.html?id=${test._id}'" class="w-full py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-lg shadow-blue-500/20 transition-colors">
-                            View Details & Start
-                        </button>
+                        ${actionBlock}
                     </div>
                 </div>
-            `).join('');
+                `;
+            }).join('');
             lucide.createIcons();
         }
     </script>

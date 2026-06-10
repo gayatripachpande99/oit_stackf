@@ -12,6 +12,12 @@ const getTests = async (req, res) => {
 
     if (req.user && req.user.role === 'admin') {
       delete filter.isActive;
+    } else if (req.user) {
+      filter.$or = [
+        { startDate: { $exists: false } },
+        { startDate: null },
+        { startDate: { $lte: new Date() } }
+      ];
     }
 
     if (category) filter.category = category;
@@ -23,7 +29,22 @@ const getTests = async (req, res) => {
       .populate('subcategory', 'name')
       .sort({ createdAt: -1 });
 
-    return successResponse(res, 200, 'Tests retrieved successfully', tests);
+    let testsData = tests;
+    if (req.user && req.user.role !== 'admin') {
+      const results = await Result.find({ user: req.user._id });
+      const resultsMap = {};
+      results.forEach(r => {
+        resultsMap[r.test.toString()] = r;
+      });
+
+      testsData = tests.map(t => {
+        const tObj = t.toObject();
+        tObj.userResult = resultsMap[t._id.toString()] || null;
+        return tObj;
+      });
+    }
+
+    return successResponse(res, 200, 'Tests retrieved successfully', testsData);
   } catch (error) {
     console.error('Get tests error:', error.message);
     return errorResponse(res, 500, 'Server error retrieving tests');

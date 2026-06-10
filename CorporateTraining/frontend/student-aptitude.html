@@ -232,7 +232,28 @@
                 empty.classList.add('hidden');
                 container.classList.remove('hidden');
                 
-                container.innerHTML = filteredTests.map(t => `
+                container.innerHTML = filteredTests.map(t => {
+                    const isEnded = t.endDate && new Date(t.endDate) < new Date();
+                    const attempt = t.userResult;
+
+                    let actionBtn = '';
+                    if (attempt) {
+                        actionBtn = `
+                            <button onclick="window.location.href='test-result.html?id=${t._id}'" class="px-3 py-2 rounded-xl border border-blue-500 text-blue-500 hover:bg-blue-600 hover:text-white font-bold text-[10px] transition-all flex items-center gap-1 leading-none shrink-0" title="Score: ${attempt.obtainedMarks}/${attempt.totalMarks} (${attempt.passed ? 'PASSED' : 'FAILED'})">
+                                <i data-lucide="eye" class="w-3.5 h-3.5"></i> Score: ${attempt.obtainedMarks}/${attempt.totalMarks}
+                            </button>
+                        `;
+                    } else if (isEnded) {
+                        actionBtn = `
+                            <button disabled class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 font-bold text-[10px] cursor-not-allowed shrink-0">Ended</button>
+                        `;
+                    } else {
+                        actionBtn = `
+                            <button onclick="window.location.href='take-test.html?id=${t._id}'" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-500/20 transition-all shrink-0">Start</button>
+                        `;
+                    }
+
+                    return `
                     <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 flex flex-col hover:border-blue-500/40 hover:shadow-lg hover:shadow-blue-500/5 transition-all group">
                         <div class="flex justify-between items-start mb-4">
                             <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400 flex items-center justify-center">
@@ -244,15 +265,16 @@
                         </div>
                         <h3 class="font-bold text-lg mb-1 group-hover:text-blue-500 transition-colors line-clamp-1">${t.name}</h3>
                         <p class="text-xs text-slate-500 mb-6 flex-1 line-clamp-2">${t.description || 'No description provided.'}</p>
-                        <div class="flex items-center justify-between mt-auto">
-                            <div class="flex items-center gap-4 text-xs font-semibold text-slate-500">
+                        <div class="flex items-center justify-between mt-auto gap-2">
+                            <div class="flex items-center gap-3 text-xs font-semibold text-slate-500">
                                 <span class="flex items-center gap-1.5"><i data-lucide="clock" class="w-3.5 h-3.5"></i> ${t.totalTime}m</span>
                                 <span class="flex items-center gap-1.5"><i data-lucide="help-circle" class="w-3.5 h-3.5"></i> ${t.totalQuestions}Q</span>
                             </div>
-                            <button onclick="window.location.href='take-test.html?id=${t._id}'" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-500/20 transition-all">Start</button>
+                            ${actionBtn}
                         </div>
                     </div>
-                `).join('');
+                    `;
+                }).join('');
                 lucide.createIcons();
             }
         }
