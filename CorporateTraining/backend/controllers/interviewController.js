@@ -1,4 +1,5 @@
 const InterviewFeedback = require('../models/InterviewFeedback');
+const User = require('../models/User');
 const { successResponse, errorResponse } = require('../utils/apiResponse');
 const config = require('../config/env');
 
@@ -201,10 +202,118 @@ const getInterviewHistory = async (req, res) => {
   }
 };
 
+const getAllStudentInterviews = async (req, res) => {
+  try {
+    const { page = 1, limit = 25, search, type, score, range } = req.query;
+    
+    const query = {};
+
+    // Date Range Filter
+    if (range && range !== 'all') {
+      const now = new Date();
+      let startDate = new Date();
+      if (range === 'today') {
+        startDate.setHours(0, 0, 0, 0);
+      } else if (range === 'week') {
+        startDate.setDate(now.getDate() - 7);
+      } else if (range === 'month') {
+        startDate.setMonth(now.getMonth() - 1);
+      }
+      query.createdAt = { $gte: startDate };
+    }
+
+    // Type Filter
+    if (type) {
+      query.type = type;
+    }
+
+    // Score Filter
+    if (score) {
+      if (score === 'high') {
+        query['scores.overall'] = { $gte: 8 };
+      } else if (score === 'mid') {
+        query['scores.overall'] = { $gte: 5, $lte: 7 };
+      } else if (score === 'low') {
+        query['scores.overall'] = { $lt: 5 };
+      }
+    }
+
+    // Search filter (name, email, branch)
+    if (search) {
+      const regex = new RegExp(search, 'i');
+      const users = await User.find({
+        $or: [
+          { name: regex },
+          { email: regex },
+          { branch: regex }
+        ]
+      }).select('_id');
+      const matchingUserIds = users.map(u => u._id);
+      query.user = { $in: matchingUserIds };
+    }
+
+    // Count before pagination
+    const totalInterviews = await InterviewFeedback.countDocuments(query);
+    const totalPages = Math.ceil(totalInterviews / parseInt(limit));
+    const skip = (parseInt(page) - 1) * parseInt(limit);
+
+    // Fetch records
+    const history = await InterviewFeedback.find(query)
+      .populate('user', 'name email branch college')
+      .sort({ createdAt: -1 })
+      .skip(skip)
+      .limit(parseInt(limit));
+
+    // Stats calculation (unpaginated, but within the date filter if any)
+    const allMatching = await InterviewFeedback.find(query).select('scores type');
+    
+    const totalCount = allMatching.length;
+    let avgOverall = 0;
+    let excellentCount = 0;
+    let hrCount = 0;
+    let techCount = 0;
+
+    if (totalCount > 0) {
+      let sum = 0;
+      allMatching.forEach(it => {
+        sum += (it.scores?.overall || 0);
+        if ((it.scores?.overall || 0) >= 8) excellentCount++;
+        if (it.type === 'hr') hrCount++;
+        if (it.type === 'technical') techCount++;
+      });
+      avgOverall = parseFloat((sum / totalCount).toFixed(1));
+    }
+
+    const excellentRate = totalCount > 0 ? Math.round((excellentCount / totalCount) * 100) : 0;
+
+    return successResponse(res, 200, 'All student mock interviews retrieved successfully', {
+      interviews: history,
+      pagination: {
+        totalInterviews,
+        totalPages,
+        currentPage: parseInt(page),
+        limit: parseInt(limit)
+      },
+      stats: {
+        totalInterviews: totalCount,
+        avgOverall,
+        excellentRate,
+        hrCount,
+        techCount
+      }
+    });
+
+  } catch (error) {
+    console.error('Get all student interviews error:', error.message);
+    return errorResponse(res, 500, 'Server error retrieving all student mock interviews');
+  }
+};
+
 module.exports = {
   startInterview,
   sendAnswer,
   endInterview,
-  getInterviewHistory
+  getInterviewHistory,
+  getAllStudentInterviews
 };
 

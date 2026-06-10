@@ -12,7 +12,7 @@
     <!-- Lucide Icons -->
     <script src="https://unpkg.com/lucide@latest"></script>
     <!-- API Config -->
-    <script src="api.js?v=2"></script>
+    <script src="api.js?v=4"></script>
 </head>
 <body class="min-h-screen bg-slate-50 dark:bg-slate-950 text-slate-800 dark:text-slate-100 font-sans transition-colors duration-300 pb-12">
 
@@ -164,7 +164,7 @@
                 let query = '?limit=100';
                 if (difficulty) query += `&difficulty=${difficulty}`;
 
-                const res = await api.request(`/coding/problems${query}`);
+                const res = await api.coding.getProblems(query);
                 let list = res.data.problems || [];
 
                 // Stats calculation (from the unfiltered list response to be consistent with original)

@@ -1,5 +1,6 @@
 const Result = require('../models/Result');
 const Test = require('../models/Test');
+const User = require('../models/User');
 const { successResponse, errorResponse } = require('../utils/apiResponse');
 
 const getMyResults = async (req, res) => {
@@ -74,12 +75,44 @@ const getAllResults = async (req, res) => {
     const limit = parseInt(req.query.limit, 10) || 10;
     const skip = (page - 1) * limit;
 
-    const { studentId, testId, passed } = req.query;
+    const { studentId, testId, passed, search, category, startDate, endDate } = req.query;
     const filter = {};
 
-    if (studentId) filter.user = studentId;
-    if (testId) filter.test = testId;
-    if (passed !== undefined) filter.passed = passed === 'true';
+    if (studentId) {
+      filter.user = studentId;
+    } else if (search) {
+      const matchingUsers = await User.find({
+        role: 'student',
+        $or: [
+          { name: { $regex: search, $options: 'i' } },
+          { email: { $regex: search, $options: 'i' } }
+        ]
+      }).select('_id');
+      const userIds = matchingUsers.map(u => u._id);
+      filter.user = { $in: userIds };
+    }
+
+    if (testId) {
+      filter.test = testId;
+    } else if (category) {
+      const matchingTests = await Test.find({ category }).select('_id');
+      const testIds = matchingTests.map(t => t._id);
+      filter.test = { $in: testIds };
+    }
+
+    if (passed !== undefined && passed !== '') {
+      filter.passed = passed === 'true';
+    }
+
+    if (startDate || endDate) {
+      filter.submittedAt = {};
+      if (startDate) filter.submittedAt.$gte = new Date(startDate);
+      if (endDate) {
+        const end = new Date(endDate);
+        end.setHours(23, 59, 59, 999);
+        filter.submittedAt.$lte = end;
+      }
+    }
 
     const results = await Result.find(filter)
       .populate('user', 'name email college branch year')

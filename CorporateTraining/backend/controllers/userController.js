@@ -2,6 +2,7 @@ const User = require('../models/User');
 const Result = require('../models/Result');
 const CodingSubmission = require('../models/CodingSubmission');
 const Leaderboard = require('../models/Leaderboard');
+const InterviewFeedback = require('../models/InterviewFeedback');
 const mongoose = require('mongoose');
 const { successResponse, errorResponse } = require('../utils/apiResponse');
 
@@ -139,6 +140,13 @@ const getUserStats = async (req, res) => {
 
     const leaderboardEntry = await Leaderboard.findOne({ user: userId });
 
+    const interviewsCompleted = await InterviewFeedback.countDocuments({ user: userId });
+    const avgInterviewScoreResult = await InterviewFeedback.aggregate([
+      { $match: { user: new mongoose.Types.ObjectId(userId) } },
+      { $group: { _id: null, avg: { $avg: '$scores.overall' } } }
+    ]);
+    const averageInterviewScore = (avgInterviewScoreResult.length > 0 && typeof avgInterviewScoreResult[0].avg === 'number') ? avgInterviewScoreResult[0].avg : 0;
+
     return successResponse(res, 200, 'User statistics retrieved successfully', {
       testsCompleted: testsCount,
       averagePercentage: parseFloat(avgPercentage.toFixed(2)),
@@ -149,6 +157,8 @@ const getUserStats = async (req, res) => {
       codingSubmissionsCount,
       score: leaderboardEntry ? leaderboardEntry.totalScore : 0,
       rank: leaderboardEntry ? leaderboardEntry.rank : 'Unranked',
+      interviewsCompleted,
+      averageInterviewScore: parseFloat(averageInterviewScore.toFixed(2))
     });
   } catch (error) {
     console.error('Get user stats error:', error.message);

@@ -9,7 +9,8 @@ const {
   runCode,
   submitCode,
   getMySubmissions,
-  getSolvedCount
+  getSolvedCount,
+  logViolation
 } = require('../controllers/codingController');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
@@ -36,6 +37,7 @@ router.get('/:id', getProblem);
 
 router.post('/run', runCode);
 router.post('/submit', submitCode);
+router.post('/violations', logViolation);
 router.get('/submissions/:problemId', getMySubmissions);
 
 router.post('/problems', admin, validate(problemValidation), createProblem);

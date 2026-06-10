@@ -82,6 +82,20 @@ const testSchema = new mongoose.Schema(
     endDate: {
       type: Date,
     },
+    sections: [
+      {
+        name: { type: String, required: true },
+        category: { type: mongoose.Schema.Types.ObjectId, ref: 'Category', required: true },
+        subcategories: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Subcategory' }],
+        count: { type: Number, required: true },
+        mode: { type: String, enum: ['auto', 'manual'], default: 'auto' },
+        questionIds: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Question' }],
+        marksPerQuestion: { type: Number, default: 1 }
+      }
+    ],
+    instructions: {
+      type: String
+    },
     createdBy: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'User',

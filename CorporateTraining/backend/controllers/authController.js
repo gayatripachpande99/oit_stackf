@@ -10,7 +10,7 @@ const { successResponse, errorResponse } = require('../utils/apiResponse');
 
 const register = async (req, res) => {
   try {
-    const { name, email, password } = req.body;
+    const { name, email, password, phone, college, branch, year, passoutYear, location } = req.body;
 
     const existingUser = await User.findOne({ email });
     if (existingUser) {
@@ -18,7 +18,9 @@ const register = async (req, res) => {
     }
 
     const activeSessionId = crypto.randomBytes(16).toString('hex');
-    const user = await User.create({ name, email, password, activeSessionId });
+    const user = await User.create({
+      name, email, password, phone, college, branch, year, passoutYear, location, activeSessionId
+    });
 
     await Leaderboard.create({ user: user._id });
 
@@ -39,9 +41,12 @@ const register = async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
+      phone: user.phone,
       college: user.college,
       branch: user.branch,
       year: user.year,
+      passoutYear: user.passoutYear,
+      location: user.location,
       profileImage: user.profileImage,
     };
 
@@ -100,9 +105,12 @@ const login = async (req, res) => {
       name: user.name,
       email: user.email,
       role: user.role,
+      phone: user.phone,
       college: user.college,
       branch: user.branch,
       year: user.year,
+      passoutYear: user.passoutYear,
+      location: user.location,
       profileImage: user.profileImage,
     };
 
@@ -136,7 +144,7 @@ const getProfile = async (req, res) => {
 
 const updateProfile = async (req, res) => {
   try {
-    const allowedFields = ['name', 'phone', 'college', 'branch', 'year', 'profileImage'];
+    const allowedFields = ['name', 'phone', 'college', 'branch', 'year', 'passoutYear', 'location', 'profileImage'];
     const updates = {};
 
     for (const field of allowedFields) {

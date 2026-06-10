@@ -13,9 +13,14 @@ const getLeaderboard = async (req, res) => {
     const skip = (page - 1) * limit;
     const search = req.query.search || '';
 
-    let matchFilter = {};
+    // Find all users who are NOT admins
+    const nonAdminUsers = await User.find({ role: { $ne: 'admin' } }).select('_id');
+    const nonAdminUserIds = nonAdminUsers.map(u => u._id);
+
+    let matchFilter = { user: { $in: nonAdminUserIds } };
     if (search) {
       const matchingUsers = await User.find({
+        _id: { $in: nonAdminUserIds },
         name: { $regex: search, $options: 'i' },
       }).select('_id');
       const userIds = matchingUsers.map(u => u._id);
@@ -51,6 +56,13 @@ const getLeaderboard = async (req, res) => {
 
 const updateLeaderboard = async (userId) => {
   try {
+    const userObj = await User.findById(userId);
+    if (!userObj || userObj.role === 'admin') {
+      // Exclude admin from leaderboard entirely
+      await Leaderboard.deleteOne({ user: userId });
+      return;
+    }
+
     const results = await Result.find({ user: userId }).populate({
       path: 'test',
       populate: { path: 'category' }
@@ -103,7 +115,11 @@ const updateLeaderboard = async (userId) => {
       { upsert: true, new: true }
     );
 
-    const allLeaderboards = await Leaderboard.find({}).sort({ totalScore: -1, updatedAt: 1 });
+    // Only rank non-admin users
+    const nonAdminUsers = await User.find({ role: { $ne: 'admin' } }).select('_id');
+    const nonAdminUserIds = nonAdminUsers.map(u => u._id);
+
+    const allLeaderboards = await Leaderboard.find({ user: { $in: nonAdminUserIds } }).sort({ totalScore: -1, updatedAt: 1 });
 
     const bulkOps = allLeaderboards.map((entry, index) => ({
       updateOne: {

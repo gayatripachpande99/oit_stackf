@@ -1,6 +1,7 @@
 const CodingProblem = require('../models/CodingProblem');
 const CodingSubmission = require('../models/CodingSubmission');
 const User = require('../models/User');
+const CodingViolation = require('../models/CodingViolation');
 const { updateLeaderboard } = require('./leaderboardController');
 const { successResponse, errorResponse } = require('../utils/apiResponse');
 const config = require('../config/env');
@@ -43,6 +44,8 @@ const getProblems = async (req, res) => {
     const total = await CodingProblem.countDocuments(filter);
 
     const solvedMap = {};
+    let statsMap = {};
+
     if (req.user && req.user.role !== 'admin') {
       const mySubmissions = await CodingSubmission.find({
         user: req.user._id,
@@ -51,11 +54,35 @@ const getProblems = async (req, res) => {
       mySubmissions.forEach(sub => {
         solvedMap[sub.problem.toString()] = true;
       });
+    } else if (req.user && req.user.role === 'admin') {
+      const stats = await CodingSubmission.aggregate([
+        {
+          $group: {
+            _id: '$problem',
+            total: { $sum: 1 },
+            accepted: { $sum: { $cond: [{ $eq: ['$status', 'accepted'] }, 1, 0] } }
+          }
+        }
+      ]);
+      stats.forEach(s => {
+        if (s._id) {
+          statsMap[s._id.toString()] = {
+            total: s.total,
+            accepted: s.accepted
+          };
+        }
+      });
     }
 
     const problemsWithSolvedState = problems.map(prob => {
       const probObj = prob.toObject();
       probObj.isSolved = !!solvedMap[prob._id.toString()];
+      
+      if (req.user && req.user.role === 'admin') {
+        const stat = statsMap[prob._id.toString()] || { total: 0, accepted: 0 };
+        probObj.submissionCount = stat.total;
+        probObj.acceptanceRate = stat.total > 0 ? Math.round((stat.accepted / stat.total) * 100) : 0;
+      }
       return probObj;
     });
 
@@ -221,7 +248,7 @@ const executeOnJudge0 = async (sourceCode, languageId, stdin, expectedOutput, ti
 
 const runCode = async (req, res) => {
   try {
-    const { problemId, language, code } = req.body;
+    const { problemId, language, code, customInput } = req.body;
 
     const problem = await CodingProblem.findById(problemId);
     if (!problem) {
@@ -233,23 +260,36 @@ const runCode = async (req, res) => {
       return errorResponse(res, 400, 'Unsupported language');
     }
 
-    const publicExamples = problem.examples || [];
-    if (publicExamples.length === 0) {
-      const fallbackTc = problem.testCases.find(tc => !tc.isHidden);
-      if (fallbackTc) {
-        publicExamples.push({
-          input: fallbackTc.input,
-          output: fallbackTc.expectedOutput,
-          explanation: 'Default example case'
-        });
+    let executionCases = [];
+    let isCustom = false;
+
+    if (customInput !== undefined && customInput !== null && customInput.trim() !== '') {
+      isCustom = true;
+      executionCases.push({
+        input: customInput,
+        output: '',
+        explanation: 'Custom test case'
+      });
+    } else {
+      const publicExamples = problem.examples || [];
+      if (publicExamples.length === 0) {
+        const fallbackTc = problem.testCases.find(tc => !tc.isHidden);
+        if (fallbackTc) {
+          publicExamples.push({
+            input: fallbackTc.input,
+            output: fallbackTc.expectedOutput,
+            explanation: 'Default example case'
+          });
+        }
       }
+      executionCases = [...publicExamples];
     }
 
     const results = [];
     let allPassed = true;
 
-    for (let i = 0; i < publicExamples.length; i++) {
-      const tc = publicExamples[i];
+    for (let i = 0; i < executionCases.length; i++) {
+      const tc = executionCases[i];
       let outputStatus = 'pending';
       let executionTime = 0;
       let memoryUsed = 0;
@@ -297,17 +337,17 @@ const runCode = async (req, res) => {
         }
       } else {
         outputStatus = 'accepted';
-        stdout = tc.output;
+        stdout = isCustom ? `Mock output for custom input:\n${tc.input}` : tc.output;
         executionTime = 0.02;
         memoryUsed = 12000; // ~12MB
       }
 
       results.push({
-        caseIndex: i + 1,
+        caseIndex: isCustom ? 'Custom' : (i + 1),
         input: tc.input,
         expectedOutput: tc.output,
         actualOutput: stdout.trim(),
-        status: outputStatus,
+        status: isCustom ? (outputStatus === 'compilation_error' || outputStatus === 'runtime_error' ? outputStatus : 'accepted') : outputStatus,
         time: executionTime,
         memory: memoryUsed,
         error: error
@@ -315,7 +355,7 @@ const runCode = async (req, res) => {
     }
 
     return successResponse(res, 200, 'Code executed successfully', {
-      allPassed,
+      allPassed: isCustom ? true : allPassed,
       results
     });
   } catch (error) {
@@ -495,6 +535,24 @@ const getSolvedCount = async (req, res) => {
   }
 };
 
+const logViolation = async (req, res) => {
+  try {
+    const { problemId, type, count } = req.body;
+    
+    const violation = await CodingViolation.create({
+      user: req.user._id,
+      problem: problemId,
+      type,
+      count: count || 1,
+    });
+
+    return successResponse(res, 201, 'Violation logged successfully', violation);
+  } catch (error) {
+    console.error('Log violation error:', error.message);
+    return errorResponse(res, 500, 'Server error logging violation');
+  }
+};
+
 module.exports = {
   getProblems,
   getProblem,
@@ -504,7 +562,8 @@ module.exports = {
   runCode,
   submitCode,
   getMySubmissions,
-  getSolvedCount
+  getSolvedCount,
+  logViolation
 };
 
 

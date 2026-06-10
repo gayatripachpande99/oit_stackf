@@ -11,8 +11,8 @@ const categorySchema = new mongoose.Schema(
     type: {
       type: String,
       enum: {
-        values: ['aptitude', 'technical', 'coding'],
-        message: 'Type must be aptitude, technical, or coding',
+        values: ['aptitude', 'technical', 'coding', 'interview'],
+        message: 'Type must be aptitude, technical, coding, or interview',
       },
       required: [true, 'Category type is required'],
     },

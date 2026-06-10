@@ -14,7 +14,7 @@
     <!-- Chart.js -->
     <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <!-- API Config -->
-    <script src="api.js?v=2"></script>
+    <script src="api.js?v=4"></script>
 </head>
 <body class="bg-slate-50 dark:bg-[#0a0f1e] text-slate-900 dark:text-white font-sans">
     
@@ -105,7 +105,7 @@
                     <div class="relative">
                         <button onclick="toggleNotifications()" class="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors relative flex items-center justify-center">
                             <i data-lucide="bell" class="w-4 h-4 text-slate-500 dark:text-slate-400"></i>
-                            <span id="notifBadge" class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-rose-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">2</span>
+                            <span id="notifBadge" class="hidden absolute -top-0.5 -right-0.5 w-4 h-4 bg-rose-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">0</span>
                         </button>
                         
                         <!-- Notifications Dropdown -->
@@ -115,24 +115,6 @@
                                 <button onclick="clearNotifs()" class="text-xs text-blue-500 hover:text-blue-600 font-semibold">Clear All</button>
                             </div>
                             <div class="divide-y divide-slate-100 dark:divide-slate-800 max-h-64 overflow-y-auto">
-                                <div class="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer flex gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-500 flex items-center justify-center shrink-0">
-                                        <i data-lucide="clipboard-list" class="w-4 h-4"></i>
-                                    </div>
-                                    <div>
-                                        <p class="text-xs font-bold text-slate-800 dark:text-white">New test assigned</p>
-                                        <p class="text-[10px] text-slate-400 mt-0.5">Quantitative Aptitude Test-4 is now open.</p>
-                                    </div>
-                                </div>
-                                <div class="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer flex gap-3">
-                                    <div class="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0">
-                                        <i data-lucide="award" class="w-4 h-4"></i>
-                                    </div>
-                                    <div>
-                                        <p class="text-xs font-bold text-slate-800 dark:text-white">Technical result ready</p>
-                                        <p class="text-[10px] text-slate-400 mt-0.5">DBMS Test-1 results have been published.</p>
-                                    </div>
-                                </div>
                             </div>
                         </div>
                     </div>
@@ -167,18 +149,7 @@
                 </div>
 
                 <div id="dashboardContent" class="hidden flex-col gap-6">
-                    <!-- Welcome Banner -->
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-3xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white shadow-xl shadow-blue-500/10">
-                        <div class="flex items-center gap-4">
-                            <div id="userWelcomePhoto" class="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-2xl font-black shrink-0 overflow-hidden">
-                                S
-                            </div>
-                            <div>
-                                <h2 class="text-2xl font-black leading-tight">Good morning, <span id="welcomeName">Student</span>! 👋</h2>
-                                <p class="text-blue-100 text-sm mt-1 font-medium">Welcome back to your placement prep! Here is your summary for today.</p>
-                            </div>
-                        </div>
-                    </div>
+
 
                     <!-- Stats Cards -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
@@ -425,14 +396,14 @@
             const RECENT_RESULTS_LIMIT = 15;
 
             try {
-                // Fetch All Data in Parallel
+                // Fetch All Data in Parallel using typed API methods
                 const [profileRes, resultsRes, allResultsRes, solvedCountRes, leaderboardRes, testsRes] = await Promise.all([
                     api.auth.getProfile(),
-                    api.request(`/results/my?limit=${RECENT_RESULTS_LIMIT}`),
-                    api.request(`/results/my?limit=${ALL_RESULTS_LIMIT}`),
+                    api.results.getMy(`?limit=${RECENT_RESULTS_LIMIT}`),
+                    api.results.getMy(`?limit=${ALL_RESULTS_LIMIT}`),
                     api.coding.getSolvedCount(),
-                    api.request('/leaderboard?limit=10'),
-                    api.request('/tests')
+                    api.leaderboard.get('?limit=10'),
+                    api.tests.getAll()
                 ]);
 
                 // User details & Profile photo support
@@ -453,14 +424,6 @@
                     initialsTopbarEl.textContent = initials;
                 }
 
-                const welcomePhotoEl = document.getElementById('userWelcomePhoto');
-                if (user.profileImage) {
-                    welcomePhotoEl.innerHTML = `<img src="${user.profileImage}" class="w-full h-full object-cover rounded-2xl" alt="${user.name}">`;
-                } else {
-                    welcomePhotoEl.textContent = initials;
-                }
-
-                document.getElementById('welcomeName').textContent = user.name.split(' ')[0];
                 document.getElementById('userNameSidebar').textContent = user.name;
                 document.getElementById('userEmailSidebar').textContent = user.email;
 
@@ -477,6 +440,64 @@
                 document.getElementById('stat-avg').textContent = avgPct + '%';
                 document.getElementById('stat-coding').textContent = solvedCount;
                 document.getElementById('stat-rank').textContent = rank !== '--' ? '#' + rank : '--';
+
+                // Populate Dynamic Notifications
+                const notifList = document.querySelector('#notifDropdown .divide-y');
+                const notifBadge = document.getElementById('notifBadge');
+                let notifications = [];
+
+                // 1. Check for unattempted active tests
+                const now = new Date();
+                const activeTests = testsRes.data || [];
+                const unattemptedActive = activeTests.filter(t => {
+                    const attempted = allResults.some(r => r.test?._id === t._id || r.test === t._id);
+                    if (attempted) return false;
+                    const start = t.startDate ? new Date(t.startDate) : null;
+                    const end = t.endDate ? new Date(t.endDate) : null;
+                    if (start && start > now) return false;
+                    if (end && end < now) return false;
+                    return true;
+                });
+
+                unattemptedActive.forEach(t => {
+                    notifications.push({
+                        title: 'New test assigned',
+                        desc: `${t.name} is now open for attempt.`,
+                        icon: 'clipboard-list',
+                        bg: 'bg-blue-50 dark:bg-blue-500/10 text-blue-500'
+                    });
+                });
+
+                // 2. Check for recent test results
+                recentResults.slice(0, 3).forEach(r => {
+                    const testName = r.test?.name || 'Aptitude/Technical Exam';
+                    notifications.push({
+                        title: 'Test result ready',
+                        desc: `You scored ${r.obtainedMarks}/${r.totalMarks} (${Math.round(r.percentage)}%) in ${testName}.`,
+                        icon: 'award',
+                        bg: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500'
+                    });
+                });
+
+                if (notifications.length > 0) {
+                    notifBadge.classList.remove('hidden');
+                    notifBadge.textContent = notifications.length;
+                    notifList.innerHTML = notifications.map(n => `
+                        <div class="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer flex gap-3">
+                            <div class="w-8 h-8 rounded-lg ${n.bg} flex items-center justify-center shrink-0">
+                                <i data-lucide="${n.icon}" class="w-4 h-4"></i>
+                            </div>
+                            <div>
+                                <p class="text-xs font-bold text-slate-800 dark:text-white">${n.title}</p>
+                                <p class="text-[10px] text-slate-400 mt-0.5">${n.desc}</p>
+                            </div>
+                        </div>
+                    `).join('');
+                } else {
+                    notifBadge.classList.add('hidden');
+                    notifList.innerHTML = '<p class="p-6 text-center text-slate-400 text-xs">No new notifications</p>';
+                }
+                lucide.createIcons();
 
                 // Populate Recent Activities List
                 const listEl = document.getElementById('recentResultsList');

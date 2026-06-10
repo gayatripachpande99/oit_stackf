@@ -10,10 +10,17 @@ const getQuestions = async (req, res) => {
     const limit = parseInt(req.query.limit, 10) || 10;
     const skip = (page - 1) * limit;
 
-    const { category, subcategory, difficulty, type, search } = req.query;
+    const { category, subcategory, difficulty, type, search, categoryType } = req.query;
     const filter = { isActive: true };
 
-    if (category) filter.category = category;
+    if (category) {
+      filter.category = category;
+    } else if (categoryType) {
+      const matchingCategories = await Category.find({ type: categoryType }).select('_id');
+      const categoryIds = matchingCategories.map(c => c._id);
+      filter.category = { $in: categoryIds };
+    }
+
     if (subcategory) filter.subcategory = subcategory;
     if (difficulty) filter.difficulty = difficulty;
     if (type) filter.type = type;
@@ -27,6 +34,7 @@ const getQuestions = async (req, res) => {
     }
 
     const questions = await Question.find(filter)
+      .select('question difficulty category subcategory marks type isActive createdAt')
       .populate('category', 'name type')
       .populate('subcategory', 'name')
       .skip(skip)

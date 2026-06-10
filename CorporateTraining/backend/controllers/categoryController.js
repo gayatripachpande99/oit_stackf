@@ -18,7 +18,12 @@ const getCategories = async (req, res) => {
       filter.type = type;
     }
 
-    const categories = await Category.find(filter);
+    const categories = await Category.find(filter).lean();
+    for (const cat of categories) {
+      cat.subcategoryCount = await Subcategory.countDocuments({ category: cat._id });
+      cat.questionCount = await Question.countDocuments({ category: cat._id });
+    }
+
     return successResponse(res, 200, 'Categories retrieved successfully', categories);
   } catch (error) {
     console.error('Get categories error:', error.message);
@@ -28,10 +33,13 @@ const getCategories = async (req, res) => {
 
 const getCategory = async (req, res) => {
   try {
-    const category = await Category.findById(req.params.id);
+    const category = await Category.findById(req.params.id).lean();
     if (!category) {
       return errorResponse(res, 404, 'Category not found');
     }
+    category.subcategoryCount = await Subcategory.countDocuments({ category: category._id });
+    category.questionCount = await Question.countDocuments({ category: category._id });
+
     return successResponse(res, 200, 'Category retrieved successfully', category);
   } catch (error) {
     console.error('Get category error:', error.message);

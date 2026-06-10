@@ -9,10 +9,9 @@
         tailwind.config = { darkMode: 'class' }
     </script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="api.js?v=2"></script>
 </head>
-<body class="bg-slate-50 dark:bg-[#0a0f1e] text-slate-900 dark:text-white font-sans overflow-hidden">
-    <div class="flex h-screen">
+<body class="bg-slate-50 dark:bg-[#0a0f1e] text-slate-900 dark:text-white font-sans">
+    <div class="flex h-screen overflow-hidden">
 
         <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 bg-slate-900 dark:bg-[#0d1117] border-r border-slate-800/60 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
             <div class="h-16 flex items-center justify-between px-5 border-b border-slate-800/60">
@@ -46,8 +45,8 @@
                 <a href="admin-technical-mcq.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
                     <i data-lucide="terminal" class="w-4 h-4 shrink-0"></i> Technical MCQs
                 </a>
-                <a href="admin-tests.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
-                    <i data-lucide="file-text" class="w-4 h-4 shrink-0"></i> Tests
+                <a href="admin-tests.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-indigo-400 bg-indigo-500/15">
+                    <i data-lucide="file-text" class="w-4 h-4 shrink-0 text-indigo-400"></i> Tests
                 </a>
                 <a href="admin-coding.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
                     <i data-lucide="code" class="w-4 h-4 shrink-0"></i> Coding Challenges
@@ -89,7 +88,6 @@
                                 <i data-lucide="sliders" class="w-6 h-6 text-indigo-500"></i>
                                 Advanced Test Builder
                             </h1>
-                            
                         </div>
                     </div>
                 </div>
@@ -104,14 +102,11 @@
 
             <main class="flex-1 overflow-y-auto p-4 lg:p-6 bg-slate-50/50 dark:bg-[#0a0f1e]/50">
 
-                <div id="content" class="hidden flex-col gap-6 p-2 md:p-4 max-w-5xl mx-auto w-full">
-        
-                    
+                <div id="loader" class="flex justify-center py-12">
+                    <div class="animate-spin h-8 w-8 border-4 border-indigo-500 border-t-transparent rounded-full"></div>
+                </div>
 
-                    <div id="loader" class="flex justify-center py-12">
-                        <div class="animate-spin h-8 w-8 border-4 border-indigo-500 border-t-transparent rounded-full"></div>
-                    </div>
-
+                <div id="content" style="display:none" class="flex-col gap-6 p-2 md:p-4 max-w-5xl mx-auto w-full">
                     <form id="testForm" onsubmit="saveTest(event)" class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
                         
                         <!-- Left Details settings -->
@@ -131,6 +126,11 @@
                                 <div class="flex flex-col gap-1.5">
                                     <label class="text-[10px] font-black uppercase tracking-wider text-slate-400">Description (Optional)</label>
                                     <textarea id="tDescription" rows="2" placeholder="e.g. Assessment containing Aptitude, Database, and core technical sections." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20"></textarea>
+                                </div>
+
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-[10px] font-black uppercase tracking-wider text-slate-400">Instructions / Rules (Student facing)</label>
+                                    <textarea id="tInstructions" rows="3" placeholder="e.g. 1. Do not refresh the page. 2. Penalty of -0.25 is applied on wrong answers." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20"></textarea>
                                 </div>
 
                                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
@@ -194,7 +194,7 @@
                                 <div class="flex items-center justify-between">
                                     <div>
                                         <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Set Active</label>
-                                        <p class="text-[10px] text-slate-400 mt-0.5">When test time start show the test in the student tab and when time end then show how much marks in this test</p>
+                                        <p class="text-[10px] text-slate-400 mt-0.5">Show this test in student lists.</p>
                                     </div>
                                     <input type="checkbox" id="tActive" checked class="w-5 h-5 rounded-lg border-slate-300">
                                 </div>
@@ -231,6 +231,9 @@
                                 </div>
 
                                 <div class="border-t border-slate-100 dark:border-slate-800 pt-4 flex flex-col gap-3">
+                                    <button type="button" onclick="openPreviewModal()" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200 font-bold rounded-xl flex justify-center items-center gap-2 transition-all">
+                                        <i data-lucide="eye" class="w-4 h-4"></i> Preview Test as Student
+                                    </button>
                                     <button type="submit" id="btnSave" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl flex justify-center items-center gap-2 transition-all shadow-lg shadow-indigo-500/20">
                                         <i data-lucide="save" class="w-4 h-4"></i> <span id="btnSaveText">Create Test</span>
                                     </button>
@@ -284,10 +287,47 @@
         </div>
     </div>
 
+    <!-- Preview Test Modal -->
+    <div id="previewModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col max-h-[85vh]">
+            <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-900/50">
+                <h3 class="font-extrabold text-base text-slate-800 dark:text-white flex items-center gap-2">
+                    <i data-lucide="eye" class="w-5 h-5 text-indigo-500"></i> Student-Facing Preview
+                </h3>
+                <button type="button" onclick="closePreviewModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto flex-1 flex flex-col gap-6" id="previewModalBody">
+                <!-- Dynamically rendered student preview -->
+            </div>
+
+            <!-- Footer -->
+            <div class="px-6 py-4 border-t border-slate-100 dark:border-slate-800 flex justify-end bg-slate-50 dark:bg-slate-900/50">
+                <button type="button" onclick="closePreviewModal()" class="px-6 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md shadow-indigo-500/20">Close Preview</button>
+            </div>
+        </div>
+    </div>
+
     <!-- Toast Notification -->
     <div id="toast" class="hidden fixed top-4 right-4 z-50 p-4 rounded-xl text-sm font-semibold shadow-lg border"></div>
 
+    <script src="api.js?v=4"></script>
+
     <script>
+        // HTML escaping helper
+        const esc = s => {
+            if (s === null || s === undefined) return '';
+            return String(s)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        };
+
         lucide.createIcons();
 
         function toggleTheme() {
@@ -339,23 +379,41 @@
 
         let categories = [];
         let subcategoriesCache = {}; // categoryId -> [subcategories]
-        let questionsCache = []; // flat array of all loaded questions
-        
         let sections = [];
         let activePickerSectionId = null;
         let pickerSelectedList = []; // temp list of checkboxes in modal
+        let isDirty = false;
+
+        // Mark form as dirty when inputs change
+        document.addEventListener('input', () => { isDirty = true; });
+        document.addEventListener('change', () => { isDirty = true; });
+        window.addEventListener('beforeunload', (e) => {
+            if (isDirty) {
+                e.preventDefault();
+                e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+                return e.returnValue;
+            }
+        });
 
         document.addEventListener('DOMContentLoaded', async () => {
             if (!api.getToken()) { window.location.href = 'login.html'; return; }
             
             try {
+                const profileRes = await api.auth.getProfile();
+                if (profileRes.data.user.role !== 'admin') {
+                    window.location.href = 'student-dashboard.html';
+                    return;
+                }
+            } catch(e) {
+                api.removeToken();
+                window.location.href='login.html?session=expired';
+                return;
+            }
+
+            try {
                 // Fetch categories
                 const res = await api.request('/categories');
                 categories = res.data || [];
-
-                // Fetch ALL active questions for compiler
-                const qRes = await api.request('/questions?limit=1500');
-                questionsCache = qRes.data.questions || [];
 
                 if (isEdit) {
                     document.getElementById('pageTitle').textContent = 'Modify Assessment';
@@ -363,9 +421,8 @@
                     await loadTest();
                 } else {
                     addSection(); // start with one section
-                    document.getElementById('loader')?.classList.add('hidden');
-                    document.getElementById('content')?.classList.remove('hidden');
-                    document.getElementById('content')?.classList.add('flex');
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('content').style.display = 'flex';
                 }
             } catch(e) { 
                 console.error('Error initializing builder', e);
@@ -389,6 +446,7 @@
                 const test = res.data;
                 document.getElementById('tName').value = test.name || '';
                 document.getElementById('tDescription').value = test.description || '';
+                document.getElementById('tInstructions').value = test.instructions || '';
                 document.getElementById('tDifficulty').value = test.difficulty || 'mixed';
                 document.getElementById('tTime').value = test.totalTime || 30;
                 document.getElementById('tPass').value = test.passingMarks || 10;
@@ -409,9 +467,37 @@
                     document.getElementById('tEndDate').value = formatDateForInput(eDate);
                 }
 
-                // If saved test has questions, let's pre-load them in a manual section to edit
-                if(test.questions && test.questions.length > 0) {
-                    // Try to group questions by category to reconstruct sections
+                // If saved test has sections
+                if (test.sections && test.sections.length > 0) {
+                    sections = [];
+                    for (const sec of test.sections) {
+                        const secId = (Date.now() + Math.random()).toString();
+                        const catId = sec.category?._id || sec.category;
+                        
+                        await fetchSubcategoriesForCache(catId);
+                        let questionsPool = [];
+                        try {
+                            const qRes = await api.request(`/questions?category=${catId}&limit=200`);
+                            questionsPool = qRes.data.questions || [];
+                        } catch (err) {
+                            console.error(err);
+                        }
+
+                        sections.push({
+                            id: secId,
+                            name: sec.name,
+                            category: catId,
+                            subcategories: sec.subcategories.map(sub => sub._id || sub),
+                            count: sec.count,
+                            mode: sec.mode || 'auto',
+                            selectedQuestions: (sec.questionIds || []).map(q => q._id || q),
+                            marksPerQuestion: sec.marksPerQuestion || 1,
+                            subcategoriesList: subcategoriesCache[catId] || [],
+                            questionsPool: questionsPool
+                        });
+                    }
+                } else if(test.questions && test.questions.length > 0) {
+                    // Try to group questions by category to reconstruct sections (legacy fallback)
                     const grouped = {};
                     test.questions.forEach(q => {
                         const catId = q.category?._id || q.category || 'other';
@@ -424,29 +510,37 @@
                         const secId = (Date.now() + Math.random()).toString();
                         const catObj = categories.find(c => c._id === catId);
                         
+                        let questionsPool = [];
+                        if(catId !== 'other') {
+                            await fetchSubcategoriesForCache(catId);
+                            try {
+                                const qRes = await api.request(`/questions?category=${catId}&limit=200`);
+                                questionsPool = qRes.data.questions || [];
+                            } catch (e) {
+                                console.error(e);
+                            }
+                        }
+
                         sections.push({
                             id: secId,
                             name: catObj ? `${catObj.name} Section` : 'Reconstructed Section',
                             category: catId !== 'other' ? catId : '',
-                            subcategories: [], // we will load subcategories below
+                            subcategories: [],
                             count: grouped[catId].length,
                             mode: 'manual',
                             selectedQuestions: grouped[catId],
-                            subcategoriesList: [] // cached subcategories HTML list
+                            marksPerQuestion: 1,
+                            subcategoriesList: subcategoriesCache[catId] || [],
+                            questionsPool: questionsPool
                         });
-
-                        if(catId !== 'other') {
-                            await fetchSubcategoriesForCache(catId);
-                        }
                     }
                 } else {
                     addSection();
                 }
 
                 renderSections();
-                document.getElementById('loader')?.classList.add('hidden');
-                document.getElementById('content')?.classList.remove('hidden');
-                document.getElementById('content')?.classList.add('flex');
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('content').style.display = 'flex';
 
             } catch(e) {
                 console.error(e);
@@ -477,7 +571,9 @@
                 count: 5,
                 mode: 'auto',
                 selectedQuestions: [],
-                subcategoriesList: []
+                marksPerQuestion: 1,
+                subcategoriesList: [],
+                questionsPool: []
             });
             renderSections();
         }
@@ -485,6 +581,7 @@
         function removeSection(id) {
             if(sections.length <= 1) { showToast('At least one section is required to build a test.', 'error'); return; }
             sections = sections.filter(s => s.id !== id);
+            isDirty = true;
             renderSections();
         }
 
@@ -498,12 +595,33 @@
             if(sec) {
                 sec.count = parseInt(val) || 0;
                 renderSubtitle();
-                // update visual feedback count
                 const countBadge = document.getElementById(`countBadge-${id}`);
                 if(countBadge) {
                     updateVisualCountFeedback(sec, countBadge);
                 }
             }
+        }
+
+        function updateSectionMarks(id, val) {
+            const sec = sections.find(s => s.id === id);
+            if(sec) {
+                sec.marksPerQuestion = parseFloat(val) || 1;
+            }
+        }
+
+        function moveSection(id, direction) {
+            const idx = sections.findIndex(s => s.id === id);
+            if (idx === -1) return;
+            const targetIdx = idx + direction;
+            if (targetIdx < 0 || targetIdx >= sections.length) return;
+            
+            // Swap sections
+            const temp = sections[idx];
+            sections[idx] = sections[targetIdx];
+            sections[targetIdx] = temp;
+            
+            isDirty = true;
+            renderSections();
         }
 
         async function handleCategoryChange(id, catId) {
@@ -514,6 +632,7 @@
             sec.subcategories = [];
             sec.selectedQuestions = [];
             sec.searchQuery = '';
+            sec.questionsPool = [];
 
             if(!catId) {
                 sec.subcategoriesList = [];
@@ -524,10 +643,19 @@
             const loaderDiv = document.getElementById(`subLoader-${id}`);
             if(loaderDiv) loaderDiv.classList.remove('hidden');
 
-            const topics = await fetchSubcategoriesForCache(catId);
-            sec.subcategoriesList = topics;
+            try {
+                const topics = await fetchSubcategoriesForCache(catId);
+                sec.subcategoriesList = topics;
 
-            if(loaderDiv) loaderDiv.classList.add('hidden');
+                // Lazy load category questions pool
+                const qRes = await api.request(`/questions?category=${catId}&limit=200`);
+                sec.questionsPool = qRes.data.questions || [];
+            } catch(e) {
+                console.error(e);
+                showToast("Failed to load questions pool for category", "error");
+            } finally {
+                if(loaderDiv) loaderDiv.classList.add('hidden');
+            }
             
             renderSections();
         }
@@ -540,7 +668,6 @@
             if(idx > -1) sec.subcategories.splice(idx, 1);
             else sec.subcategories.push(subId);
             
-            // If they change topics in manual mode, clear previous manual selections since questions list changes
             if(sec.mode === 'manual') {
                 sec.selectedQuestions = [];
                 const countBadge = document.getElementById(`countBadge-${id}`);
@@ -551,6 +678,9 @@
                 if(listDiv) {
                     listDiv.innerHTML = getInlineQuestionsHTML(sec);
                 }
+            } else {
+                const countBadge = document.getElementById(`countBadge-${id}`);
+                if(countBadge) updateVisualCountFeedback(sec, countBadge);
             }
         }
 
@@ -565,22 +695,22 @@
             renderSections();
         }
 
-        function getInlineQuestionsHTML(sec) {
-            if(!sec.category) {
-                return `<p class="text-[10px] text-slate-400 font-bold p-3">Please select a Category first to view questions.</p>`;
-            }
-
-            const pool = questionsCache.filter(q => {
-                const catMatch = (q.category?._id || q.category) === sec.category;
-                if(!catMatch) return false;
-                
+        function getPoolForSection(sec) {
+            return (sec.questionsPool || []).filter(q => {
                 if(sec.subcategories.length > 0) {
                     const subId = q.subcategory?._id || q.subcategory;
                     return sec.subcategories.includes(subId);
                 }
                 return true;
             });
+        }
 
+        function getInlineQuestionsHTML(sec) {
+            if(!sec.category) {
+                return `<p class="text-[10px] text-slate-400 font-bold p-3">Please select a Category first to view questions.</p>`;
+            }
+
+            const pool = getPoolForSection(sec);
             const search = (sec.searchQuery || '').toLowerCase();
             const filtered = pool.filter(q => q.question.toLowerCase().includes(search));
 
@@ -634,9 +764,15 @@
         }
 
         function updateVisualCountFeedback(sec, badge) {
+            const pool = getPoolForSection(sec);
             if(sec.mode === 'auto') {
-                badge.className = "px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase bg-emerald-500/10 text-emerald-500 border border-emerald-500/20";
-                badge.textContent = `${sec.count} Questions to draw automatically`;
+                if (pool.length < sec.count) {
+                    badge.className = "px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase bg-rose-500/10 text-rose-500 border border-rose-500/20";
+                    badge.textContent = `Insufficient Pool: Draw ${sec.count} from ${pool.length} available`;
+                } else {
+                    badge.className = "px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase bg-emerald-500/10 text-emerald-500 border border-emerald-500/20";
+                    badge.textContent = `${sec.count} Questions to draw automatically`;
+                }
             } else {
                 const len = sec.selectedQuestions.length;
                 if(len === sec.count) {
@@ -665,11 +801,10 @@
                 const countBadgeId = `countBadge-${s.id}`;
                 const manualBtnId = `manualBtn-${s.id}`;
                 
-                // Get subcategories HTML list if cached
                 let subsHTML = ``;
                 if(s.category && s.subcategoriesList) {
                     if(s.subcategoriesList.length === 0) {
-                        subsHTML = `<p class="text-[10px] text-slate-400 font-bold">No subcategory topics found for this category.</p>`;
+                        subsHTML = `<p class="text-[10px] text-slate-400 font-bold col-span-3">No subcategory topics found for this category.</p>`;
                     } else {
                         subsHTML = s.subcategoriesList.map(sub => `
                             <label class="flex items-center gap-1.5 p-2 rounded-lg bg-slate-50 dark:bg-slate-800/40 text-[11px] font-bold border border-slate-100 dark:border-slate-800/80 cursor-pointer">
@@ -687,16 +822,24 @@
                             <span class="w-6 h-6 rounded-lg bg-indigo-500/10 text-indigo-500 flex items-center justify-center font-black text-xs">${idx + 1}</span>
                             <input type="text" value="${s.name}" oninput="updateSectionName('${s.id}', this.value)" class="font-extrabold text-sm text-slate-800 dark:text-white bg-transparent border-b border-transparent focus:border-indigo-500 focus:outline-none py-0.5">
                         </div>
-                        <div class="flex items-center gap-2">
+                        <div class="flex items-center gap-3">
                             <span id="${countBadgeId}" class="px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
                                 ${s.count} questions to draw automatically
                             </span>
+                            <div class="flex items-center gap-1 shrink-0">
+                                <button type="button" onclick="moveSection('${s.id}', -1)" ${idx === 0 ? 'disabled' : ''} class="p-1.5 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-30 rounded-xl transition-colors" title="Move Section Up">
+                                    <i data-lucide="chevron-up" class="w-4 h-4"></i>
+                                </button>
+                                <button type="button" onclick="moveSection('${s.id}', 1)" ${idx === sections.length - 1 ? 'disabled' : ''} class="p-1.5 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-30 rounded-xl transition-colors" title="Move Section Down">
+                                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                                </button>
+                            </div>
                             ${sections.length > 1 ? `<button type="button" onclick="removeSection('${s.id}')" class="p-1.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-xl transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
                         </div>
                     </div>
 
                     <!-- Category & count rows -->
-                    <div class="grid grid-cols-1 sm:grid-cols-3 gap-4 border-t border-slate-50 dark:border-slate-800/50 pt-4">
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 border-t border-slate-50 dark:border-slate-800/50 pt-4">
                         <div class="flex flex-col gap-1.5">
                             <label class="text-[9px] font-black uppercase text-slate-400">Category</label>
                             <select onchange="handleCategoryChange('${s.id}', this.value)" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-xs focus:outline-none">
@@ -707,6 +850,10 @@
                         <div class="flex flex-col gap-1.5">
                             <label class="text-[9px] font-black uppercase text-slate-400">Number of Questions</label>
                             <input type="number" oninput="updateSectionCount('${s.id}', this.value)" value="${s.count}" min="1" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-xs focus:outline-none">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-[9px] font-black uppercase text-slate-400">Marks Per Question</label>
+                            <input type="number" oninput="updateSectionMarks('${s.id}', this.value)" value="${s.marksPerQuestion || 1}" min="1" step="0.5" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-xs focus:outline-none">
                         </div>
                         <div class="flex flex-col gap-1.5">
                             <label class="text-[9px] font-black uppercase text-slate-400">Selection Mode</label>
@@ -738,18 +885,10 @@
                             ${getInlineQuestionsHTML(s)}
                         </div>
                     </div>
-
-                    <!-- Pick Questions Button (Hidden) -->
-                    <div class="hidden justify-end pt-2 border-t border-slate-50 dark:border-slate-800/40">
-                        <button type="button" onclick="openPickerModal('${s.id}')" id="${manualBtnId}" class="${s.mode==='manual'?'':'hidden'} px-4 py-2 border border-indigo-500/20 bg-indigo-500/10 text-indigo-500 rounded-xl text-xs font-black hover:bg-indigo-500 hover:text-white transition-all flex items-center gap-1.5">
-                            <i data-lucide="list-checks" class="w-4 h-4"></i> Select Specific Questions
-                        </button>
-                    </div>
                 </div>
                 `;
             }).join('');
             
-            // Make sure visual count indicators display correctly in all sections
             sections.forEach(s => {
                 const badge = document.getElementById(`countBadge-${s.id}`);
                 if(badge) updateVisualCountFeedback(s, badge);
@@ -771,7 +910,6 @@
             const categoryName = categories.find(c => c._id === sec.category)?.name || 'Technical';
             document.getElementById('pickerMeta').textContent = `Pick questions under "${categoryName}" for section "${sec.name}"`;
 
-            // Load questions checklist
             renderPickerQuestionsList();
             document.getElementById('pickerModal').classList.remove('hidden');
         }
@@ -781,22 +919,10 @@
             activePickerSectionId = null;
         }
 
-        // Return checklist of questions matching Category and selected Subcategories
         function getMatchingPickerQuestions() {
             const sec = sections.find(s => s.id === activePickerSectionId);
             if(!sec) return [];
-
-            return questionsCache.filter(q => {
-                const catMatch = (q.category?._id || q.category) === sec.category;
-                if(!catMatch) return false;
-                
-                // If subcategories chosen, check if matches
-                if(sec.subcategories.length > 0) {
-                    const subId = q.subcategory?._id || q.subcategory;
-                    return sec.subcategories.includes(subId);
-                }
-                return true;
-            });
+            return getPoolForSection(sec);
         }
 
         function renderPickerQuestionsList() {
@@ -853,7 +979,6 @@
 
             sec.selectedQuestions = [...pickerSelectedList];
             
-            // Re-render count badges
             const countBadge = document.getElementById(`countBadge-${sec.id}`);
             if(countBadge) updateVisualCountFeedback(sec, countBadge);
 
@@ -861,29 +986,106 @@
             showToast('Manual selections applied!');
         }
 
-        // Dynamic automatic random picker from questions matching category and subcategories
-        function selectRandomQuestions(sec) {
-            const pool = questionsCache.filter(q => {
-                const catMatch = (q.category?._id || q.category) === sec.category;
-                if(!catMatch) return false;
-                
-                if(sec.subcategories.length > 0) {
-                    const subId = q.subcategory?._id || q.subcategory;
-                    return sec.subcategories.includes(subId);
-                }
-                return true;
-            });
+        function openPreviewModal() {
+            const name = document.getElementById('tName').value.trim() || 'Untitled Test';
+            const desc = document.getElementById('tDescription').value.trim() || 'No description provided.';
+            const instructions = document.getElementById('tInstructions').value.trim() || 'No specific instructions provided.';
+            const time = document.getElementById('tTime').value || '30';
+            const pass = document.getElementById('tPass').value || '10';
+            
+            const difficulty = document.getElementById('tDifficulty').value;
+            const negMarking = document.getElementById('tNegativeMarking').checked;
+            const negValue = negMarking ? document.getElementById('tNegativeValue').value : '0';
 
-            if(pool.length === 0) {
-                throw new Error(`Zero questions pool matches Category/Topics selected for "${sec.name}"`);
+            const validSections = sections.filter(s => s.category);
+            let sectionsHTML = '';
+            if(validSections.length === 0) {
+                sectionsHTML = `<p class="text-xs text-rose-500 font-bold">Please add at least one section with category.</p>`;
+            } else {
+                sectionsHTML = validSections.map((s, idx) => {
+                    const catObj = categories.find(c => c._id === s.category);
+                    const catName = catObj ? catObj.name : 'Unknown';
+                    const modeText = s.mode === 'auto' ? 'Random Selection' : 'Manual Selection';
+                    return `
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800/80 flex flex-col gap-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-extrabold text-slate-800 dark:text-slate-200">Section ${idx+1}: ${s.name}</span>
+                            <span class="px-2 py-0.5 rounded text-[8px] uppercase font-bold bg-indigo-100 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-400">${modeText}</span>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-[10px] font-bold text-slate-500 mt-1">
+                            <div>
+                                <span class="block text-slate-400 uppercase text-[8px]">Category</span>
+                                <span class="text-slate-700 dark:text-slate-300 font-extrabold">${catName}</span>
+                            </div>
+                            <div>
+                                <span class="block text-slate-400 uppercase text-[8px]">Questions Count</span>
+                                <span class="text-slate-700 dark:text-slate-300 font-extrabold">${s.count} Qs</span>
+                            </div>
+                            <div>
+                                <span class="block text-slate-400 uppercase text-[8px]">Marks Per Q</span>
+                                <span class="text-slate-700 dark:text-slate-300 font-extrabold">${s.marksPerQuestion || 1} mark(s)</span>
+                            </div>
+                            <div>
+                                <span class="block text-slate-400 uppercase text-[8px]">Total Marks</span>
+                                <span class="text-slate-700 dark:text-slate-300 font-extrabold">${(s.count * (s.marksPerQuestion || 1))} marks</span>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                }).join('');
             }
 
-            // Shuffle pool client-side
-            const shuffled = pool.sort(() => 0.5 - Math.random());
-            
-            // Take slice
-            const selected = shuffled.slice(0, sec.count);
-            return selected.map(q => q._id);
+            const body = document.getElementById('previewModalBody');
+            body.innerHTML = `
+                <div class="flex flex-col gap-1">
+                    <h2 class="text-xl font-black text-slate-900 dark:text-white">${esc(name)}</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">${esc(desc)}</p>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-2xl bg-indigo-500/5 border border-indigo-500/10 text-xs">
+                    <div>
+                        <span class="block text-slate-400 font-bold uppercase text-[9px]">Duration</span>
+                        <span class="font-extrabold text-slate-800 dark:text-slate-200 flex items-center gap-1 mt-0.5">
+                            <i data-lucide="clock" class="w-3.5 h-3.5 text-indigo-500"></i> ${time} mins
+                        </span>
+                    </div>
+                    <div>
+                        <span class="block text-slate-400 font-bold uppercase text-[9px]">Passing Marks</span>
+                        <span class="font-extrabold text-slate-800 dark:text-slate-200 flex items-center gap-1 mt-0.5">
+                            <i data-lucide="award" class="w-3.5 h-3.5 text-indigo-500"></i> ${pass} marks
+                        </span>
+                    </div>
+                    <div>
+                        <span class="block text-slate-400 font-bold uppercase text-[9px]">Difficulty</span>
+                        <span class="font-extrabold text-slate-800 dark:text-slate-200 uppercase mt-0.5 block">${difficulty}</span>
+                    </div>
+                    <div>
+                        <span class="block text-slate-400 font-bold uppercase text-[9px]">Negative Marking</span>
+                        <span class="font-extrabold text-slate-800 dark:text-slate-200 mt-0.5 block">
+                            ${negMarking ? `Yes (-${negValue})` : 'No'}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Instructions</h4>
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800/80 text-xs text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">${esc(instructions)}</div>
+                </div>
+
+                <div class="flex flex-col gap-3">
+                    <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Sections Breakdown</h4>
+                    <div class="flex flex-col gap-3">
+                        ${sectionsHTML}
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('previewModal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closePreviewModal() {
+            document.getElementById('previewModal').classList.add('hidden');
         }
 
         async function saveTest(e) {
@@ -896,30 +1098,23 @@
                 const validSections = sections.filter(s => s.category);
                 if(validSections.length === 0) throw new Error('At least one section with category selected is required.');
 
-                let compiledQuestionIds = [];
-
-                // Resolve each section questions
-                for(const sec of validSections) {
-                    if(sec.mode === 'manual') {
-                        if(sec.selectedQuestions.length === 0) {
-                            throw new Error(`Section "${sec.name}" has manual mode enabled but zero questions picked.`);
+                // Validate question counts against loaded pool sizes
+                for (const sec of validSections) {
+                    const pool = getPoolForSection(sec);
+                    if (sec.mode === 'auto') {
+                        if (pool.length < sec.count) {
+                            throw new Error(`Section "${sec.name}" requests ${sec.count} questions, but only ${pool.length} are available in the category pool.`);
                         }
-                        compiledQuestionIds = compiledQuestionIds.concat(sec.selectedQuestions);
                     } else {
-                        // Automatically draw random questions
-                        const drawnIds = selectRandomQuestions(sec);
-                        compiledQuestionIds = compiledQuestionIds.concat(drawnIds);
+                        if (sec.selectedQuestions.length === 0) {
+                            throw new Error(`Section "${sec.name}" has manual mode enabled but zero questions selected.`);
+                        }
+                        if (sec.selectedQuestions.length !== sec.count) {
+                            throw new Error(`Section "${sec.name}" requires exactly ${sec.count} selected questions (currently ${sec.selectedQuestions.length} selected).`);
+                        }
                     }
                 }
 
-                // Dedup questions in case of overlaps across sections
-                compiledQuestionIds = [...new Set(compiledQuestionIds)];
-
-                if(compiledQuestionIds.length === 0) {
-                    throw new Error('Could not resolve or compile any questions.');
-                }
-
-                // Compile settings
                 const active = document.getElementById('tActive').checked;
                 const randomize = document.getElementById('tRandomize').checked;
                 const shuffle = document.getElementById('tShuffle').checked;
@@ -934,24 +1129,37 @@
                     throw new Error('Start Test Time must be earlier than End Test Time.');
                 }
 
+                // Map sections to payload matching database schema
                 const payload = {
                     name: document.getElementById('tName').value.trim(),
                     description: document.getElementById('tDescription').value.trim(),
-                    category: validSections[0].category, // primary category for student sorting compatibility
+                    instructions: document.getElementById('tInstructions').value.trim(),
+                    category: validSections[0].category, // compatibility field
                     difficulty: document.getElementById('tDifficulty').value,
                     totalTime: parseInt(document.getElementById('tTime').value) || 30,
                     passingMarks: parseFloat(document.getElementById('tPass').value) || 10,
-                    isDynamic: false, // pre-compiled statically on save!
-                    questions: compiledQuestionIds,
-                    totalQuestions: compiledQuestionIds.length,
                     isActive: active,
                     randomizeQuestions: randomize,
                     shuffleOptions: shuffle,
                     negativeMarking: negMarking,
                     negativeMarkValue: negValue,
                     startDate: startDateVal ? new Date(startDateVal).toISOString() : null,
-                    endDate: endDateVal ? new Date(endDateVal).toISOString() : null
+                    endDate: endDateVal ? new Date(endDateVal).toISOString() : null,
+                    questions: [], // sections are primary now
+                    totalQuestions: validSections.reduce((sum, s) => sum + parseInt(s.count || 0), 0),
+                    sections: validSections.map(s => ({
+                        name: s.name,
+                        category: s.category,
+                        subcategories: s.subcategories,
+                        count: s.count,
+                        mode: s.mode,
+                        questionIds: s.mode === 'manual' ? s.selectedQuestions : [],
+                        marksPerQuestion: s.marksPerQuestion || 1
+                    }))
                 };
+
+                // Clear dirty state on successful save to prevent beforeunload prompt
+                isDirty = false;
 
                 if (isEdit) {
                     await api.request(`/tests/${testId}`, { method: 'PUT', body: JSON.stringify(payload) });

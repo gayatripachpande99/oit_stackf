@@ -4,15 +4,14 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin - Create/Edit Question</title>
-                </main>
-                    </main>
-        <script src="https://cdn.tailwindcss.com"></script>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
     <script>
         tailwind.config = { darkMode: 'class' }
     </script>
     <script src="https://unpkg.com/lucide@latest"></script>
-                </main>
-        <script src="api.js?v=2"></script>
+    <!-- API Config -->
+    <script src="api.js?v=4"></script>
 </head>
 <body class="bg-slate-50 dark:bg-[#0a0f1e] text-slate-900 dark:text-white font-sans overflow-hidden">
     <div class="flex h-screen">
@@ -20,7 +19,7 @@
         <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 bg-slate-900 dark:bg-[#0d1117] border-r border-slate-800/60 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
             <div class="h-16 flex items-center justify-between px-5 border-b border-slate-800/60">
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                    <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-50 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
                         <i data-lucide="shield-check" class="w-4 h-4 text-white"></i>
                     </div>
                     <div>
@@ -43,8 +42,8 @@
                 <a href="admin-categories.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
                     <i data-lucide="folder-tree" class="w-4 h-4 shrink-0"></i> Categories
                 </a>
-                <a href="admin-questions.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
-                    <i data-lucide="database" class="w-4 h-4 shrink-0"></i> Question Pool
+                <a href="admin-questions.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-450 bg-indigo-500/15 text-indigo-400 border border-indigo-500/20">
+                    <i data-lucide="database" class="w-4 h-4 shrink-0 text-indigo-450"></i> Question Pool
                 </a>
                 <a href="admin-technical-mcq.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
                     <i data-lucide="terminal" class="w-4 h-4 shrink-0"></i> Technical MCQs
@@ -88,7 +87,7 @@
                             <a href="admin-questions.html" class="inline-flex items-center text-xs text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white transition-colors font-bold mb-1">
                                 <i data-lucide="chevron-left" class="w-3.5 h-3.5 mr-1"></i> Back to Question Pool
                             </a>
-                            <h1 id="pageTitle" class="text-2xl font-black text-slate-800 dark:text-white">Add MCQ Question</h1>
+                            <h1 id="pageTitle" class="text-2xl font-black text-slate-900 dark:text-white">Add MCQ Question</h1>
                         </div>
                     </div>
                 </div>
@@ -102,16 +101,13 @@
             </header>
 
             <main class="flex-1 overflow-y-auto p-4 lg:p-6 bg-slate-50/50 dark:bg-[#0a0f1e]/50">
-
                 <div class="max-w-5xl mx-auto flex flex-col gap-6 pb-12">
                     
-                    
-
                     <div id="loader" class="flex justify-center py-12">
                         <div class="animate-spin h-8 w-8 border-4 border-indigo-500 border-t-transparent rounded-full"></div>
                     </div>
 
-                    <div id="formContent" class="hidden grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+                    <div id="formContent" class="hidden grid-cols-1 lg:grid-cols-3 gap-6 items-start">
                         
                         <!-- Form Panel -->
                         <div class="lg:col-span-2 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-3xl p-6 shadow-sm">
@@ -157,15 +153,15 @@
                                 <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
                                     <div>
                                         <label class="block text-xs font-bold text-slate-500 mb-1.5">Marks</label>
-                                        <input type="number" id="marks" value="1" step="0.5" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-indigo-500" oninput="updatePreview()">
+                                        <input type="number" id="marks" value="1" step="0.5" min="0" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-indigo-500" oninput="updatePreview()">
                                     </div>
                                     <div>
                                         <label class="block text-xs font-bold text-slate-500 mb-1.5">Penalty</label>
-                                        <input type="number" id="negativeMark" value="0" step="0.05" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-indigo-500" oninput="updatePreview()">
+                                        <input type="number" id="negativeMark" value="0" step="0.05" min="0" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-indigo-500" oninput="updatePreview()">
                                     </div>
                                     <div>
                                         <label class="block text-xs font-bold text-slate-500 mb-1.5">Time Limit (s)</label>
-                                        <input type="number" id="timeLimit" value="60" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-indigo-500">
+                                        <input type="number" id="timeLimit" value="60" min="1" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-indigo-500">
                                     </div>
                                 </div>
 
@@ -193,8 +189,11 @@
                                     <button type="button" onclick="window.location.href='admin-questions.html'" class="px-6 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-700 dark:text-slate-300 font-bold text-sm hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors">
                                         Cancel
                                     </button>
-                                    <button type="submit" id="saveBtn" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md shadow-indigo-500/20 flex items-center gap-2">
+                                    <button type="submit" onclick="submitForm(event, false)" id="saveBtn" class="px-6 py-2.5 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md shadow-indigo-500/20 flex items-center gap-2">
                                         <i data-lucide="save" class="w-4 h-4"></i> Save Question
+                                    </button>
+                                    <button type="submit" onclick="submitForm(event, true)" id="saveAddAnotherBtn" class="px-6 py-2.5 rounded-xl bg-indigo-50 hover:bg-indigo-100 text-indigo-650 dark:bg-indigo-900/30 dark:hover:bg-indigo-900/50 font-bold text-sm shadow-md flex items-center gap-2">
+                                        Save & Add Another
                                     </button>
                                 </div>
                             </form>
@@ -231,7 +230,13 @@
                     </div>
                 </div>
             </main>
-        <script>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="hidden fixed top-4 right-4 z-50 p-4 rounded-xl text-sm font-semibold shadow-lg border"></div>
+
+    <script>
         lucide.createIcons();
 
         function toggleSidebar() {
@@ -240,7 +245,8 @@
             if(overlay) overlay.classList.toggle('hidden');
         }
 
-        function logout() {
+        async function logout() {
+            try { await api.auth.logout(); } catch(e) {}
             api.removeToken();
             window.location.href = 'login.html';
         }
@@ -249,7 +255,7 @@
         document.addEventListener('DOMContentLoaded', () => {
             const currentPath = window.location.pathname.split('/').pop();
             document.querySelectorAll('.nav-link').forEach(link => {
-                if(link.getAttribute('href') === currentPath) {
+                if(link.getAttribute('href') === 'admin-questions.html' || link.getAttribute('href') === currentPath) {
                     link.classList.remove('text-slate-400');
                     link.classList.add('bg-indigo-500/15', 'text-indigo-400', 'border', 'border-indigo-500/20');
                     const icon = link.querySelector('i');
@@ -267,27 +273,91 @@
             document.documentElement.classList.add('dark');
         }
 
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `fixed top-4 right-4 z-50 p-4 rounded-xl text-sm font-semibold shadow-lg border transition-opacity ${
+                type === 'success' 
+                ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white border-slate-200 dark:border-slate-800' 
+                : 'bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800'
+            }`;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 4000);
+        }
+
         const urlParams = new URLSearchParams(window.location.search);
         const qId = urlParams.get('id');
         const isEdit = !!qId;
         
         let optionsArr = ['', ''];
         let correctIdx = 0;
+        let isDirty = false;
+        let addAnotherFlag = false;
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            return str.toString()
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
 
         document.addEventListener('DOMContentLoaded', async () => {
             const token = api.getToken();
             if(!token) { window.location.href='login.html'; return; }
+
+            try {
+                const profileRes = await api.auth.getProfile();
+                if (profileRes.data.user.role !== 'admin') {
+                    window.location.href = 'student-dashboard.html';
+                    return;
+                }
+            } catch(e) {
+                api.removeToken();
+                window.location.href='login.html?session=expired';
+                return;
+            }
             
             if (isEdit) {
                 document.getElementById('pageTitle').textContent = 'Modify Question';
+                document.getElementById('saveAddAnotherBtn').classList.add('hidden');
             }
 
             try {
                 // Fetch categories
                 const catRes = await api.request('/categories');
                 const catSelect = document.getElementById('category');
+                
+                const urlParams = new URLSearchParams(window.location.search);
+                const categoryType = urlParams.get('categoryType');
+                
+                const fragment = document.createDocumentFragment();
                 catRes.data.forEach(c => {
-                    catSelect.innerHTML += `<option value="${c._id}">${c.name} (ID: ${c._id})</option>`;
+                    if (categoryType && c.type !== categoryType) return;
+                    const opt = document.createElement('option');
+                    opt.value = c._id;
+                    opt.textContent = c.name;
+                    fragment.appendChild(opt);
+                });
+                catSelect.appendChild(fragment);
+
+                const backLink = document.querySelector('a[href="admin-questions.html"]');
+                if (categoryType && backLink) {
+                    backLink.setAttribute('href', `admin-questions.html?categoryType=${categoryType}`);
+                    if (categoryType === 'technical') {
+                        backLink.innerHTML = `<i data-lucide="chevron-left" class="w-3.5 h-3.5 mr-1"></i> Back to Technical MCQs`;
+                        if (!isEdit) document.getElementById('pageTitle').textContent = 'Add Technical MCQ';
+                    } else if (categoryType === 'aptitude') {
+                        backLink.innerHTML = `<i data-lucide="chevron-left" class="w-3.5 h-3.5 mr-1"></i> Back to Aptitude MCQs`;
+                        if (!isEdit) document.getElementById('pageTitle').textContent = 'Add Aptitude MCQ';
+                    }
+                    lucide.createIcons();
+                }
+
+                document.getElementById('category').addEventListener('change', async (e) => {
+                    await loadSubcategories(e.target.value);
                 });
 
                 if (isEdit) {
@@ -296,6 +366,10 @@
                     document.getElementById('type').value = q.type || 'mcq';
                     document.getElementById('difficulty').value = q.difficulty || 'medium';
                     document.getElementById('category').value = q.category?._id || q.category || '';
+                    
+                    // Await subcategories load before restoring subcategory value
+                    await loadSubcategories(q.category?._id || q.category, q.subcategory);
+                    
                     document.getElementById('questionDesc').value = q.question || '';
                     document.getElementById('marks').value = q.marks || 1;
                     document.getElementById('negativeMark').value = q.negativeMark || 0;
@@ -304,6 +378,10 @@
                     
                     optionsArr = q.options || ['', ''];
                     correctIdx = q.correctAnswer || 0;
+                    
+                    if (q.type === 'true-false') {
+                        document.getElementById('addOptionBtn').classList.add('hidden');
+                    }
                 }
                 
                 renderOptions();
@@ -311,12 +389,49 @@
                 
                 document.getElementById('loader')?.classList.add('hidden');
                 document.getElementById('formContent').classList.remove('hidden');
+                document.getElementById('formContent').classList.add('grid');
 
             } catch(e) {
                 console.error(e);
-                alert("Error loading data");
+                showToast("Error loading categories or question details", "error");
             }
+
+            // Unsaved changes flag
+            document.getElementById('qForm').addEventListener('input', () => {
+                isDirty = true;
+            });
+            window.addEventListener('beforeunload', (e) => {
+                if (isDirty) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                }
+            });
         });
+
+        async function loadSubcategories(catId, selectedSubId = null) {
+            const subSelect = document.getElementById('subcategory');
+            subSelect.innerHTML = '<option value="">None</option>';
+            if (!catId) return;
+
+            try {
+                const res = await api.request(`/categories/${catId}`);
+                if (res.data && res.data.subcategories) {
+                    const fragment = document.createDocumentFragment();
+                    res.data.subcategories.forEach(sub => {
+                        const opt = document.createElement('option');
+                        opt.value = sub._id;
+                        opt.textContent = sub.name;
+                        if (selectedSubId && (sub._id === selectedSubId || sub._id === selectedSubId._id)) {
+                            opt.selected = true;
+                        }
+                        fragment.appendChild(opt);
+                    });
+                    subSelect.appendChild(fragment);
+                }
+            } catch(e) {
+                console.error('Error fetching subcategories', e);
+            }
+        }
 
         function handleTypeChange() {
             const type = document.getElementById('type').value;
@@ -326,30 +441,35 @@
                 document.getElementById('addOptionBtn').classList.add('hidden');
             } else {
                 optionsArr = ['', ''];
+                correctIdx = 0;
                 document.getElementById('addOptionBtn').classList.remove('hidden');
             }
+            isDirty = true;
             renderOptions();
             updatePreview();
         }
 
         function addOption() {
-            if(optionsArr.length >= 6) return alert("Max 6 options allowed");
+            if(optionsArr.length >= 6) return showToast("Max 6 options allowed", "error");
             optionsArr.push('');
+            isDirty = true;
             renderOptions();
             updatePreview();
         }
 
         function removeOption(idx) {
-            if(optionsArr.length <= 2) return alert("Min 2 options required");
+            if(optionsArr.length <= 2) return showToast("Min 2 options required", "error");
             optionsArr.splice(idx, 1);
             if (correctIdx === idx) correctIdx = 0;
             else if (correctIdx > idx) correctIdx--;
+            isDirty = true;
             renderOptions();
             updatePreview();
         }
 
         function setCorrect(idx) {
             correctIdx = idx;
+            isDirty = true;
             renderOptions();
             updatePreview();
         }
@@ -366,7 +486,7 @@
             container.innerHTML = optionsArr.map((opt, i) => `
                 <div class="flex items-center gap-3">
                     <input type="radio" name="correct" ${correctIdx === i ? 'checked' : ''} onchange="setCorrect(${i})" class="w-5 h-5 text-indigo-600">
-                    <input type="text" value="${opt.replace(/"/g, '&quot;')}" oninput="updateOptionText(${i}, this.value)" ${type==='true-false'?'disabled':''} placeholder="Option ${i+1}" class="flex-1 py-2 px-4 rounded-xl text-sm bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 focus:outline-none focus:border-indigo-500">
+                    <input type="text" value="${escapeHTML(opt)}" oninput="updateOptionText(${i}, this.value)" ${type==='true-false'?'disabled':''} placeholder="Option ${i+1}" class="flex-1 py-2 px-4 rounded-xl text-sm bg-slate-50 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-800 focus:outline-none focus:border-indigo-500">
                     ${type==='mcq' && optionsArr.length > 2 ? `<button type="button" onclick="removeOption(${i})" class="p-2 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-xl"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
                 </div>
             `).join('');
@@ -379,7 +499,7 @@
             
             document.getElementById('prevOptions').innerHTML = optionsArr.map((opt, i) => `
                 <div class="flex items-center justify-between p-3 rounded-xl border text-xs font-bold ${correctIdx === i ? 'border-emerald-500/50 bg-emerald-50/5 text-emerald-600' : 'border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900'}">
-                    <span>${opt || `Option ${i+1}`}</span>
+                    <span>${escapeHTML(opt) || `Option ${i+1}`}</span>
                     ${correctIdx === i ? '<span class="text-[9px] uppercase font-black text-emerald-500 tracking-wider">Correct Key</span>' : ''}
                 </div>
             `).join('');
@@ -391,6 +511,10 @@
             } else {
                 document.getElementById('prevExp').classList.add('hidden');
             }
+        }
+
+        function submitForm(event, addAnother) {
+            addAnotherFlag = addAnother;
         }
 
         document.getElementById('qForm').addEventListener('submit', async (e) => {
@@ -415,19 +539,52 @@
             if(!payload.question) return errBox.textContent="Question required", errBox.classList.remove('hidden');
             if(!payload.category) return errBox.textContent="Category required", errBox.classList.remove('hidden');
             if(payload.options.some(o => !o)) return errBox.textContent="All options must be filled", errBox.classList.remove('hidden');
+            if(payload.options.length !== new Set(payload.options).size) return errBox.textContent="Duplicate options are not allowed", errBox.classList.remove('hidden');
 
+            const saveBtn = document.getElementById('saveBtn');
+            const saveAddBtn = document.getElementById('saveAddAnotherBtn');
+            
             try {
-                document.getElementById('saveBtn').disabled = true;
+                saveBtn.disabled = true;
+                saveAddBtn.disabled = true;
+                
+                isDirty = false; // reset dirty flag for navigation/reset
+                
                 if(isEdit) {
                     await api.request(`/questions/${qId}`, { method: 'PUT', body: JSON.stringify(payload) });
+                    showToast('Question modified successfully!');
                 } else {
                     await api.request(`/questions`, { method: 'POST', body: JSON.stringify(payload) });
+                    showToast('Question created successfully!');
                 }
-                window.location.href = 'admin-questions.html';
+                
+                if (addAnotherFlag) {
+                    // Reset form fields
+                    document.getElementById('questionDesc').value = '';
+                    document.getElementById('explanation').value = '';
+                    if (document.getElementById('type').value === 'mcq') {
+                        optionsArr = ['', ''];
+                        correctIdx = 0;
+                    } else {
+                        optionsArr = ['True', 'False'];
+                        correctIdx = 0;
+                    }
+                    renderOptions();
+                    updatePreview();
+                    saveBtn.disabled = false;
+                    saveAddBtn.disabled = false;
+                } else {
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const categoryType = urlParams.get('categoryType');
+                    setTimeout(() => {
+                        window.location.href = categoryType ? `admin-questions.html?categoryType=${categoryType}` : 'admin-questions.html';
+                    }, 1000);
+                }
             } catch(err) {
                 errBox.textContent = err.message;
                 errBox.classList.remove('hidden');
-                document.getElementById('saveBtn').disabled = false;
+                saveBtn.disabled = false;
+                saveAddBtn.disabled = false;
             }
         });
     </script>

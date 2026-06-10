@@ -9,7 +9,7 @@
         tailwind.config = { darkMode: 'class' }
     </script>
     <script src="https://unpkg.com/lucide@latest"></script>
-    <script src="api.js?v=2"></script>
+    <script src="api.js?v=4"></script>
 </head>
 <body class="bg-slate-50 dark:bg-[#0a0f1e] text-slate-900 dark:text-white font-sans overflow-hidden">
     
@@ -103,26 +103,99 @@
                 </div>
             </header>
 
-            <main class="flex-1 overflow-y-auto p-4 lg:p-6 flex flex-col gap-6">
-                <!-- Page Header -->
-                
-
-
+            <main class="flex-1 overflow-y-auto p-4 lg:p-6 flex flex-col gap-8">
                 <div id="loader" class="flex justify-center py-12">
                     <div class="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full"></div>
                 </div>
 
-                <!-- Test List Container -->
-                <div id="testContainer" class="hidden grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-5">
-                    <!-- Tests injected here -->
+                <div id="testsWrapper" class="hidden flex flex-col gap-10">
+                    <!-- Active & Scheduled Tests -->
+                    <div class="flex flex-col gap-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                                    <i data-lucide="play-circle" class="w-5 h-5 text-blue-500"></i>
+                                    Active & Scheduled Tests
+                                </h2>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Upcoming and ongoing aptitude tests available for you to attempt.</p>
+                            </div>
+                        </div>
+                        <div class="w-full overflow-x-auto rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+                            <table class="w-full text-left border-collapse min-w-[800px]">
+                                <thead>
+                                    <tr class="bg-slate-50 dark:bg-slate-800/40 border-b border-slate-200 dark:border-slate-800">
+                                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Title</th>
+                                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Description</th>
+                                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Level</th>
+                                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Quiz Date</th>
+                                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Start Time</th>
+                                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">End Time</th>
+                                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="activeTestsBody" class="divide-y divide-slate-100 dark:divide-slate-800/60">
+                                    <!-- Injected via script -->
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+
+                    <!-- Ended & Attempted Tests -->
+                    <div class="flex flex-col gap-4">
+                        <div class="flex items-center justify-between">
+                            <div>
+                                <h2 class="text-lg font-bold text-slate-800 dark:text-white flex items-center gap-2">
+                                    <i data-lucide="check-circle" class="w-5 h-5 text-emerald-500"></i>
+                                    Ended & Attempted Tests
+                                </h2>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 mt-0.5">Historical list of tests that have expired or that you have already attempted.</p>
+                            </div>
+                        </div>
+                        <div class="w-full overflow-x-auto rounded-2xl border border-slate-200/80 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
+                            <table class="w-full text-left border-collapse min-w-[900px]">
+                                <thead>
+                                    <tr class="bg-slate-50 dark:bg-slate-800/40 border-b border-slate-200 dark:border-slate-800">
+                                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 w-16">#</th>
+                                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Title</th>
+                                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Description</th>
+                                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Level</th>
+                                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Quiz Date</th>
+                                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Start Time</th>
+                                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">End Time</th>
+                                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400">Obtained Marks</th>
+                                        <th class="px-6 py-4 text-xs font-bold uppercase tracking-wider text-slate-500 dark:text-slate-400 text-right">Action</th>
+                                    </tr>
+                                </thead>
+                                <tbody id="endedTestsBody" class="divide-y divide-slate-100 dark:divide-slate-800/60">
+                                    <!-- Injected via script -->
+                                </tbody>
+                            </table>
+                        </div>
+
+                        <!-- Pagination controls -->
+                        <div id="endedPagination" class="flex items-center justify-between pt-2">
+                            <span id="paginationInfo" class="text-xs text-slate-500 dark:text-slate-400 font-medium"></span>
+                            <div class="flex items-center gap-1.5">
+                                <button id="prevBtn" onclick="changePage(-1)" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-1 text-slate-700 dark:text-slate-300">
+                                    <i data-lucide="chevron-left" class="w-3.5 h-3.5"></i> Previous
+                                </button>
+                                <div id="pageNumbers" class="flex items-center gap-1">
+                                    <!-- Page numbers -->
+                                </div>
+                                <button id="nextBtn" onclick="changePage(1)" class="px-3 py-1.5 rounded-xl border border-slate-200 dark:border-slate-800 text-xs font-semibold hover:bg-slate-50 dark:hover:bg-slate-800 disabled:opacity-50 disabled:cursor-not-allowed transition-all flex items-center gap-1 text-slate-700 dark:text-slate-300">
+                                    Next <i data-lucide="chevron-right" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
                 </div>
-                
+
                 <div id="emptyState" class="hidden py-16 flex-col items-center justify-center text-center rounded-2xl border-2 border-dashed border-slate-200 dark:border-slate-800">
                     <div class="w-16 h-16 bg-slate-100 dark:bg-slate-800 text-slate-400 rounded-2xl flex items-center justify-center mb-4">
                         <i data-lucide="inbox" class="w-8 h-8"></i>
                     </div>
                     <h3 class="text-lg font-bold mb-2">No tests found</h3>
-                    <p class="text-slate-500 text-sm max-w-sm">There are currently no active tests in this category.</p>
+                    <p class="text-slate-500 text-sm max-w-sm">There are currently no aptitude tests in this category.</p>
                 </div>
             </main>
         </div>
@@ -152,6 +225,10 @@
 
         let categories = [];
         let tests = [];
+        let activeTests = [];
+        let endedTests = [];
+        let currentPage = 1;
+        const itemsPerPage = 25;
 
         document.addEventListener('DOMContentLoaded', async () => {
             const token = api.getToken();
@@ -176,68 +253,271 @@
                 renderTests();
             } catch (error) {
                 console.error(error);
+                document.getElementById('loader').classList.add('hidden');
+                document.getElementById('emptyState').classList.remove('hidden');
+                document.getElementById('emptyState').classList.add('flex');
             }
         });
+
+        function getDifficultyBadge(diff) {
+            const val = (diff || 'mixed').toLowerCase();
+            let cls = 'bg-slate-100 text-slate-600 dark:bg-slate-800 dark:text-slate-400';
+            if (val === 'easy') cls = 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400';
+            else if (val === 'medium') cls = 'bg-amber-50 text-amber-600 dark:bg-amber-500/10 dark:text-amber-400';
+            else if (val === 'hard') cls = 'bg-rose-50 text-rose-600 dark:bg-rose-500/10 dark:text-rose-400';
+            return `<span class="px-2.5 py-1 rounded text-[10px] font-bold uppercase tracking-wider ${cls}">${val}</span>`;
+        }
 
         function renderTests() {
             document.getElementById('loader').classList.add('hidden');
             
-            const container = document.getElementById('testContainer');
-            const empty = document.getElementById('emptyState');
-
             if (tests.length === 0) {
-                container.classList.add('hidden');
-                empty.classList.remove('hidden');
-                empty.classList.add('flex');
-            } else {
-                empty.classList.add('hidden');
-                container.classList.remove('hidden');
-                
-                container.innerHTML = tests.map(t => {
-                    const isEnded = t.endDate && new Date(t.endDate) < new Date();
-                    const attempt = t.userResult;
-
-                    let actionBtn = '';
-                    if (attempt) {
-                        actionBtn = `
-                            <button onclick="window.location.href='test-result.html?id=${t._id}'" class="px-3 py-2 rounded-xl border border-blue-500 text-blue-500 hover:bg-blue-600 hover:text-white font-bold text-[10px] transition-all flex items-center gap-1 leading-none shrink-0" title="Score: ${attempt.obtainedMarks}/${attempt.totalMarks} (${attempt.passed ? 'PASSED' : 'FAILED'})">
-                                <i data-lucide="eye" class="w-3.5 h-3.5"></i> Score: ${attempt.obtainedMarks}/${attempt.totalMarks}
-                            </button>
-                        `;
-                    } else if (isEnded) {
-                        actionBtn = `
-                            <button disabled class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 font-bold text-[10px] cursor-not-allowed shrink-0">Ended</button>
-                        `;
-                    } else {
-                        actionBtn = `
-                            <button onclick="window.location.href='test-start.html?id=${t._id}'" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-500/20 transition-all shrink-0">Start</button>
-                        `;
-                    }
-
-                    return `
-                    <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 flex flex-col hover:border-blue-500/40 hover:shadow-lg hover:shadow-blue-500/5 transition-all group">
-                        <div class="flex justify-between items-start mb-4">
-                            <div class="w-10 h-10 rounded-xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400 flex items-center justify-center">
-                                <i data-lucide="file-text" class="w-5 h-5"></i>
-                            </div>
-                            <span class="px-2.5 py-1 rounded-md text-[10px] font-bold uppercase tracking-wider bg-slate-100 dark:bg-slate-800 text-slate-500 dark:text-slate-400">
-                                ${t.difficulty || 'Mixed'}
-                            </span>
-                        </div>
-                        <h3 class="font-bold text-lg mb-1 group-hover:text-blue-500 transition-colors line-clamp-1">${t.name}</h3>
-                        <p class="text-xs text-slate-500 mb-6 flex-1 line-clamp-2">${t.description || 'No description provided.'}</p>
-                        <div class="flex items-center justify-between mt-auto gap-2">
-                            <div class="flex items-center gap-3 text-xs font-semibold text-slate-500">
-                                <span class="flex items-center gap-1.5"><i data-lucide="clock" class="w-3.5 h-3.5"></i> ${t.totalTime}m</span>
-                                <span class="flex items-center gap-1.5"><i data-lucide="help-circle" class="w-3.5 h-3.5"></i> ${t.totalQuestions}Q</span>
-                            </div>
-                            ${actionBtn}
-                        </div>
-                    </div>
-                    `;
-                }).join('');
-                lucide.createIcons();
+                document.getElementById('testsWrapper').classList.add('hidden');
+                document.getElementById('emptyState').classList.remove('hidden');
+                document.getElementById('emptyState').classList.add('flex');
+                return;
             }
+
+            document.getElementById('emptyState').classList.add('hidden');
+            document.getElementById('testsWrapper').classList.remove('hidden');
+
+            const now = new Date();
+            
+            // Categorize tests
+            activeTests = [];
+            endedTests = [];
+
+            tests.forEach(t => {
+                const isEnded = t.endDate && new Date(t.endDate) < now;
+                const attempt = t.userResult;
+
+                if (attempt || isEnded) {
+                    endedTests.push(t);
+                } else {
+                    activeTests.push(t);
+                }
+            });
+
+            // Sort tests
+            activeTests.sort((a, b) => new Date(a.startDate || 0) - new Date(b.startDate || 0));
+            endedTests.sort((a, b) => new Date(b.endDate || b.createdAt || 0) - new Date(a.endDate || a.createdAt || 0));
+
+            // Render active tests
+            renderActiveTests();
+
+            // Render ended tests (paginated)
+            currentPage = 1;
+            renderEndedPage();
+        }
+
+        function renderActiveTests() {
+            const tbody = document.getElementById('activeTestsBody');
+            if (activeTests.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="7" class="px-6 py-10 text-center text-sm text-slate-500 dark:text-slate-400 font-medium">
+                            <div class="flex flex-col items-center justify-center gap-2">
+                                <i data-lucide="inbox" class="w-6 h-6 text-slate-400"></i>
+                                <span>No active or scheduled tests found</span>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                lucide.createIcons();
+                return;
+            }
+
+            tbody.innerHTML = activeTests.map(t => {
+                const quizDate = t.startDate ? new Date(t.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : "Anytime";
+                const startTime = t.startDate ? new Date(t.startDate).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "Anytime";
+                const endTime = t.endDate ? new Date(t.endDate).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "No Limit";
+                
+                let startBtn = '';
+                const now = new Date();
+                const notStartedYet = t.startDate && now < new Date(t.startDate);
+
+                if (notStartedYet) {
+                    startBtn = `
+                        <button disabled class="px-4 py-2 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 font-bold text-xs cursor-not-allowed leading-none">
+                            Scheduled
+                        </button>
+                    `;
+                } else {
+                    startBtn = `
+                        <button onclick="window.location.href='test-start.html?id=${t._id}'" class="px-4 py-2 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-xs shadow-md shadow-blue-500/20 transition-all leading-none">
+                            Start
+                        </button>
+                    `;
+                }
+
+                const difficultyBadge = getDifficultyBadge(t.difficulty);
+
+                return `
+                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors">
+                        <td class="px-6 py-4">
+                            <span class="font-bold text-slate-800 dark:text-white text-sm">${t.name}</span>
+                        </td>
+                        <td class="px-6 py-4 max-w-xs truncate">
+                            <span class="text-xs text-slate-500 dark:text-slate-400">${t.description || 'No description provided.'}</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            ${difficultyBadge}
+                        </td>
+                        <td class="px-6 py-4 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                            ${quizDate}
+                        </td>
+                        <td class="px-6 py-4 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                            ${startTime}
+                        </td>
+                        <td class="px-6 py-4 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                            ${endTime}
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            ${startBtn}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+            lucide.createIcons();
+        }
+
+        function renderEndedPage() {
+            const tbody = document.getElementById('endedTestsBody');
+            if (endedTests.length === 0) {
+                tbody.innerHTML = `
+                    <tr>
+                        <td colspan="9" class="px-6 py-10 text-center text-sm text-slate-500 dark:text-slate-400 font-medium">
+                            <div class="flex flex-col items-center justify-center gap-2">
+                                <i data-lucide="inbox" class="w-6 h-6 text-slate-400"></i>
+                                <span>No historical or ended tests found</span>
+                            </div>
+                        </td>
+                    </tr>
+                `;
+                document.getElementById('endedPagination').classList.add('hidden');
+                lucide.createIcons();
+                return;
+            }
+
+            document.getElementById('endedPagination').classList.remove('hidden');
+
+            const totalPages = Math.ceil(endedTests.length / itemsPerPage);
+            if (currentPage > totalPages) currentPage = totalPages;
+            if (currentPage < 1) currentPage = 1;
+
+            const startIdx = (currentPage - 1) * itemsPerPage;
+            const paginatedTests = endedTests.slice(startIdx, startIdx + itemsPerPage);
+
+            tbody.innerHTML = paginatedTests.map((t, index) => {
+                const globalIndex = startIdx + index + 1;
+                const attempt = t.userResult;
+
+                const quizDate = t.startDate ? new Date(t.startDate).toLocaleDateString('en-US', { year: 'numeric', month: 'short', day: 'numeric' }) : "Anytime";
+                const startTime = t.startDate ? new Date(t.startDate).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "Anytime";
+                const endTime = t.endDate ? new Date(t.endDate).toLocaleTimeString('en-US', { hour: '2-digit', minute: '2-digit' }) : "No Limit";
+
+                let scoreBlock = '';
+                let actionBlock = '';
+
+                if (attempt) {
+                    const pct = Math.round(attempt.percentage || ((attempt.obtainedMarks / attempt.totalMarks) * 100));
+                    const passed = attempt.passed;
+                    scoreBlock = `
+                        <div class="flex flex-col gap-0.5">
+                            <span class="text-sm font-extrabold text-slate-800 dark:text-white">${attempt.obtainedMarks} / ${attempt.totalMarks}</span>
+                            <span class="text-[10px] font-bold ${passed ? 'text-emerald-500' : 'text-rose-500'}">${pct}% (${passed ? 'PASSED' : 'FAILED'})</span>
+                        </div>
+                    `;
+                    actionBlock = `
+                        <button onclick="window.location.href='test-result.html?id=${t._id}'" class="px-3 py-1.5 rounded-xl border border-blue-500/30 text-blue-500 hover:bg-blue-600 hover:text-white font-bold text-xs transition-all flex items-center justify-center gap-1 leading-none">
+                            <i data-lucide="eye" class="w-3.5 h-3.5"></i> View Report
+                        </button>
+                    `;
+                } else {
+                    scoreBlock = `
+                        <span class="text-xs text-slate-400 dark:text-slate-500 font-semibold uppercase">Not Attempted</span>
+                    `;
+                    actionBlock = `
+                        <button disabled class="px-3 py-1.5 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-500 font-bold text-xs cursor-not-allowed leading-none">
+                            Ended
+                        </button>
+                    `;
+                }
+
+                const difficultyBadge = getDifficultyBadge(t.difficulty);
+
+                return `
+                    <tr class="hover:bg-slate-50/50 dark:hover:bg-slate-800/20 transition-colors">
+                        <td class="px-6 py-4 font-extrabold text-xs text-slate-400">
+                            #${globalIndex}
+                        </td>
+                        <td class="px-6 py-4">
+                            <span class="font-bold text-slate-800 dark:text-white text-sm">${t.name}</span>
+                        </td>
+                        <td class="px-6 py-4 max-w-xs truncate">
+                            <span class="text-xs text-slate-500 dark:text-slate-400">${t.description || 'No description provided.'}</span>
+                        </td>
+                        <td class="px-6 py-4">
+                            ${difficultyBadge}
+                        </td>
+                        <td class="px-6 py-4 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                            ${quizDate}
+                        </td>
+                        <td class="px-6 py-4 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                            ${startTime}
+                        </td>
+                        <td class="px-6 py-4 text-xs font-semibold text-slate-600 dark:text-slate-300">
+                            ${endTime}
+                        </td>
+                        <td class="px-6 py-4">
+                            ${scoreBlock}
+                        </td>
+                        <td class="px-6 py-4 text-right">
+                            ${actionBlock}
+                        </td>
+                    </tr>
+                `;
+            }).join('');
+
+            // Pagination details
+            document.getElementById('paginationInfo').textContent = `Page ${currentPage} of ${totalPages} (Total ${endedTests.length} tests)`;
+            document.getElementById('prevBtn').disabled = currentPage === 1;
+            document.getElementById('nextBtn').disabled = currentPage === totalPages;
+
+            // Page numbers
+            const pageNumbersDiv = document.getElementById('pageNumbers');
+            pageNumbersDiv.innerHTML = '';
+            
+            let startPage = Math.max(1, currentPage - 2);
+            let endPage = Math.min(totalPages, startPage + 4);
+            if (endPage - startPage < 4) {
+                startPage = Math.max(1, endPage - 4);
+            }
+
+            for (let p = startPage; p <= endPage; p++) {
+                if (p < 1) continue;
+                const activeClass = p === currentPage 
+                    ? 'bg-blue-600 text-white border-blue-600 shadow-md shadow-blue-500/10' 
+                    : 'border-slate-200 dark:border-slate-800 text-slate-600 dark:text-slate-400 hover:bg-slate-50 dark:hover:bg-slate-800';
+                
+                pageNumbersDiv.innerHTML += `
+                    <button onclick="goToPage(${p})" class="w-8 h-8 rounded-xl border text-xs font-bold transition-all ${activeClass}">
+                        ${p}
+                    </button>
+                `;
+            }
+
+            lucide.createIcons();
+        }
+
+        function changePage(direction) {
+            currentPage += direction;
+            renderEndedPage();
+        }
+
+        function goToPage(page) {
+            currentPage = page;
+            renderEndedPage();
         }
     </script>
 </body>

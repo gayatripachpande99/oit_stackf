@@ -15,13 +15,12 @@ router.use(auth);
 
 router.get('/my', getMyResults);
 router.get('/my/:id', getResultDetail);
+router.get('/admin/all', admin, getAllResults);
+router.get('/admin/stats/:testId', admin, getResultStats);
 router.get('/:id', getResultDetail);
 
 router.put('/:resultId/answer', saveAnswer);
 router.patch('/:resultId/answer', saveAnswer);
-
-router.get('/admin/all', admin, getAllResults);
-router.get('/admin/stats/:testId', admin, getResultStats);
 
 module.exports = router;
 

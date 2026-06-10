@@ -38,15 +38,18 @@ const questionSchema = new mongoose.Schema(
         message: 'Difficulty must be easy, medium, or hard',
       },
       default: 'medium',
+      index: true,
     },
     category: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Category',
       required: [true, 'Category is required'],
+      index: true,
     },
     subcategory: {
       type: mongoose.Schema.Types.ObjectId,
       ref: 'Subcategory',
+      index: true,
     },
     timeLimit: {
       type: Number,
@@ -77,6 +80,7 @@ const questionSchema = new mongoose.Schema(
 questionSchema.index({ category: 1, difficulty: 1, isActive: 1 });
 
 const Question = mongoose.model('Question', questionSchema);
+Question.syncIndexes().catch(err => console.error('Error syncing Question indexes:', err));
 
 module.exports = Question;
 

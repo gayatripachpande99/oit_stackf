@@ -3,71 +3,99 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin - Categories</title>
-                </main>
-                    </main>
-                    </main>
-        <script src="https://cdn.tailwindcss.com"></script>
-    <script>
-        tailwind.config = { darkMode: 'class' }
-    </script>
+    <title>OIT_STACK — Manage Categories</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
     <script src="https://unpkg.com/lucide@latest"></script>
-                </main>
-        <script src="api.js?v=2"></script>
+    <script src="api.js?v=4"></script>
 </head>
-<body class="bg-slate-50 dark:bg-[#0a0f1e] text-slate-900 dark:text-white font-sans overflow-hidden">
+<body class="bg-slate-50 dark:bg-[#0a0f1e] text-slate-900 dark:text-white font-sans overflow-hidden transition-colors duration-300">
+
     <div class="flex h-screen">
 
+        <!-- ═══════════════════════════════════════════════════════
+             SIDEBAR
+        ═══════════════════════════════════════════════════════════ -->
         <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 bg-slate-900 dark:bg-[#0d1117] border-r border-slate-800/60 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
-            <div class="h-16 flex items-center justify-between px-5 border-b border-slate-800/60">
+            
+            <!-- Brand -->
+            <div class="h-16 flex items-center justify-between px-5 border-b border-slate-800/60 shrink-0">
                 <div class="flex items-center gap-3">
                     <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
                         <i data-lucide="shield-check" class="w-4 h-4 text-white"></i>
                     </div>
                     <div>
-                        <h1 class="font-bold text-white text-sm leading-none">OIT_STACK</h1>
+                        <p class="font-bold text-white text-sm leading-none">OIT_STACK</p>
                         <p class="text-[10px] text-slate-500 font-medium mt-0.5">Admin Portal</p>
                     </div>
                 </div>
+                <button onclick="toggleSidebar()" class="lg:hidden text-slate-400 hover:text-white p-1">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
             </div>
-            
-            <nav class="flex-1 py-3 px-3 overflow-y-auto space-y-0.5">
-                <a href="/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
-                    <i data-lucide="home" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Home
-                </a>
-                <a href="admin-dashboard.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
-                    <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0"></i> Dashboard
-                </a>
-                <a href="admin-students.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
-                    <i data-lucide="users" class="w-4 h-4 shrink-0"></i> Students
-                </a>
-                <a href="admin-categories.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
-                    <i data-lucide="folder-tree" class="w-4 h-4 shrink-0"></i> Categories
-                </a>
-                <a href="admin-questions.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
-                    <i data-lucide="database" class="w-4 h-4 shrink-0"></i> Question Pool
-                </a>
-                <a href="admin-technical-mcq.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
-                    <i data-lucide="terminal" class="w-4 h-4 shrink-0"></i> Technical MCQs
-                </a>
-                <a href="admin-tests.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
-                    <i data-lucide="file-text" class="w-4 h-4 shrink-0"></i> Tests
-                </a>
-                <a href="admin-coding.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
-                    <i data-lucide="code" class="w-4 h-4 shrink-0"></i> Coding Challenges
-                </a>
-                <a href="admin-interviews.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
-                    <i data-lucide="mic" class="w-4 h-4 shrink-0"></i> Mock Interviews
-                </a>
-                <a href="admin-results.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
-                    <i data-lucide="award" class="w-4 h-4 shrink-0"></i> Results
-                </a>
-                <a href="admin-analytics.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
-                    <i data-lucide="bar-chart-3" class="w-4 h-4 shrink-0"></i> Analytics
-                </a>
+
+            <!-- Navigation -->
+            <nav class="flex-1 py-4 px-3 overflow-y-auto space-y-5">
+                <div>
+                    <p class="px-3 mb-1.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">Overview</p>
+                    <a href="admin-dashboard.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition-colors">
+                        <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0"></i> Dashboard
+                    </a>
+                </div>
+
+                <div>
+                    <p class="px-3 mb-1.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">Content</p>
+                    <div class="space-y-0.5">
+                        <a href="admin-categories.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white bg-indigo-600/20 border border-indigo-500/30">
+                            <i data-lucide="folder-tree" class="w-4 h-4 shrink-0 text-indigo-400"></i> Categories
+                        </a>
+                        <a href="admin-questions.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition-colors">
+                            <i data-lucide="database" class="w-4 h-4 shrink-0"></i> Question Pool
+                        </a>
+                        <a href="admin-technical-mcq.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition-colors">
+                            <i data-lucide="terminal" class="w-4 h-4 shrink-0"></i> Technical MCQs
+                        </a>
+                        <a href="admin-coding.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition-colors">
+                            <i data-lucide="code" class="w-4 h-4 shrink-0"></i> Coding Challenges
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="px-3 mb-1.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">Assessments</p>
+                    <div class="space-y-0.5">
+                        <a href="admin-tests.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition-colors">
+                            <i data-lucide="file-text" class="w-4 h-4 shrink-0"></i> Tests
+                        </a>
+                        <a href="admin-interviews.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition-colors">
+                            <i data-lucide="mic" class="w-4 h-4 shrink-0"></i> Mock Interviews
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="px-3 mb-1.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">People</p>
+                    <div class="space-y-0.5">
+                        <a href="admin-students.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition-colors">
+                            <i data-lucide="users" class="w-4 h-4 shrink-0"></i> Students
+                        </a>
+                        <a href="admin-results.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition-colors">
+                            <i data-lucide="award" class="w-4 h-4 shrink-0"></i> Results
+                        </a>
+                    </div>
+                </div>
+
+                <div>
+                    <p class="px-3 mb-1.5 text-[10px] font-bold uppercase tracking-widest text-slate-600">Insights</p>
+                    <a href="admin-analytics.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 transition-colors">
+                        <i data-lucide="bar-chart-3" class="w-4 h-4 shrink-0"></i> Analytics
+                    </a>
+                </div>
             </nav>
-            <div class="p-3 border-t border-slate-800/60">
-                <button onclick="logout()" class="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl bg-slate-800/50 hover:bg-slate-800 border border-slate-700/40 text-slate-400 hover:text-rose-400 transition-colors">
+
+            <!-- Logout -->
+            <div class="p-3 border-t border-slate-800/60 shrink-0">
+                <button onclick="logout()" class="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl bg-slate-800/50 hover:bg-rose-500/10 border border-slate-700/40 hover:border-rose-500/30 text-slate-400 hover:text-rose-400 transition-all">
                     <i data-lucide="log-out" class="w-4 h-4"></i>
                     <span class="text-sm font-medium">Logout</span>
                 </button>
@@ -77,46 +105,66 @@
         <!-- Overlay for mobile sidebar -->
         <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 hidden lg:hidden"></div>
 
-        <!-- Main Content -->
-        <div class="flex-1 lg:ml-64 flex flex-col min-w-0 h-full">
-            <header class="min-h-[4.5rem] py-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/60 flex flex-col md:flex-row md:items-center justify-between px-4 lg:px-6 shrink-0 z-20 gap-4">
-                <div class="flex items-center gap-3 flex-1">
+        <!-- ═══════════════════════════════════════════════════════
+             MAIN CONTENT AREA
+        ═══════════════════════════════════════════════════════════ -->
+        <div class="flex-1 lg:ml-64 flex flex-col min-w-0 h-screen overflow-hidden">
+            
+            <!-- Header -->
+            <header class="h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/60 flex items-center justify-between px-4 lg:px-6 shrink-0 z-20">
+                <div class="flex items-center gap-3">
                     <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">
                         <i data-lucide="menu" class="w-5 h-5 text-slate-600 dark:text-slate-400"></i>
                     </button>
-                    <div class="flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <div>
-                            <h1 class="text-2xl font-black text-slate-800 dark:text-white">Category Directory</h1>
-                            
-                        </div>
-                    </div>
+                    <nav class="flex items-center gap-1.5 text-sm" aria-label="Breadcrumb">
+                        <span class="text-slate-400 dark:text-slate-500 font-medium">Admin</span>
+                        <i data-lucide="chevron-right" class="w-3.5 h-3.5 text-slate-300 dark:text-slate-600"></i>
+                        <span class="font-bold text-slate-800 dark:text-white">Categories</span>
+                    </nav>
                 </div>
                 <div class="flex items-center gap-2">
                     <a href="/" class="text-sm font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors mr-2">Home</a>
-                    <button onclick="toggleTheme()" class="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                    <button onclick="toggleTheme()" class="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400">
                         <i data-lucide="moon" class="w-4 h-4 dark:hidden"></i>
                         <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
                     </button>
                 </div>
             </header>
 
+            <!-- Content Body -->
             <main class="flex-1 overflow-y-auto p-4 lg:p-6 bg-slate-50/50 dark:bg-[#0a0f1e]/50">
-
-                <div class="max-w-6xl mx-auto flex flex-col gap-8 pb-12">
+                <div class="max-w-6xl mx-auto flex flex-col gap-6 pb-12">
                     
-                    
+                    <!-- Search & Filters -->
+                    <div class="p-4 bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 rounded-2xl shadow-sm flex flex-col sm:flex-row items-center justify-between gap-4">
+                        <div class="relative w-full sm:w-80">
+                            <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                            <input type="text" id="searchInput" oninput="filterList()" placeholder="Search categories & topics..." class="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-indigo-500 focus:ring-1 focus:ring-indigo-500 transition-all">
+                        </div>
+                        <div class="flex items-center gap-2 w-full sm:w-auto">
+                            <select id="typeFilter" onchange="filterList()" class="w-full sm:w-48 pl-3 pr-8 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-indigo-500 cursor-pointer">
+                                <option value="">All Category Types</option>
+                                <option value="aptitude">Aptitude</option>
+                                <option value="technical">Technical core</option>
+                                <option value="coding">Coding problems</option>
+                                <option value="interview">Mock interviews</option>
+                            </select>
+                        </div>
+                    </div>
 
+                    <!-- Loader -->
                     <div id="loader" class="flex justify-center py-12">
                         <div class="animate-spin h-8 w-8 border-4 border-indigo-500 border-t-transparent rounded-full"></div>
                     </div>
 
+                    <!-- Columns -->
                     <div id="catContent" class="hidden grid grid-cols-1 lg:grid-cols-2 gap-8 items-start">
                         
                         <!-- Left: Categories -->
-                        <div class="flex flex-col gap-4">
+                        <div class="flex flex-col gap-4 animate-fade-in">
                             <div class="flex justify-between items-center">
-                                <h3 class="font-extrabold text-sm text-slate-400 uppercase tracking-wider">Parent Categories</h3>
-                                <button onclick="openCatModal()" class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-bold hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-1.5 transition-colors">
+                                <h3 class="font-extrabold text-xs text-slate-400 uppercase tracking-wider">Parent Categories</h3>
+                                <button onclick="openCatModal()" class="px-3 py-1.5 rounded-lg bg-indigo-600 text-white text-xs font-bold hover:bg-indigo-700 flex items-center gap-1.5 transition-colors shadow-md">
                                     <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Add Category
                                 </button>
                             </div>
@@ -128,12 +176,12 @@
                         <!-- Right: Subcategories -->
                         <div class="flex flex-col gap-4">
                             <div class="flex justify-between items-center">
-                                <h3 class="font-extrabold text-sm text-slate-400 uppercase tracking-wider">Granular Topics / Subcategories</h3>
+                                <h3 class="font-extrabold text-xs text-slate-400 uppercase tracking-wider">Topics / Subcategories</h3>
                                 <div class="flex gap-2">
-                                    <button id="addBulkSubBtn" onclick="openSubBulkModal()" disabled class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-bold hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-1.5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-indigo-500 hover:text-indigo-600 dark:text-indigo-400 dark:hover:text-indigo-300">
+                                    <button id="addBulkSubBtn" onclick="openSubBulkModal()" disabled class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-bold hover:bg-slate-100 dark:hover:bg-slate-800 flex items-center gap-1.5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed text-indigo-500 dark:text-indigo-400">
                                         <i data-lucide="upload" class="w-3.5 h-3.5"></i> Bulk Import
                                     </button>
-                                    <button id="addSubBtn" onclick="openSubModal()" disabled class="px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 text-xs font-bold hover:bg-slate-50 dark:hover:bg-slate-800 flex items-center gap-1.5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed">
+                                    <button id="addSubBtn" onclick="openSubModal()" disabled class="px-3 py-1.5 rounded-lg bg-slate-900 text-white dark:bg-slate-800 text-xs font-bold hover:bg-slate-800 dark:hover:bg-slate-700 flex items-center gap-1.5 transition-colors disabled:opacity-50 disabled:cursor-not-allowed shadow-sm border border-slate-200 dark:border-slate-700">
                                         <i data-lucide="plus-circle" class="w-3.5 h-3.5"></i> Add Topic
                                     </button>
                                 </div>
@@ -142,14 +190,14 @@
                                 <div id="subLoader" class="flex justify-center py-12 hidden">
                                     <div class="animate-spin h-6 w-6 border-4 border-indigo-500 border-t-transparent rounded-full"></div>
                                 </div>
-                                <div id="subEmpty" class="py-24 text-center text-slate-400 text-xs">
+                                <div id="subEmpty" class="py-24 text-center text-slate-400 text-xs font-semibold">
                                     Select a parent category on the left to review its topics.
                                 </div>
                                 <table id="subTable" class="w-full text-left border-collapse text-xs hidden">
                                     <thead>
                                         <tr class="bg-slate-50 dark:bg-slate-800/30 border-b border-slate-100 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider text-[10px]">
-                                            <th class="px-6 py-3">Topic Title</th>
-                                            <th class="px-6 py-3 text-right">Actions</th>
+                                            <th class="px-6 py-3.5">Topic Title</th>
+                                            <th class="px-6 py-3.5 text-right">Actions</th>
                                         </tr>
                                     </thead>
                                     <tbody id="subList" class="divide-y divide-slate-100 dark:divide-slate-800/60 font-semibold text-slate-700 dark:text-slate-200">
@@ -167,22 +215,32 @@
 
     <!-- Category Modal -->
     <div id="catModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col">
             <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
                 <h3 id="catModalTitle" class="font-bold text-lg text-slate-800 dark:text-white">Create Parent Category</h3>
+                <button onclick="closeCatModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <form id="catForm" class="p-6 flex flex-col gap-4">
                 <div>
                     <label class="block text-xs font-bold text-slate-500 mb-1.5">Category Title</label>
-                    <input type="text" id="catName" required class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-indigo-500">
+                    <input type="text" id="catName" required class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-indigo-500 dark:text-white">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-500 mb-1.5">Platform Category Type</label>
-                    <select id="catType" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-indigo-500">
+                    <select id="catType" class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-indigo-500 dark:text-white">
                         <option value="aptitude">Quantitative & Logical Aptitude</option>
                         <option value="technical">Technical Core MCQ</option>
                         <option value="coding">Coding Problems</option>
+                        <option value="interview">AI Mock Interview</option>
                     </select>
+                </div>
+                <div>
+                    <label class="block text-xs font-bold text-slate-500 mb-1.5">Description</label>
+                    <textarea id="catDesc" rows="3" placeholder="Provide a brief context for this category..." class="w-full px-4 py-2.5 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-indigo-500 dark:text-white"></textarea>
+                </div>
+                <div class="flex items-center justify-between border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 select-none bg-slate-50 dark:bg-slate-800/40">
+                    <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Active Status</label>
+                    <input type="checkbox" id="catActive" checked class="w-5 h-5 rounded border-slate-300 text-indigo-600">
                 </div>
                 <div class="flex justify-end gap-3 mt-4">
                     <button type="button" onclick="closeCatModal()" class="px-4 py-2 rounded-xl text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">Cancel</button>
@@ -194,18 +252,19 @@
 
     <!-- Subcategory Modal -->
     <div id="subModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
-        <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl flex flex-col">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-md overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col">
             <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
                 <h3 id="subModalTitle" class="font-bold text-lg text-slate-800 dark:text-white">Add Topic</h3>
+                <button onclick="closeSubModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-200"><i data-lucide="x" class="w-5 h-5"></i></button>
             </div>
             <form id="subForm" class="p-6 flex flex-col gap-4">
                 <div>
                     <label class="block text-xs font-bold text-slate-500 mb-1.5">Parent Category</label>
-                    <input type="text" id="subParentCategoryDisplay" readonly class="w-full px-4 py-2 bg-slate-100 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-500 cursor-not-allowed outline-none">
+                    <input type="text" id="subParentCategoryDisplay" readonly class="w-full px-4 py-2 bg-slate-100 dark:bg-slate-800/40 border border-slate-200 dark:border-slate-700 rounded-xl text-sm text-slate-500 cursor-not-allowed outline-none z-10">
                 </div>
                 <div>
                     <label class="block text-xs font-bold text-slate-500 mb-1.5">Topic Title</label>
-                    <input type="text" id="subName" required class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-indigo-500">
+                    <input type="text" id="subName" required class="w-full px-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:border-indigo-500 dark:text-white">
                 </div>
                 <div class="flex justify-end gap-3 mt-4">
                     <button type="button" onclick="closeSubModal()" class="px-4 py-2 rounded-xl text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">Cancel</button>
@@ -230,30 +289,43 @@
                     <span id="subBulkParentCategoryDisplay" class="font-extrabold text-indigo-600 dark:text-indigo-400">Loading...</span>
                 </div>
                 <div class="bg-slate-50 dark:bg-slate-950 p-4 rounded-2xl border border-slate-100 dark:border-slate-800/80 text-xs text-slate-500 dark:text-slate-400 space-y-2">
-                    <p class="font-bold text-slate-700 dark:text-slate-300">How to use:</p>
-                    <p>Simply paste your list of subcategories below, writing **one topic name per line**. No JSON formatting or brackets are required!</p>
-                    <p class="font-bold text-indigo-500 dark:text-indigo-400 mt-2">Example format:</p>
-                    <pre class="bg-slate-100 dark:bg-slate-900/60 p-2.5 rounded border border-slate-200/50 dark:border-slate-800/50 font-mono text-[11px] overflow-x-auto">Introduction to Java
-OOPs Principles
-Exception Handling
-Java Collections Framework</pre>
+                    <p class="font-bold text-slate-700 dark:text-slate-300">Instructions:</p>
+                    <p>Write **one topic name per line**. Duplicate items will be filtered automatically.</p>
                 </div>
-
                 <div>
-                    <label class="block text-xs font-bold text-slate-500 mb-1.5">Paste Topic Names (one per line)</label>
-                    <textarea id="subBulkInput" rows="8" required placeholder="Paste list of names here..." class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all"></textarea>
+                    <label class="block text-xs font-bold text-slate-500 mb-1.5">Paste Topic Names (one per line, max 100)</label>
+                    <textarea id="subBulkInput" rows="6" required placeholder="Topic 1&#10;Topic 2&#10;Topic 3..." class="w-full px-4 py-3 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-sm focus:outline-none focus:ring-1 focus:ring-indigo-500 transition-all dark:text-white"></textarea>
                 </div>
-
                 <div id="subBulkErrors" class="hidden text-rose-500 text-xs bg-rose-50 dark:bg-rose-950/20 border border-rose-100 dark:border-rose-900/40 p-3 rounded-xl max-h-32 overflow-y-auto space-y-1">
-                    <!-- Errors injected dynamically -->
+                    <!-- Errors -->
                 </div>
-
                 <div class="flex justify-end gap-3 mt-2">
                     <button type="button" onclick="closeSubBulkModal()" class="px-4 py-2 rounded-xl text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">Cancel</button>
                     <button type="submit" id="subBulkSaveBtn" class="px-6 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-sm shadow-md transition-colors">Import</button>
                 </div>
             </form>
-        <script>
+        </div>
+    </div>
+
+    <!-- Custom Confirm Dialog -->
+    <div id="confirmModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-sm p-6 shadow-2xl border border-slate-200 dark:border-slate-800">
+            <h3 id="confirmTitle" class="font-bold text-lg text-slate-800 dark:text-white mb-2">Are you sure?</h3>
+            <p id="confirmDesc" class="text-xs text-slate-500 dark:text-slate-400 mb-6 leading-relaxed">This action cannot be undone.</p>
+            <div class="flex justify-end gap-3">
+                <button id="confirmCancelBtn" class="px-4 py-2 rounded-xl text-sm font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800 transition-colors">Cancel</button>
+                <button id="confirmActionBtn" class="px-6 py-2 rounded-xl bg-rose-600 hover:bg-rose-700 text-white font-bold text-sm shadow-md transition-colors">Confirm</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="hidden fixed top-4 right-4 z-[100] p-4 rounded-xl text-sm font-semibold shadow-lg border"></div>
+
+    <!-- ═══════════════════════════════════════════════════════
+         SCRIPTS
+    ═══════════════════════════════════════════════════════════ -->
+    <script>
         lucide.createIcons();
 
         function toggleTheme() {
@@ -267,6 +339,50 @@ Java Collections Framework</pre>
 
         function toggleSidebar() {
             document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            document.getElementById('sidebarOverlay').classList.toggle('hidden');
+        }
+
+        async function logout() {
+            try { await api.auth.logout(); } catch(e) {}
+            api.removeToken();
+            window.location.href = 'login.html';
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `fixed top-4 right-4 z-[100] p-4 rounded-xl text-sm font-semibold shadow-lg border transition-opacity ${
+                type === 'success' 
+                ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white border-slate-200 dark:border-slate-800' 
+                : 'bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800'
+            }`;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 4000);
+        }
+
+        function showConfirm(title, desc, onConfirm) {
+            document.getElementById('confirmTitle').textContent = title;
+            document.getElementById('confirmDesc').textContent = desc;
+            const modal = document.getElementById('confirmModal');
+            modal.classList.remove('hidden');
+            
+            document.getElementById('confirmActionBtn').onclick = async () => {
+                modal.classList.add('hidden');
+                await onConfirm();
+            };
+            document.getElementById('confirmCancelBtn').onclick = () => {
+                modal.classList.add('hidden');
+            };
+        }
+
+        function escapeHTML(str) {
+            if (!str) return '';
+            return str.toString()
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
         }
 
         let categories = [];
@@ -279,12 +395,28 @@ Java Collections Framework</pre>
         document.addEventListener('DOMContentLoaded', async () => {
             const token = api.getToken();
             if(!token) { window.location.href='login.html'; return; }
+            
+            try {
+                const profileRes = await api.auth.getProfile();
+                if (profileRes.data.user.role !== 'admin') {
+                    window.location.href = 'student-dashboard.html';
+                    return;
+                }
+            } catch(e) {
+                api.removeToken();
+                window.location.href='login.html?session=expired';
+                return;
+            }
+            
             await loadCategories();
         });
 
         async function loadCategories() {
-            document.getElementById('loader')?.classList.remove('hidden');
-            document.getElementById('catContent').classList.add('hidden');
+            const loader = document.getElementById('loader');
+            const content = document.getElementById('catContent');
+            loader.classList.remove('hidden');
+            content.classList.add('hidden');
+
             try {
                 const res = await api.request('/categories');
                 categories = res.data || [];
@@ -299,11 +431,12 @@ Java Collections Framework</pre>
                     loadSubcategories(activeParent);
                 }
 
-                document.getElementById('loader')?.classList.add('hidden');
-                document.getElementById('catContent').classList.remove('hidden');
-                document.getElementById('catContent').classList.add('grid');
+                loader.classList.add('hidden');
+                content.classList.remove('hidden');
+                content.classList.add('grid');
             } catch(e) {
                 console.error(e);
+                showToast('Failed to load categories.', 'error');
             }
         }
 
@@ -315,24 +448,38 @@ Java Collections Framework</pre>
                     ? 'border-indigo-500 bg-indigo-50/10 dark:bg-slate-900/60' 
                     : 'border-slate-100 dark:border-slate-800/80 hover:border-slate-200 cursor-pointer';
 
+                const subCount = cat.subcategoryCount || 0;
+                const qCount = cat.questionCount || 0;
+                const desc = cat.description || 'No description provided.';
+                const activeBadge = cat.isActive 
+                    ? '<span class="px-2 py-0.5 text-[9px] font-bold rounded bg-emerald-100 text-emerald-800 dark:bg-emerald-900/30 dark:text-emerald-400">ACTIVE</span>'
+                    : '<span class="px-2 py-0.5 text-[9px] font-bold rounded bg-slate-100 text-slate-800 dark:bg-slate-900/30 dark:text-slate-400">INACTIVE</span>';
+
                 return `
                 <div onclick="selectParent('${cat._id}')" class="p-5 rounded-3xl flex flex-col justify-between border-2 transition-all duration-200 ${borderClass}">
                     <div class="flex justify-between items-start gap-4">
-                        <div class="flex items-center gap-3">
-                            <div class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center shrink-0">
-                                <i data-lucide="folder" class="w-5 h-5"></i>
+                        <div class="flex items-start gap-3 min-w-0">
+                            <div class="w-9 h-9 rounded-xl bg-slate-100 dark:bg-slate-800 text-slate-400 flex items-center justify-center shrink-0 mt-0.5">
+                                <i data-lucide="folder" class="w-5 h-5 text-slate-400"></i>
                             </div>
-                            <div>
-                                <h4 class="font-extrabold text-slate-800 dark:text-white text-sm flex items-center gap-2">${cat.name} <span class="text-[9px] font-mono text-slate-400 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" title="Click to copy ID" onclick="navigator.clipboard.writeText('${cat._id}'); event.stopPropagation(); alert('Category ID copied!');">ID: ${cat._id}</span></h4>
-                                <p class="text-[10px] text-slate-400 capitalize mt-0.5">${cat.type} Type</p>
+                            <div class="min-w-0">
+                                <div class="flex items-center gap-2 flex-wrap">
+                                    <h4 class="font-bold text-slate-800 dark:text-white text-sm truncate max-w-[160px]">${escapeHTML(cat.name)}</h4>
+                                    ${activeBadge}
+                                </div>
+                                <p class="text-[10px] text-slate-400 capitalize mt-0.5">${cat.type} Type • ${subCount} Topics • ${qCount} Qs</p>
+                                <p class="text-xs text-slate-500 dark:text-slate-400 line-clamp-2 mt-2 leading-relaxed font-normal">${escapeHTML(desc)}</p>
                             </div>
                         </div>
-                        <div class="flex gap-1.5">
-                            <button onclick="event.stopPropagation(); openCatModal('${cat._id}')" class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-white">
-                                <i data-lucide="edit-2" class="w-4 h-4"></i>
+                        <div class="flex gap-1.5 shrink-0">
+                            <button onclick="event.stopPropagation(); navigator.clipboard.writeText('${cat._id}'); showToast('Category ID copied!');" class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-white" title="Copy Category ID">
+                                <i data-lucide="copy" class="w-3.5 h-3.5"></i>
                             </button>
-                            <button onclick="event.stopPropagation(); deleteCategory('${cat._id}')" class="p-1 text-rose-400 hover:text-rose-600">
-                                <i data-lucide="trash-2" class="w-4 h-4"></i>
+                            <button onclick="event.stopPropagation(); openCatModal('${cat._id}')" class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-white" title="Modify Category">
+                                <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
+                            </button>
+                            <button onclick="event.stopPropagation(); deleteCategory('${cat._id}')" class="p-1 text-rose-400 hover:text-rose-600" title="Delete Category">
+                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
                             </button>
                         </div>
                     </div>
@@ -370,14 +517,21 @@ Java Collections Framework</pre>
                     const tbody = document.getElementById('subList');
                     tbody.innerHTML = subcategories.map(sub => `
                     <tr class="hover:bg-slate-50/20">
-                        <td class="px-6 py-3 font-extrabold text-slate-700 dark:text-slate-200">${sub.name} <span class="ml-2 text-[9px] font-mono text-slate-400 bg-slate-100 dark:bg-slate-800 px-1.5 py-0.5 rounded cursor-pointer hover:bg-slate-200 dark:hover:bg-slate-700 transition-colors" title="Click to copy ID" onclick="navigator.clipboard.writeText('${sub._id}'); event.stopPropagation(); alert('Subcategory ID copied!');">ID: ${sub._id}</span></td>
-                        <td class="px-6 py-3 text-right">
-                            <button onclick="openSubModal('${sub._id}')" class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-white mr-1">
-                                <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
-                            </button>
-                            <button onclick="deleteSubcategory('${sub._id}')" class="p-1 text-rose-400 hover:text-rose-600">
-                                <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
-                            </button>
+                        <td class="px-6 py-3.5 font-bold text-slate-700 dark:text-slate-200">
+                            <span class="text-sm">${escapeHTML(sub.name)}</span>
+                        </td>
+                        <td class="px-6 py-3.5 text-right">
+                            <div class="flex justify-end gap-2">
+                                <button onclick="navigator.clipboard.writeText('${sub._id}'); showToast('Topic ID copied!');" class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-white" title="Copy Topic ID">
+                                    <i data-lucide="copy" class="w-3.5 h-3.5"></i>
+                                </button>
+                                <button onclick="openSubModal('${sub._id}')" class="p-1 text-slate-400 hover:text-slate-600 dark:hover:text-white" title="Modify Topic">
+                                    <i data-lucide="edit-2" class="w-3.5 h-3.5"></i>
+                                </button>
+                                <button onclick="deleteSubcategory('${sub._id}')" class="p-1 text-rose-400 hover:text-rose-600" title="Delete Topic">
+                                    <i data-lucide="trash-2" class="w-3.5 h-3.5"></i>
+                                </button>
+                            </div>
                         </td>
                     </tr>
                     `).join('');
@@ -386,6 +540,7 @@ Java Collections Framework</pre>
 
             } catch(e) {
                 console.error(e);
+                showToast('Failed to load subcategories.', 'error');
             }
         }
 
@@ -395,12 +550,18 @@ Java Collections Framework</pre>
             if(id) {
                 document.getElementById('catModalTitle').textContent = 'Modify Category';
                 const c = categories.find(x => x._id === id);
-                document.getElementById('catName').value = c.name;
-                document.getElementById('catType').value = c.type;
+                if (c) {
+                    document.getElementById('catName').value = c.name;
+                    document.getElementById('catType').value = c.type;
+                    document.getElementById('catDesc').value = c.description || '';
+                    document.getElementById('catActive').checked = c.isActive !== false;
+                }
             } else {
                 document.getElementById('catModalTitle').textContent = 'Create Parent Category';
                 document.getElementById('catName').value = '';
                 document.getElementById('catType').value = 'aptitude';
+                document.getElementById('catDesc').value = '';
+                document.getElementById('catActive').checked = true;
             }
         }
         function closeCatModal() { document.getElementById('catModal').classList.add('hidden'); }
@@ -412,34 +573,45 @@ Java Collections Framework</pre>
             
             const payload = {
                 name: document.getElementById('catName').value.trim(),
-                type: document.getElementById('catType').value
+                type: document.getElementById('catType').value,
+                description: document.getElementById('catDesc').value.trim(),
+                isActive: document.getElementById('catActive').checked
             };
 
             try {
                 if(editCatId) {
                     await api.request(`/categories/${editCatId}`, { method: 'PUT', body: JSON.stringify(payload) });
+                    showToast('Category updated successfully.');
                 } else {
                     await api.request(`/categories`, { method: 'POST', body: JSON.stringify(payload) });
+                    showToast('Category created successfully.');
                 }
                 closeCatModal();
                 await loadCategories();
             } catch(err) {
-                alert(err.message);
+                showToast(err.message || 'Failed to save category.', 'error');
             } finally {
                 btn.disabled = false;
             }
         });
 
-        async function deleteCategory(id) {
-            if(confirm('Are you sure you want to permanently delete this category?')) {
-                try {
-                    await api.request(`/categories/${id}`, { method: 'DELETE' });
-                    if(activeParent === id) activeParent = null;
-                    await loadCategories();
-                } catch(e) {
-                    alert(e.message);
+        function deleteCategory(id) {
+            const cat = categories.find(x => x._id === id);
+            const name = cat ? cat.name : '';
+            showConfirm(
+                'Delete Category?',
+                `Are you sure you want to permanently delete the category "${name}"? All associated topics/subcategories will also be deleted.`,
+                async () => {
+                    try {
+                        await api.request(`/categories/${id}`, { method: 'DELETE' });
+                        showToast('Category deleted successfully.');
+                        if(activeParent === id) activeParent = null;
+                        await loadCategories();
+                    } catch(e) {
+                        showToast(e.message || 'Cannot delete category.', 'error');
+                    }
                 }
-            }
+            );
         }
 
         function openSubModal(id = null) {
@@ -452,7 +624,9 @@ Java Collections Framework</pre>
             if(id) {
                 document.getElementById('subModalTitle').textContent = 'Modify Topic';
                 const s = subcategories.find(x => x._id === id);
-                document.getElementById('subName').value = s.name;
+                if (s) {
+                    document.getElementById('subName').value = s.name;
+                }
             } else {
                 document.getElementById('subModalTitle').textContent = 'Add Topic';
                 document.getElementById('subName').value = '';
@@ -470,27 +644,36 @@ Java Collections Framework</pre>
             try {
                 if(editSubId) {
                     await api.request(`/categories/subcategories/${editSubId}`, { method: 'PUT', body: JSON.stringify(payload) });
+                    showToast('Topic updated successfully.');
                 } else {
                     await api.request(`/categories/${activeParent}/subcategories`, { method: 'POST', body: JSON.stringify(payload) });
+                    showToast('Topic added successfully.');
                 }
                 closeSubModal();
                 await loadSubcategories(activeParent);
             } catch(err) {
-                alert(err.message);
+                showToast(err.message || 'Failed to save topic.', 'error');
             } finally {
                 btn.disabled = false;
             }
         });
 
-        async function deleteSubcategory(id) {
-            if(confirm('Are you sure you want to delete this topic?')) {
-                try {
-                    await api.request(`/categories/subcategories/${id}`, { method: 'DELETE' });
-                    await loadSubcategories(activeParent);
-                } catch(e) {
-                    alert(e.message);
+        function deleteSubcategory(id) {
+            const sub = subcategories.find(x => x._id === id);
+            const name = sub ? sub.name : '';
+            showConfirm(
+                'Delete Topic?',
+                `Are you sure you want to delete the topic "${name}"?`,
+                async () => {
+                    try {
+                        await api.request(`/categories/subcategories/${id}`, { method: 'DELETE' });
+                        showToast('Topic deleted successfully.');
+                        await loadSubcategories(activeParent);
+                    } catch(e) {
+                        showToast(e.message || 'Cannot delete topic.', 'error');
+                    }
                 }
-            }
+            );
         }
 
         function openSubBulkModal() {
@@ -519,28 +702,43 @@ Java Collections Framework</pre>
             errorDiv.innerHTML = '';
             errorDiv.classList.add('hidden');
             
+            // Fix Windows \r\n line break splits
             const parsed = inputVal.split('\n')
-                .map(line => line.trim())
+                .map(line => line.replace(/\r$/, '').trim())
                 .filter(line => line.length > 0);
 
             if (parsed.length === 0) {
-                errorDiv.innerHTML = `<strong>Input Error:</strong> Please enter at least one topic name.`;
+                errorDiv.textContent = 'Please enter at least one topic name.';
                 errorDiv.classList.remove('hidden');
                 return;
             }
 
+            if (parsed.length > 100) {
+                errorDiv.textContent = 'You can paste a maximum of 100 topics at a time.';
+                errorDiv.classList.remove('hidden');
+                return;
+            }
+
+            // Deduplicate locally
+            const uniqueList = [...new Set(parsed)];
+            if (uniqueList.length !== parsed.length) {
+                showToast('Filter: Deduplicated topic list automatically.', 'warning');
+            }
+
             btn.disabled = true;
             try {
-                await api.categories.bulkImportSubcategories(activeParent, { subcategories: parsed });
+                await api.categories.bulkImportSubcategories(activeParent, { subcategories: uniqueList });
+                showToast(`Successfully imported ${uniqueList.length} topics!`);
                 closeSubBulkModal();
                 await loadSubcategories(activeParent);
             } catch (err) {
+                // XSS Sanitize errors
                 if (err.errors && Array.isArray(err.errors)) {
-                    errorDiv.innerHTML = `<strong>Import Errors:</strong><ul class="list-disc list-inside mt-1">${err.errors.map(msg => `<li>${msg}</li>`).join('')}</ul>`;
+                    errorDiv.innerHTML = `<strong>Import Errors:</strong><ul class="list-disc list-inside mt-1">${err.errors.map(msg => `<li>${escapeHTML(msg)}</li>`).join('')}</ul>`;
                 } else if (err.message) {
-                    errorDiv.innerHTML = `<strong>Error:</strong> ${err.message}`;
+                    errorDiv.textContent = `Error: ${err.message}`;
                 } else {
-                    errorDiv.innerHTML = `<strong>Unknown server error occurred during import.</strong>`;
+                    errorDiv.textContent = 'Unknown server error occurred during import.';
                 }
                 errorDiv.classList.remove('hidden');
             } finally {
@@ -548,6 +746,25 @@ Java Collections Framework</pre>
             }
         });
 
+        function filterList() {
+            const search = document.getElementById('searchInput').value.toLowerCase();
+            const typeFilter = document.getElementById('typeFilter').value;
+
+            const cards = document.getElementById('catList').children;
+            categories.forEach((cat, idx) => {
+                const card = cards[idx];
+                if (!card) return;
+                
+                const matchesSearch = cat.name.toLowerCase().includes(search) || (cat.description || '').toLowerCase().includes(search);
+                const matchesType = !typeFilter || cat.type === typeFilter;
+
+                if (matchesSearch && matchesType) {
+                    card.classList.remove('hidden');
+                } else {
+                    card.classList.add('hidden');
+                }
+            });
+        }
     </script>
 </body>
 </html>
