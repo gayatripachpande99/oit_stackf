@@ -399,6 +399,23 @@ const submitTest = async (req, res) => {
   }
 };
 
+const toggleTest = async (req, res) => {
+  try {
+    const test = await Test.findById(req.params.id);
+    if (!test) {
+      return errorResponse(res, 404, 'Test not found');
+    }
+
+    test.isActive = !test.isActive;
+    await test.save();
+
+    return successResponse(res, 200, `Test status toggled to ${test.isActive ? 'Active' : 'Inactive'}`, test);
+  } catch (error) {
+    console.error('Toggle test error:', error.message);
+    return errorResponse(res, 500, 'Server error toggling test status');
+  }
+};
+
 module.exports = {
   getTests,
   getTest,
@@ -408,5 +425,7 @@ module.exports = {
   startTest,
   saveAnswer,
   submitTest,
+  toggleTest,
 };
+
 
