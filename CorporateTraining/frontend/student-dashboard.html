@@ -16,9 +16,9 @@
     <!-- API Config -->
     <script src="api.js?v=2"></script>
 </head>
-<body class="bg-slate-50 dark:bg-[#0a0f1e] text-slate-900 dark:text-white font-sans overflow-hidden">
+<body class="bg-slate-50 dark:bg-[#0a0f1e] text-slate-900 dark:text-white font-sans">
     
-    <div class="flex h-screen">
+    <div class="flex h-screen overflow-hidden">
         <!-- Sidebar -->
         <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 bg-slate-900 dark:bg-[#0d1117] border-r border-slate-800/60 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
             <div class="h-16 flex items-center justify-between px-5 border-b border-slate-800/60">
@@ -69,7 +69,7 @@
 
             <div class="p-3 border-t border-slate-800/60">
                 <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-800/50 border border-slate-700/40">
-                    <div id="userInitialsSidebar" class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm">S</div>
+                    <div id="userInitialsSidebar" class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm overflow-hidden">S</div>
                     <div class="flex-1 min-w-0">
                         <p id="userNameSidebar" class="text-sm font-semibold text-white truncate">Student</p>
                         <p id="userEmailSidebar" class="text-[10px] text-slate-500 truncate">student@example.com</p>
@@ -94,44 +94,105 @@
                     </button>
                     <div class="flex-1 flex flex-col gap-0.5">
                         <h1 class="text-2xl font-black text-slate-800 dark:text-white">Student Dashboard</h1>
-                        
                     </div>
                 </div>
                 <div class="flex items-center gap-1.5">
                     <a href="/" class="text-sm font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors mr-4">Home</a>
-          <button onclick="toggleTheme()" class="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                    <button onclick="toggleTheme()" class="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
                         <i data-lucide="moon" class="w-4 h-4 dark:hidden"></i>
                         <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
                     </button>
-                    <button class="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors relative">
-                        <i data-lucide="bell" class="w-4 h-4 text-slate-500 dark:text-slate-400"></i>
-                    </button>
+                    <div class="relative">
+                        <button onclick="toggleNotifications()" class="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors relative flex items-center justify-center">
+                            <i data-lucide="bell" class="w-4 h-4 text-slate-500 dark:text-slate-400"></i>
+                            <span id="notifBadge" class="absolute -top-0.5 -right-0.5 w-4 h-4 bg-rose-500 text-white text-[9px] font-bold rounded-full flex items-center justify-center">2</span>
+                        </button>
+                        
+                        <!-- Notifications Dropdown -->
+                        <div id="notifDropdown" class="hidden absolute right-0 mt-2 w-80 bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-800 rounded-2xl shadow-xl z-50 overflow-hidden">
+                            <div class="p-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center">
+                                <h4 class="font-bold text-sm">Notifications</h4>
+                                <button onclick="clearNotifs()" class="text-xs text-blue-500 hover:text-blue-600 font-semibold">Clear All</button>
+                            </div>
+                            <div class="divide-y divide-slate-100 dark:divide-slate-800 max-h-64 overflow-y-auto">
+                                <div class="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer flex gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-500 flex items-center justify-center shrink-0">
+                                        <i data-lucide="clipboard-list" class="w-4 h-4"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-bold text-slate-800 dark:text-white">New test assigned</p>
+                                        <p class="text-[10px] text-slate-400 mt-0.5">Quantitative Aptitude Test-4 is now open.</p>
+                                    </div>
+                                </div>
+                                <div class="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer flex gap-3">
+                                    <div class="w-8 h-8 rounded-lg bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500 flex items-center justify-center shrink-0">
+                                        <i data-lucide="award" class="w-4 h-4"></i>
+                                    </div>
+                                    <div>
+                                        <p class="text-xs font-bold text-slate-800 dark:text-white">Technical result ready</p>
+                                        <p class="text-[10px] text-slate-400 mt-0.5">DBMS Test-1 results have been published.</p>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                     <div class="ml-1 pl-3 border-l border-slate-200 dark:border-slate-700">
-                        <div id="userInitialsTopbar" class="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-xs shadow-md">S</div>
+                        <div id="userInitialsTopbar" class="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-xs shadow-md overflow-hidden">S</div>
                     </div>
                 </div>
             </header>
 
             <!-- Dashboard Content -->
             <main class="flex-1 overflow-y-auto p-4 lg:p-6">
-                <div id="loader" class="flex justify-center items-center h-full">
-                    <div class="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full"></div>
+                <!-- Skeleton Loader -->
+                <div id="loader" class="flex flex-col gap-6 w-full animate-pulse">
+                    <div class="h-28 rounded-3xl bg-slate-200 dark:bg-slate-800/80"></div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                        <div class="h-24 rounded-2xl bg-slate-200 dark:bg-slate-800/80"></div>
+                        <div class="h-24 rounded-2xl bg-slate-200 dark:bg-slate-800/80"></div>
+                        <div class="h-24 rounded-2xl bg-slate-200 dark:bg-slate-800/80"></div>
+                        <div class="h-24 rounded-2xl bg-slate-200 dark:bg-slate-800/80"></div>
+                    </div>
+                    <div class="h-8 w-48 rounded bg-slate-200 dark:bg-slate-800/80"></div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
+                        <div class="h-36 rounded-2xl bg-slate-200 dark:bg-slate-800/80"></div>
+                        <div class="h-36 rounded-2xl bg-slate-200 dark:bg-slate-800/80"></div>
+                        <div class="h-36 rounded-2xl bg-slate-200 dark:bg-slate-800/80"></div>
+                        <div class="h-36 rounded-2xl bg-slate-200 dark:bg-slate-800/80"></div>
+                    </div>
+                    <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                        <div class="h-80 rounded-2xl bg-slate-200 dark:bg-slate-800/80"></div>
+                        <div class="h-80 rounded-2xl bg-slate-200 dark:bg-slate-800/80"></div>
+                    </div>
                 </div>
 
-                <div id="dashboardContent" class="hidden flex flex-col gap-6">
+                <div id="dashboardContent" class="hidden flex-col gap-6">
+                    <!-- Welcome Banner -->
+                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4 p-6 rounded-3xl bg-gradient-to-r from-blue-600 via-indigo-600 to-purple-600 text-white shadow-xl shadow-blue-500/10">
+                        <div class="flex items-center gap-4">
+                            <div id="userWelcomePhoto" class="w-16 h-16 rounded-2xl bg-white/10 backdrop-blur-md border border-white/20 flex items-center justify-center text-2xl font-black shrink-0 overflow-hidden">
+                                S
+                            </div>
+                            <div>
+                                <h2 class="text-2xl font-black leading-tight">Good morning, <span id="welcomeName">Student</span>! 👋</h2>
+                                <p class="text-blue-100 text-sm mt-1 font-medium">Welcome back to your placement prep! Here is your summary for today.</p>
+                            </div>
+                        </div>
+                    </div>
+
                     <!-- Stats Cards -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
                         <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 shadow-sm flex items-center gap-4">
                             <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-blue-50 text-blue-600 dark:bg-blue-500/10 dark:text-blue-400"><i data-lucide="check-circle" class="w-6 h-6"></i></div>
-                            <div><p class="text-xs font-medium text-slate-500">Tests Completed</p><p id="stat-tests" class="text-2xl font-bold">0</p></div>
+                            <div><p class="text-xs font-medium text-slate-500">Tests Completed</p><p id="stat-tests" class="text-2xl font-bold">--</p></div>
                         </div>
                         <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 shadow-sm flex items-center gap-4">
                             <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400"><i data-lucide="award" class="w-6 h-6"></i></div>
-                            <div><p class="text-xs font-medium text-slate-500">Average Score</p><p id="stat-avg" class="text-2xl font-bold">0%</p></div>
+                            <div><p class="text-xs font-medium text-slate-500">Average Score</p><p id="stat-avg" class="text-2xl font-bold">--</p></div>
                         </div>
                         <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 shadow-sm flex items-center gap-4">
                             <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 dark:text-emerald-400"><i data-lucide="code-2" class="w-6 h-6"></i></div>
-                            <div><p class="text-xs font-medium text-slate-500">Coding Solved</p><p id="stat-coding" class="text-2xl font-bold">0</p></div>
+                            <div><p class="text-xs font-medium text-slate-500">Coding Solved</p><p id="stat-coding" class="text-2xl font-bold">--</p></div>
                         </div>
                         <div class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800/80 shadow-sm flex items-center gap-4">
                             <div class="w-12 h-12 rounded-xl flex items-center justify-center bg-purple-50 text-purple-600 dark:bg-purple-500/10 dark:text-purple-400"><i data-lucide="trophy" class="w-6 h-6"></i></div>
@@ -143,26 +204,26 @@
                     <div>
                         <h2 class="text-lg font-bold mb-4">Quick Preparation Actions</h2>
                         <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
-                            <div onclick="window.location.href='student-aptitude.html'" class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 flex flex-col hover:border-blue-500/40 cursor-pointer">
+                            <a href="student-aptitude.html" class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 flex flex-col hover:border-blue-500/40 cursor-pointer group no-underline text-inherit">
                                 <div class="w-12 h-12 rounded-2xl bg-blue-50 text-blue-600 dark:bg-blue-500/10 mb-4 flex items-center justify-center"><i data-lucide="brain"></i></div>
-                                <h3 class="font-bold mb-4">Aptitude Tests</h3>
-                                <button class="text-blue-500 font-bold text-sm text-left">Attempt Tests &rarr;</button>
-                            </div>
-                            <div onclick="window.location.href='student-technical.html'" class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 flex flex-col hover:border-indigo-500/40 cursor-pointer">
+                                <h3 class="font-bold mb-4 group-hover:text-blue-500 transition-colors">Aptitude Tests</h3>
+                                <span class="text-blue-500 font-bold text-sm text-left">Attempt Tests &rarr;</span>
+                            </a>
+                            <a href="student-technical.html" class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 flex flex-col hover:border-indigo-500/40 cursor-pointer group no-underline text-inherit">
                                 <div class="w-12 h-12 rounded-2xl bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 mb-4 flex items-center justify-center"><i data-lucide="terminal"></i></div>
-                                <h3 class="font-bold mb-4">Technical MCQs</h3>
-                                <button class="text-indigo-500 font-bold text-sm text-left">Attempt MCQs &rarr;</button>
-                            </div>
-                            <div onclick="window.location.href='student-coding.html'" class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 flex flex-col hover:border-emerald-500/40 cursor-pointer">
+                                <h3 class="font-bold mb-4 group-hover:text-indigo-500 transition-colors">Technical MCQs</h3>
+                                <span class="text-indigo-500 font-bold text-sm text-left">Attempt MCQs &rarr;</span>
+                            </a>
+                            <a href="student-coding.html" class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 flex flex-col hover:border-emerald-500/40 cursor-pointer group no-underline text-inherit">
                                 <div class="w-12 h-12 rounded-2xl bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10 mb-4 flex items-center justify-center"><i data-lucide="code-2"></i></div>
-                                <h3 class="font-bold mb-4">Coding Problems</h3>
-                                <button class="text-emerald-500 font-bold text-sm text-left">Practice Code &rarr;</button>
-                            </div>
-                            <div onclick="window.location.href='student-interview-setup.html'" class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 flex flex-col hover:border-purple-500/40 cursor-pointer">
+                                <h3 class="font-bold mb-4 group-hover:text-emerald-500 transition-colors">Coding Problems</h3>
+                                <span class="text-emerald-500 font-bold text-sm text-left">Practice Code &rarr;</span>
+                            </a>
+                            <a href="student-interview-setup.html" class="p-5 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 flex flex-col hover:border-purple-500/40 cursor-pointer group no-underline text-inherit">
                                 <div class="w-12 h-12 rounded-2xl bg-purple-50 text-purple-600 dark:bg-purple-500/10 mb-4 flex items-center justify-center"><i data-lucide="mic"></i></div>
-                                <h3 class="font-bold mb-4">Mock Interview</h3>
-                                <button class="text-purple-500 font-bold text-sm text-left">Start Interview &rarr;</button>
-                            </div>
+                                <h3 class="font-bold mb-4 group-hover:text-purple-500 transition-colors">Mock Interview</h3>
+                                <span class="text-purple-500 font-bold text-sm text-left">Start Interview &rarr;</span>
+                            </a>
                         </div>
                     </div>
 
@@ -171,12 +232,57 @@
                         <!-- Progress Chart -->
                         <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
                             <h3 class="font-bold mb-4">Recent Test Performance Trend</h3>
-                            <canvas id="progressChart" class="w-full h-64"></canvas>
+                            <div class="w-full h-64 relative">
+                                <canvas id="progressChart" class="w-full h-64"></canvas>
+                            </div>
                         </div>
                         <!-- Recent Results -->
                         <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
                             <h3 class="font-bold mb-4">Recent Activities</h3>
                             <div id="recentResultsList" class="flex flex-col gap-3"></div>
+                        </div>
+                    </div>
+
+                    <!-- Leaderboard Preview, Upcoming Tests & Badges -->
+                    <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                        <!-- Upcoming Tests -->
+                        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800 flex flex-col justify-between">
+                            <div>
+                                <h3 class="font-bold mb-4 flex items-center gap-2">
+                                    <i data-lucide="calendar" class="w-5 h-5 text-indigo-500"></i> Upcoming Scheduled Tests
+                                </h3>
+                                <div id="upcomingTestsList" class="flex flex-col gap-3">
+                                    <div class="animate-pulse flex flex-col gap-3">
+                                        <div class="h-12 bg-slate-200 dark:bg-slate-800 rounded-xl"></div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Leaderboard Preview -->
+                        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                            <h3 class="font-bold mb-4 flex items-center gap-2">
+                                <i data-lucide="crown" class="w-5 h-5 text-amber-500"></i> Leaderboard Standings
+                            </h3>
+                            <div id="leaderboardPreviewList" class="flex flex-col gap-3">
+                                <div class="animate-pulse flex flex-col gap-3">
+                                    <div class="h-12 bg-slate-200 dark:bg-slate-800 rounded-xl"></div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Completion Badges -->
+                        <div class="p-6 rounded-2xl bg-white dark:bg-slate-900 border border-slate-100 dark:border-slate-800">
+                            <h3 class="font-bold mb-4 flex items-center gap-2">
+                                <i data-lucide="award" class="w-5 h-5 text-purple-500"></i> Completion Badges
+                            </h3>
+                            <div id="badgesList" class="grid grid-cols-3 gap-4 text-center">
+                                <div class="animate-pulse col-span-3 flex justify-around">
+                                    <div class="w-12 h-12 rounded-full bg-slate-200 dark:bg-slate-800"></div>
+                                    <div class="w-12 h-12 rounded-full bg-slate-200 dark:bg-slate-800"></div>
+                                    <div class="w-12 h-12 rounded-full bg-slate-200 dark:bg-slate-800"></div>
+                                </div>
+                            </div>
                         </div>
                     </div>
                 </div>
@@ -191,7 +297,9 @@
             const html = document.documentElement;
             html.classList.toggle('dark');
             localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
-            renderChart(); // Re-render chart to adjust colors
+            if (chartInstance && lineChartData.length) {
+                renderChart(); // Re-render chart to adjust colors
+            }
         }
         if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
             document.documentElement.classList.add('dark');
@@ -207,6 +315,53 @@
         function logout() {
             api.removeToken();
             window.location.href = 'login.html';
+        }
+
+        function toggleNotifications() {
+            const dropdown = document.getElementById('notifDropdown');
+            dropdown.classList.toggle('hidden');
+        }
+
+        function clearNotifs() {
+            const badge = document.getElementById('notifBadge');
+            if (badge) badge.classList.add('hidden');
+            const list = document.querySelector('#notifDropdown .divide-y');
+            if (list) list.innerHTML = '<p class="p-6 text-center text-slate-400 text-xs">No new notifications</p>';
+        }
+
+        // Close dropdown when clicking outside
+        window.addEventListener('click', (e) => {
+            const dropdown = document.getElementById('notifDropdown');
+            const bellBtn = e.target.closest('button[onclick="toggleNotifications()"]');
+            if (dropdown && !dropdown.classList.contains('hidden') && !bellBtn && !e.target.closest('#notifDropdown')) {
+                dropdown.classList.add('hidden');
+            }
+        });
+
+        // Date formatter helper
+        const fmt = d => new Date(d).toLocaleDateString('en-IN', {
+            day: '2-digit', month: 'short', year: 'numeric'
+        });
+
+        // Extracted Result Item Render Template
+        function renderResultItem(res) {
+            return `
+                <div class="flex items-center justify-between p-3.5 border border-slate-100 dark:border-slate-800/80 rounded-xl bg-slate-50/20">
+                    <div class="flex items-center gap-3">
+                        <div class="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold ${res.passed ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10' : 'bg-rose-50 text-rose-600 dark:bg-rose-500/10'}">
+                            ${res.obtainedMarks}
+                        </div>
+                        <div>
+                            <p class="text-sm font-bold">${res.test?.name || 'Deleted Test'}</p>
+                            <p class="text-[10px] text-slate-400">${fmt(res.submittedAt)}</p>
+                        </div>
+                    </div>
+                    <div class="text-right">
+                        <p class="text-xs font-black ${res.passed ? 'text-emerald-500' : 'text-rose-500'}">${res.passed ? 'PASSED' : 'FAILED'}</p>
+                        <p class="text-[10px] text-slate-400">Score: ${res.percentage}%</p>
+                    </div>
+                </div>
+            `;
         }
 
         let lineChartData = [];
@@ -236,7 +391,17 @@
                 options: {
                     responsive: true,
                     maintainAspectRatio: false,
-                    plugins: { legend: { display: false } },
+                    plugins: { 
+                        legend: { display: false },
+                        tooltip: {
+                            callbacks: {
+                                label: ctx => ctx.parsed.y + '%'
+                            }
+                        }
+                    },
+                    elements: {
+                        point: { radius: 4, hoverRadius: 6 }
+                    },
                     scales: {
                         y: { 
                             beginAtZero: true, max: 100,
@@ -256,29 +421,55 @@
             const token = api.getToken();
             if (!token) { window.location.href = 'login.html'; return; }
 
+            const ALL_RESULTS_LIMIT = 100;
+            const RECENT_RESULTS_LIMIT = 15;
+
             try {
-                // Load User Data
-                const profileRes = await api.auth.getProfile();
+                // Fetch All Data in Parallel
+                const [profileRes, resultsRes, allResultsRes, solvedCountRes, leaderboardRes, testsRes] = await Promise.all([
+                    api.auth.getProfile(),
+                    api.request(`/results/my?limit=${RECENT_RESULTS_LIMIT}`),
+                    api.request(`/results/my?limit=${ALL_RESULTS_LIMIT}`),
+                    api.coding.getSolvedCount(),
+                    api.request('/leaderboard?limit=10'),
+                    api.request('/tests')
+                ]);
+
+                // User details & Profile photo support
                 const user = profileRes.data.user;
                 const initials = user.name.charAt(0).toUpperCase();
                 
-                document.getElementById('userInitialsSidebar').textContent = initials;
-                document.getElementById('userInitialsTopbar').textContent = initials;
+                const initialsSidebarEl = document.getElementById('userInitialsSidebar');
+                if (user.profileImage) {
+                    initialsSidebarEl.innerHTML = `<img src="${user.profileImage}" class="w-full h-full object-cover rounded-xl" alt="${user.name}">`;
+                } else {
+                    initialsSidebarEl.textContent = initials;
+                }
+
+                const initialsTopbarEl = document.getElementById('userInitialsTopbar');
+                if (user.profileImage) {
+                    initialsTopbarEl.innerHTML = `<img src="${user.profileImage}" class="w-full h-full object-cover rounded-xl" alt="${user.name}">`;
+                } else {
+                    initialsTopbarEl.textContent = initials;
+                }
+
+                const welcomePhotoEl = document.getElementById('userWelcomePhoto');
+                if (user.profileImage) {
+                    welcomePhotoEl.innerHTML = `<img src="${user.profileImage}" class="w-full h-full object-cover rounded-2xl" alt="${user.name}">`;
+                } else {
+                    welcomePhotoEl.textContent = initials;
+                }
+
+                document.getElementById('welcomeName').textContent = user.name.split(' ')[0];
                 document.getElementById('userNameSidebar').textContent = user.name;
                 document.getElementById('userEmailSidebar').textContent = user.email;
 
-                // Load Dashboard Data
-                const resultsRes = await api.request('/results/my?limit=5');
-                const allResultsRes = await api.request('/results/my?limit=100');
-                const problemsRes = await api.request('/coding/problems?limit=100');
-                const leaderboardRes = await api.request('/leaderboard?limit=1');
-
+                // Process Dashboard Statistics
                 const recentResults = resultsRes.data.results || [];
                 const allResults = allResultsRes.data.results || [];
-                const problems = problemsRes.data.problems || [];
+                const solvedCount = solvedCountRes.data.solvedCount || 0;
                 const rank = leaderboardRes.data.myRank || '--';
 
-                const solvedCount = problems.filter(p => p.isSolved).length;
                 const avgPct = allResults.length ? Math.round(allResults.reduce((sum, r) => sum + r.percentage, 0) / allResults.length) : 0;
 
                 // Populate Stats
@@ -287,50 +478,204 @@
                 document.getElementById('stat-coding').textContent = solvedCount;
                 document.getElementById('stat-rank').textContent = rank !== '--' ? '#' + rank : '--';
 
-                // Populate List
+                // Populate Recent Activities List
                 const listEl = document.getElementById('recentResultsList');
                 if (recentResults.length > 0) {
-                    listEl.innerHTML = recentResults.map(res => `
-                        <div class="flex items-center justify-between p-3.5 border border-slate-100 dark:border-slate-800/80 rounded-xl bg-slate-50/20">
-                            <div class="flex items-center gap-3">
-                                <div class="w-8 h-8 rounded-lg flex items-center justify-center text-xs font-bold ${res.passed ? 'bg-emerald-50 text-emerald-600 dark:bg-emerald-500/10' : 'bg-rose-50 text-rose-600 dark:bg-rose-500/10'}">
-                                    ${res.obtainedMarks}
-                                </div>
-                                <div>
-                                    <p class="text-sm font-bold">${res.test?.name || 'Deleted Test'}</p>
-                                    <p class="text-[10px] text-slate-400">${new Date(res.submittedAt).toLocaleDateString()}</p>
-                                </div>
-                            </div>
-                            <div class="text-right">
-                                <p class="text-xs font-black ${res.passed ? 'text-emerald-500' : 'text-rose-500'}">${res.passed ? 'PASSED' : 'FAILED'}</p>
-                                <p class="text-[10px] text-slate-400">Score: ${res.percentage}%</p>
-                            </div>
-                        </div>
-                    `).join('');
+                    listEl.innerHTML = recentResults.map(res => renderResultItem(res)).join('');
                 } else {
                     listEl.innerHTML = '<p class="py-8 text-center text-slate-400 text-sm">No tests taken yet. Get started today!</p>';
                 }
 
-                // Render Chart
+                // Render Chart (with blur mask empty state)
                 lineChartData = recentResults.slice().reverse().map(r => ({
-                    date: new Date(r.submittedAt).toLocaleDateString(undefined, { month: 'short', day: 'numeric' }),
+                    date: fmt(r.submittedAt).split(',')[0],
                     score: r.percentage
                 }));
-                if (lineChartData.length) {
-                    renderChart();
+
+                if (!lineChartData.length) {
+                    const container = document.getElementById('progressChart').parentNode;
+                    container.classList.add('relative');
+                    
+                    if (!document.getElementById('chartOverlay')) {
+                        const overlay = document.createElement('div');
+                        overlay.id = 'chartOverlay';
+                        overlay.className = 'absolute inset-0 bg-white/70 dark:bg-slate-900/70 backdrop-blur-[2px] flex flex-col items-center justify-center text-center p-6 z-10';
+                        overlay.innerHTML = `
+                            <div class="w-12 h-12 rounded-xl bg-slate-50 dark:bg-slate-800/50 text-slate-400 flex items-center justify-center mb-3">
+                                <i data-lucide="line-chart" class="w-6 h-6"></i>
+                            </div>
+                            <p class="text-sm font-bold text-slate-700 dark:text-slate-300">No performance data yet</p>
+                            <p class="text-xs text-slate-400 mt-1 max-w-[200px]">Attempt tests in Aptitude or Technical hubs to track your progress trend!</p>
+                        `;
+                        container.appendChild(overlay);
+                    }
+                    
+                    // Render dummy data behind blur
+                    lineChartData = [
+                        { date: 'Test 1', score: 40 },
+                        { date: 'Test 2', score: 65 },
+                        { date: 'Test 3', score: 50 },
+                        { date: 'Test 4', score: 85 }
+                    ];
                 } else {
-                    document.getElementById('progressChart').outerHTML = '<div class="h-64 flex items-center justify-center text-slate-400 text-sm">Attempt tests to visualize your progress over time!</div>';
+                    const overlay = document.getElementById('chartOverlay');
+                    if (overlay) overlay.remove();
+                }
+                renderChart();
+
+                // Populate Upcoming Scheduled Tests
+                const upcomingTestsList = document.getElementById('upcomingTestsList');
+                const now = new Date();
+                const upcomingTests = (testsRes.data || []).filter(t => t.startDate && new Date(t.startDate) > now);
+
+                if (upcomingTests.length > 0) {
+                    upcomingTestsList.innerHTML = upcomingTests.slice(0, 3).map(t => {
+                        const dateStr = new Date(t.startDate).toLocaleString('en-IN', {
+                            day: '2-digit', month: 'short', hour: '2-digit', minute: '2-digit'
+                        });
+                        return `
+                            <div class="flex items-center justify-between p-3.5 border border-slate-100 dark:border-slate-800/80 rounded-xl bg-slate-50/20">
+                                <div class="min-w-0">
+                                    <p class="text-xs font-bold text-slate-800 dark:text-white truncate">${t.name}</p>
+                                    <p class="text-[10px] text-slate-400 mt-0.5">Starts: ${dateStr}</p>
+                                </div>
+                                <span class="px-2 py-0.5 rounded text-[9px] font-bold bg-indigo-50 text-indigo-600 dark:bg-indigo-500/10 dark:text-indigo-400 shrink-0">Scheduled</span>
+                            </div>
+                        `;
+                    }).join('');
+                } else {
+                    upcomingTestsList.innerHTML = `
+                        <div class="flex flex-col items-center justify-center py-6 text-center">
+                            <div class="w-10 h-10 rounded-full bg-slate-50 dark:bg-slate-800/40 text-slate-400 flex items-center justify-center mb-2">
+                                <i data-lucide="calendar-x" class="w-5 h-5"></i>
+                            </div>
+                            <p class="text-xs font-bold text-slate-500">No upcoming tests</p>
+                            <p class="text-[10px] text-slate-400 mt-0.5">All scheduled tests have started.</p>
+                        </div>
+                    `;
                 }
 
-                // Show Dashboard
+                // Populate Leaderboard Preview
+                const leaderboardList = leaderboardRes.data.leaderboard || [];
+                const leaderboardPreviewList = document.getElementById('leaderboardPreviewList');
+                
+                if (leaderboardList.length > 0) {
+                    let previewHTML = leaderboardList.slice(0, 3).map((entry, index) => {
+                        const u = entry.user || {};
+                        const name = u.name || 'Anonymous User';
+                        const initials = name.charAt(0).toUpperCase();
+                        const medalColor = index === 0 ? 'text-amber-400' : index === 1 ? 'text-slate-400' : 'text-amber-600';
+                        
+                        let avatarContent = `<div class="w-8 h-8 rounded-lg bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 font-bold text-xs flex items-center justify-center shrink-0">${initials}</div>`;
+                        if (u.profileImage) {
+                            avatarContent = `<img src="${u.profileImage}" class="w-8 h-8 rounded-lg object-cover shrink-0" alt="${name}">`;
+                        }
+                        
+                        return `
+                            <div class="flex items-center justify-between p-2 border-b border-slate-100 dark:border-slate-800/40 last:border-0">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <span class="w-5 font-black text-xs text-slate-400">${index + 1}</span>
+                                    ${avatarContent}
+                                    <div class="min-w-0">
+                                        <p class="text-xs font-bold truncate">${name}</p>
+                                        <p class="text-[9px] text-slate-400 truncate">${u.college || 'General College'}</p>
+                                    </div>
+                                </div>
+                                <div class="flex items-center gap-2 shrink-0">
+                                    <span class="text-xs font-bold text-slate-500 dark:text-slate-400">${entry.totalScore} pts</span>
+                                    <i data-lucide="crown" class="w-3.5 h-3.5 ${medalColor}"></i>
+                                </div>
+                            </div>
+                        `;
+                    }).join('');
+                    
+                    const isStudentInTop3 = leaderboardList.slice(0, 3).some(entry => entry.user?._id === user._id);
+                    if (!isStudentInTop3 && rank !== '--') {
+                        const myEntry = leaderboardList.find(entry => entry.user?._id === user._id) || { totalScore: 0 };
+                        let avatarContent = `<div class="w-8 h-8 rounded-lg bg-blue-500 text-white font-bold text-xs flex items-center justify-center shrink-0">${initials}</div>`;
+                        if (user.profileImage) {
+                            avatarContent = `<img src="${user.profileImage}" class="w-8 h-8 rounded-lg object-cover shrink-0" alt="${user.name}">`;
+                        }
+                        
+                        previewHTML += `
+                            <div class="mt-2 pt-2 border-t border-dashed border-slate-200 dark:border-slate-850 flex items-center justify-between bg-blue-500/5 -mx-4 px-4 py-2 rounded-xl">
+                                <div class="flex items-center gap-2.5 min-w-0">
+                                    <span class="w-5 font-black text-xs text-blue-500">#${rank}</span>
+                                    ${avatarContent}
+                                    <div class="min-w-0">
+                                        <p class="text-xs font-bold truncate">${user.name} (You)</p>
+                                        <p class="text-[9px] text-slate-400 truncate">${user.college || 'Your College'}</p>
+                                    </div>
+                                </div>
+                                <span class="text-xs font-bold text-blue-500">${myEntry.totalScore || 0} pts</span>
+                            </div>
+                        `;
+                    }
+                    
+                    leaderboardPreviewList.innerHTML = previewHTML;
+                } else {
+                    leaderboardPreviewList.innerHTML = '<p class="py-6 text-center text-slate-400 text-xs">No standings recorded yet.</p>';
+                }
+
+                // Populate Completion Badges Wall
+                const badgesList = document.getElementById('badgesList');
+                const aptitudeCompletedCount = allResults.filter(r => r.test?.category?.type === 'aptitude').length;
+                const technicalCompletedCount = allResults.filter(r => r.test?.category?.type === 'technical').length;
+
+                const badges = [
+                    { id: 'badge1', name: 'Aptitude Ace', desc: 'Attempt 3 Aptitude Tests', active: aptitudeCompletedCount >= 3, icon: 'brain', color: 'from-blue-400 to-indigo-500' },
+                    { id: 'badge2', name: 'Tech Ninja', desc: 'Attempt 3 Technical MCQs', active: technicalCompletedCount >= 3, icon: 'terminal', color: 'from-indigo-400 to-purple-500' },
+                    { id: 'badge3', name: 'Code Master', desc: 'Solve 3 Code Challenges', active: solvedCount >= 3, icon: 'code-2', color: 'from-emerald-400 to-teal-500' }
+                ];
+
+                badgesList.innerHTML = badges.map(b => `
+                    <div class="flex flex-col items-center">
+                        <div class="w-12 h-12 rounded-full flex items-center justify-center shadow-md mb-2 transition-all duration-300 ${
+                            b.active 
+                            ? `bg-gradient-to-br ${b.color} text-white scale-100 hover:scale-110` 
+                            : 'bg-slate-100 dark:bg-slate-800 text-slate-400 dark:text-slate-650 scale-95 opacity-50'
+                        }" title="${b.desc}">
+                            <i data-lucide="${b.icon}" class="w-5 h-5"></i>
+                        </div>
+                        <p class="text-[10px] font-bold ${b.active ? 'text-slate-800 dark:text-slate-200' : 'text-slate-400 dark:text-slate-600'} leading-tight truncate w-full">${b.name}</p>
+                        <p class="text-[8px] text-slate-400 dark:text-slate-500 mt-0.5 leading-tight truncate w-full" title="${b.desc}">${b.active ? 'Earned' : b.desc}</p>
+                    </div>
+                `).join('');
+
+                // Render dynamic icons
+                lucide.createIcons();
+
+                // Show Dashboard Content using flex display
                 document.getElementById('loader').classList.add('hidden');
-                document.getElementById('dashboardContent').classList.remove('hidden');
+                const dashboardContent = document.getElementById('dashboardContent');
+                dashboardContent.style.display = 'flex';
+                dashboardContent.classList.remove('hidden');
 
             } catch (error) {
                 console.error(error);
-                if (error.message.includes('Invalid token') || error.message.includes('Not authorized')) {
+                if (error.message.includes('Invalid token') || error.message.includes('Not authorized') || error.message.includes('Session expired')) {
                     logout();
+                    return;
                 }
+                
+                // Hide loader and present high-fidelity error state
+                document.getElementById('loader').classList.add('hidden');
+                const dashboardContent = document.getElementById('dashboardContent');
+                dashboardContent.innerHTML = `
+                    <div class="flex flex-col items-center justify-center py-20 px-4 text-center max-w-md mx-auto">
+                        <div class="w-16 h-16 rounded-2xl bg-red-50 dark:bg-red-500/10 text-red-500 flex items-center justify-center mb-6">
+                            <i data-lucide="alert-triangle" class="w-8 h-8"></i>
+                        </div>
+                        <h2 class="text-xl font-bold text-slate-800 dark:text-white mb-2">Failed to load dashboard</h2>
+                        <p class="text-sm text-slate-500 dark:text-slate-400 mb-6">${error.message || 'Please check your internet connection and try again.'}</p>
+                        <button onclick="location.reload()" class="px-5 py-2.5 rounded-xl bg-blue-600 hover:bg-blue-700 text-white font-bold text-sm shadow-lg shadow-blue-500/20 transition-all">
+                            Retry Connection
+                        </button>
+                    </div>
+                `;
+                dashboardContent.style.display = 'flex';
+                dashboardContent.classList.remove('hidden');
+                lucide.createIcons();
             }
         });
     </script>

@@ -377,6 +377,14 @@
                 btnSpinner.classList.add('hidden');
             }
         });
+
+        // Check for session expired
+        document.addEventListener('DOMContentLoaded', () => {
+            const urlParams = new URLSearchParams(window.location.search);
+            if (urlParams.get('session') === 'expired') {
+                showToast('Your session has expired. Please log in again.', 'error');
+            }
+        });
     </script>
 </body>
 </html>

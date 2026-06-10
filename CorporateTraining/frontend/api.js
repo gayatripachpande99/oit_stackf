@@ -50,8 +50,8 @@ const api = {
                 const isAuthPage = window.location.pathname.endsWith('login.html') || window.location.pathname.endsWith('register.html');
                 if (!isAuthPage) {
                     api.removeToken();
-                    window.location.href = 'login.html';
-                    return;
+                    window.location.href = 'login.html?session=expired';
+                    throw new Error('Session expired');
                 }
             }
 
@@ -154,7 +154,8 @@ const api = {
         getProblem: (id) => api.request(`/coding/problems/${id}`),
         getSubmissions: (id) => api.request(`/coding/problems/${id}/submissions`),
         run: (data) => api.request('/coding/run', { method: 'POST', body: JSON.stringify(data) }),
-        submit: (data) => api.request('/coding/submit', { method: 'POST', body: JSON.stringify(data) })
+        submit: (data) => api.request('/coding/submit', { method: 'POST', body: JSON.stringify(data) }),
+        getSolvedCount: () => api.request('/coding/solved-count')
     },
 
     leaderboard: {

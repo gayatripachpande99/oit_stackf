@@ -478,6 +478,23 @@ const getMySubmissions = async (req, res) => {
   }
 };
 
+const getSolvedCount = async (req, res) => {
+  try {
+    const CodingSubmission = require('../models/CodingSubmission');
+    const uniqueSolvedProblems = await CodingSubmission.find({
+      user: req.user._id,
+      status: 'accepted'
+    }).distinct('problem');
+
+    return successResponse(res, 200, 'Solved problems count retrieved successfully', {
+      solvedCount: uniqueSolvedProblems.length
+    });
+  } catch (error) {
+    console.error('Get solved count error:', error.message);
+    return errorResponse(res, 500, 'Server error retrieving solved problems count');
+  }
+};
+
 module.exports = {
   getProblems,
   getProblem,
@@ -486,6 +503,8 @@ module.exports = {
   deleteProblem,
   runCode,
   submitCode,
-  getMySubmissions
+  getMySubmissions,
+  getSolvedCount
 };
+
 

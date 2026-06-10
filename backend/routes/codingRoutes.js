@@ -9,6 +9,7 @@ const {
   runCode,
   submitCode,
   getMySubmissions,
+  getSolvedCount
 } = require('../controllers/codingController');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
@@ -25,8 +26,10 @@ const problemValidation = [
 
 router.use(auth);
 
+router.get('/solved-count', getSolvedCount);
 router.get('/problems', getProblems);
 router.get('/', getProblems);
+
 
 router.get('/problems/:id', getProblem);
 router.get('/:id', getProblem);
