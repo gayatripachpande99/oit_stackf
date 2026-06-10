@@ -9,6 +9,7 @@ const {
   startTest,
   saveAnswer,
   submitTest,
+  toggleTest,
 } = require('../controllers/testController');
 const auth = require('../middleware/auth');
 const admin = require('../middleware/admin');
@@ -27,6 +28,7 @@ router.get('/:id', auth, getTest);
 router.post('/:id/start', auth, startTest);
 router.patch('/results/:resultId/save-answer', auth, saveAnswer);
 router.post('/:id/submit', auth, submitTest);
+router.patch('/:id/toggle', auth, admin, toggleTest);
 
 router.post('/', auth, admin, validate(testValidation), createTest);
 router.put('/:id', auth, admin, updateTest);
