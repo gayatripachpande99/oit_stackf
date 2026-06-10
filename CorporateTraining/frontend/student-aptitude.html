@@ -208,18 +208,23 @@
         function renderTests() {
             document.getElementById('loader').classList.add('hidden');
             
-            // Map tab to category name
-            let targetCategoryName = '';
-            if(currentTab === 'math') targetCategoryName = 'Math';
-            if(currentTab === 'verbal') targetCategoryName = 'Verbal';
-            if(currentTab === 'nonverbal') targetCategoryName = 'Non Verbal';
-
-            const targetCategory = categories.find(c => c.name.toLowerCase() === targetCategoryName.toLowerCase());
-            
             let filteredTests = [];
-            if(targetCategory) {
-                filteredTests = tests.filter(t => t.category && t.category._id === targetCategory._id);
-            }
+            filteredTests = tests.filter(t => {
+                const cat = t.category;
+                if(!cat || typeof cat !== 'object' || !cat.name) return false;
+                const catName = cat.name.toLowerCase();
+
+                if(currentTab === 'math') {
+                    return catName.includes('math') || catName.includes('quant');
+                }
+                if(currentTab === 'verbal') {
+                    return catName.includes('verbal') && !catName.includes('non');
+                }
+                if(currentTab === 'nonverbal') {
+                    return catName.includes('non') || catName.includes('reason');
+                }
+                return false;
+            });
 
             const container = document.getElementById('testContainer');
             const empty = document.getElementById('emptyState');
