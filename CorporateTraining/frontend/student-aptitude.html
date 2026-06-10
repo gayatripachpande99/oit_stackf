@@ -107,18 +107,6 @@
                     <p class="text-slate-500 text-sm">Improve your core aptitude skills with carefully curated test modules.</p>
                 </div>
 
-                <!-- Tabs -->
-                <div class="flex flex-wrap gap-2 p-1.5 bg-slate-200/50 dark:bg-slate-800/50 rounded-2xl w-fit">
-                    <button onclick="switchTab('math')" id="tab-math" class="tab-btn px-6 py-2.5 rounded-xl text-sm font-bold bg-white dark:bg-slate-700 text-blue-600 dark:text-white shadow-sm transition-all">
-                        Math / Quantitative
-                    </button>
-                    <button onclick="switchTab('verbal')" id="tab-verbal" class="tab-btn px-6 py-2.5 rounded-xl text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-all">
-                        Verbal Ability
-                    </button>
-                    <button onclick="switchTab('nonverbal')" id="tab-nonverbal" class="tab-btn px-6 py-2.5 rounded-xl text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-all">
-                        Non-Verbal Reasoning
-                    </button>
-                </div>
 
                 <div id="loader" class="flex justify-center py-12">
                     <div class="animate-spin h-8 w-8 border-4 border-blue-500 border-t-transparent rounded-full"></div>
@@ -162,7 +150,6 @@
             window.location.href = 'login.html';
         }
 
-        let currentTab = 'math';
         let categories = [];
         let tests = [];
 
@@ -192,44 +179,13 @@
             }
         });
 
-        function switchTab(tab) {
-            currentTab = tab;
-            
-            // Update Tab UI
-            document.querySelectorAll('.tab-btn').forEach(btn => {
-                btn.className = 'tab-btn px-6 py-2.5 rounded-xl text-sm font-bold text-slate-500 dark:text-slate-400 hover:text-slate-700 dark:hover:text-slate-200 transition-all';
-            });
-            const activeBtn = document.getElementById(`tab-${tab}`);
-            activeBtn.className = 'tab-btn px-6 py-2.5 rounded-xl text-sm font-bold bg-white dark:bg-slate-700 text-blue-600 dark:text-white shadow-sm transition-all';
-            
-            renderTests();
-        }
-
         function renderTests() {
             document.getElementById('loader').classList.add('hidden');
             
-            let filteredTests = [];
-            filteredTests = tests.filter(t => {
-                const cat = t.category;
-                if(!cat || typeof cat !== 'object' || !cat.name) return false;
-                const catName = cat.name.toLowerCase();
-
-                if(currentTab === 'math') {
-                    return catName.includes('math') || catName.includes('quant');
-                }
-                if(currentTab === 'verbal') {
-                    return catName.includes('verbal') && !catName.includes('non');
-                }
-                if(currentTab === 'nonverbal') {
-                    return catName.includes('non') || catName.includes('reason');
-                }
-                return false;
-            });
-
             const container = document.getElementById('testContainer');
             const empty = document.getElementById('emptyState');
 
-            if (filteredTests.length === 0) {
+            if (tests.length === 0) {
                 container.classList.add('hidden');
                 empty.classList.remove('hidden');
                 empty.classList.add('flex');
@@ -237,7 +193,7 @@
                 empty.classList.add('hidden');
                 container.classList.remove('hidden');
                 
-                container.innerHTML = filteredTests.map(t => {
+                container.innerHTML = tests.map(t => {
                     const isEnded = t.endDate && new Date(t.endDate) < new Date();
                     const attempt = t.userResult;
 

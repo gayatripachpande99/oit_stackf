@@ -82,12 +82,19 @@
 
         <!-- Main Content -->
         <div class="flex-1 lg:ml-64 flex flex-col min-w-0 h-full">
-            <header class="h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/60 flex items-center justify-between px-4 lg:px-6 shrink-0 z-20">
-                <div class="flex items-center gap-3">
+            <header class="min-h-[4.5rem] py-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/60 flex flex-col md:flex-row md:items-center justify-between px-4 lg:px-6 shrink-0 z-20 gap-4">
+                <div class="flex items-center gap-3 flex-1">
                     <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">
                         <i data-lucide="menu" class="w-5 h-5 text-slate-600 dark:text-slate-400"></i>
                     </button>
-                    <h2 class="font-bold text-lg hidden sm:block">Admin Portal</h2>
+                    <div class="flex-1 flex flex-col sm:flex-row sm:items-start md:items-center justify-between gap-4">
+                        <div class="flex flex-col gap-1">
+                            <a href="admin-coding.html" class="inline-flex items-center text-xs text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white transition-colors font-bold mb-1">
+                                <i data-lucide="chevron-left" class="w-3.5 h-3.5 mr-1"></i> Back to Coding Problems
+                            </a>
+                            <h1 id="pageTitle" class="text-2xl font-black text-slate-900 dark:text-white">Add Coding Challenge</h1>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex items-center gap-2">
                     <a href="/" class="text-sm font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors mr-2">Home</a>
@@ -102,12 +109,7 @@
 
                 <div id="content" class="hidden flex-col gap-6 p-6 max-w-4xl mx-auto w-full">
         
-        <div>
-            <a href="admin-coding.html" class="inline-flex items-center text-sm text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white transition-colors font-bold mb-4">
-                <i data-lucide="chevron-left" class="w-4 h-4 mr-1.5"></i> Back to Coding Problems
-            </a>
-            <h1 id="pageTitle" class="text-2xl font-black text-slate-900 dark:text-white">Add Coding Challenge</h1>
-        </div>
+        
 
         <form id="problemForm" onsubmit="saveProblem(event)" class="flex flex-col gap-6">
 

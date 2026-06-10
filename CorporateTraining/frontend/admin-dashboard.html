@@ -83,12 +83,28 @@
 
         <!-- Main Content -->
         <div class="flex-1 lg:ml-64 flex flex-col min-w-0 h-full">
-            <header class="h-16 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/60 flex items-center justify-between px-4 lg:px-6 shrink-0 z-20">
-                <div class="flex items-center gap-3">
+            <header class="min-h-[4.5rem] py-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/60 flex flex-col md:flex-row md:items-center justify-between px-4 lg:px-6 shrink-0 z-20 gap-4">
+                <div class="flex items-center gap-3 flex-1">
                     <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">
                         <i data-lucide="menu" class="w-5 h-5 text-slate-600 dark:text-slate-400"></i>
                     </button>
-                    <h2 class="font-bold text-lg hidden sm:block">Admin Portal</h2>
+                    <div class="flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h1 class="text-2xl font-black text-slate-800 dark:text-white">Admin Dashboard</h1>
+                            <p class="text-sm text-slate-400 mt-0.5">Quick overview and administration shortcuts.</p>
+                        </div>
+                        <div class="flex flex-wrap items-center gap-3">
+                            <button onclick="window.location.href='admin-test-create.html'" class="px-3 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-xs flex items-center gap-1.5 hover:from-blue-700 hover:to-indigo-700">
+                                <i data-lucide="plus-circle" class="w-4 h-4"></i> Create Test
+                            </button>
+                            <button onclick="window.location.href='admin-question-create.html'" class="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 font-bold text-xs flex items-center gap-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-white">
+                                <i data-lucide="plus-circle" class="w-4 h-4"></i> Add MCQ
+                            </button>
+                            <button onclick="window.location.href='admin-coding-create.html'" class="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 font-bold text-xs flex items-center gap-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-white">
+                                <i data-lucide="plus-circle" class="w-4 h-4"></i> Add Code Challenge
+                            </button>
+                        </div>
+                    </div>
                 </div>
                 <div class="flex items-center gap-2">
                     <a href="/" class="text-sm font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors mr-2">Home</a>
@@ -103,20 +119,7 @@
 
                 <div class="max-w-7xl mx-auto flex flex-col gap-6 w-full">
                     <!-- Page Title & Actions -->
-                    <div class="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
-                        <h1 class="text-2xl font-black text-slate-800 dark:text-white">Admin Dashboard</h1>
-                        <div class="flex flex-wrap items-center gap-3">
-                            <button onclick="window.location.href='admin-test-create.html'" class="px-3 py-2 rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 text-white font-bold text-xs flex items-center gap-1.5 hover:from-blue-700 hover:to-indigo-700">
-                                <i data-lucide="plus-circle" class="w-4 h-4"></i> Create Test
-                            </button>
-                            <button onclick="window.location.href='admin-question-create.html'" class="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 font-bold text-xs flex items-center gap-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-white">
-                                <i data-lucide="plus-circle" class="w-4 h-4"></i> Add MCQ
-                            </button>
-                            <button onclick="window.location.href='admin-coding-create.html'" class="px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 font-bold text-xs flex items-center gap-1.5 hover:bg-slate-100 dark:hover:bg-slate-800 text-slate-800 dark:text-white">
-                                <i data-lucide="plus-circle" class="w-4 h-4"></i> Add Code Challenge
-                            </button>
-                        </div>
-                    </div>
+                    
 
                     <!-- Stats Cards Row -->
                     <div class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-5">
