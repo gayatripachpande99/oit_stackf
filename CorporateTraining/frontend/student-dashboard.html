@@ -464,7 +464,8 @@
                         title: 'New test assigned',
                         desc: `${t.name} is now open for attempt.`,
                         icon: 'clipboard-list',
-                        bg: 'bg-blue-50 dark:bg-blue-500/10 text-blue-500'
+                        bg: 'bg-blue-50 dark:bg-blue-500/10 text-blue-500',
+                        link: `test-start.html?id=${t._id}`
                     });
                 });
 
@@ -475,7 +476,8 @@
                         title: 'Test result ready',
                         desc: `You scored ${r.obtainedMarks}/${r.totalMarks} (${Math.round(r.percentage)}%) in ${testName}.`,
                         icon: 'award',
-                        bg: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500'
+                        bg: 'bg-emerald-50 dark:bg-emerald-500/10 text-emerald-500',
+                        link: `test-result.html?id=${r._id}`
                     });
                 });
 
@@ -483,7 +485,7 @@
                     notifBadge.classList.remove('hidden');
                     notifBadge.textContent = notifications.length;
                     notifList.innerHTML = notifications.map(n => `
-                        <div class="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer flex gap-3">
+                        <div onclick="window.location.href='${n.link}'" class="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer flex gap-3">
                             <div class="w-8 h-8 rounded-lg ${n.bg} flex items-center justify-center shrink-0">
                                 <i data-lucide="${n.icon}" class="w-4 h-4"></i>
                             </div>
