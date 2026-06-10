@@ -419,7 +419,7 @@
 
                     sections = [];
                     for(const catId of Object.keys(grouped)) {
-                        const secId = Date.now() + Math.random();
+                        const secId = (Date.now() + Math.random()).toString();
                         const catObj = categories.find(c => c._id === catId);
                         
                         sections.push({
@@ -466,7 +466,7 @@
         }
 
         async function addSection() {
-            const id = Date.now() + Math.random();
+            const id = (Date.now() + Math.random()).toString();
             sections.push({
                 id,
                 name: `Section ${sections.length + 1}`,
@@ -511,6 +511,7 @@
             sec.category = catId;
             sec.subcategories = [];
             sec.selectedQuestions = [];
+            sec.searchQuery = '';
 
             if(!catId) {
                 sec.subcategoriesList = [];
@@ -526,20 +527,7 @@
 
             if(loaderDiv) loaderDiv.classList.add('hidden');
             
-            // Re-render the subcategories box directly
-            const subBox = document.getElementById(`subcategoriesContainer-${id}`);
-            if(subBox) {
-                if(topics.length === 0) {
-                    subBox.innerHTML = `<p class="text-[10px] text-slate-400 font-bold">No subcategory topics found for this category.</p>`;
-                } else {
-                    subBox.innerHTML = topics.map(sub => `
-                        <label class="flex items-center gap-1.5 p-2 rounded-lg bg-slate-50 dark:bg-slate-800/40 text-[11px] font-bold border border-slate-100 dark:border-slate-800/80 cursor-pointer">
-                            <input type="checkbox" value="${sub._id}" onchange="toggleSubcategory('${id}', '${sub._id}')" class="rounded text-indigo-600 focus:ring-0">
-                            <span>${sub.name}</span>
-                        </label>
-                    `).join('');
-                }
-            }
+            renderSections();
         }
 
         function toggleSubcategory(id, subId) {
@@ -555,6 +543,12 @@
                 sec.selectedQuestions = [];
                 const countBadge = document.getElementById(`countBadge-${id}`);
                 if(countBadge) updateVisualCountFeedback(sec, countBadge);
+
+                // Update the inline questions list
+                const listDiv = document.getElementById(`questionsList-${id}`);
+                if(listDiv) {
+                    listDiv.innerHTML = getInlineQuestionsHTML(sec);
+                }
             }
         }
 
@@ -564,16 +558,76 @@
 
             sec.mode = mode;
             sec.selectedQuestions = [];
+            sec.searchQuery = '';
 
-            const manualBtn = document.getElementById(`manualBtn-${id}`);
-            const countBadge = document.getElementById(`countBadge-${id}`);
-            
-            if(mode === 'manual') {
-                if(manualBtn) manualBtn.classList.remove('hidden');
-            } else {
-                if(manualBtn) manualBtn.classList.add('hidden');
+            renderSections();
+        }
+
+        function getInlineQuestionsHTML(sec) {
+            if(!sec.category) {
+                return `<p class="text-[10px] text-slate-400 font-bold p-3">Please select a Category first to view questions.</p>`;
             }
 
+            const pool = questionsCache.filter(q => {
+                const catMatch = (q.category?._id || q.category) === sec.category;
+                if(!catMatch) return false;
+                
+                if(sec.subcategories.length > 0) {
+                    const subId = q.subcategory?._id || q.subcategory;
+                    return sec.subcategories.includes(subId);
+                }
+                return true;
+            });
+
+            const search = (sec.searchQuery || '').toLowerCase();
+            const filtered = pool.filter(q => q.question.toLowerCase().includes(search));
+
+            if(filtered.length === 0) {
+                return `<div class="p-4 text-center text-[10px] font-bold text-slate-400 leading-normal">No matching questions found.</div>`;
+            }
+
+            return filtered.map(q => {
+                const checked = sec.selectedQuestions.includes(q._id);
+                let diffBadge = '';
+                if(q.difficulty==='easy') diffBadge='bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400';
+                if(q.difficulty==='medium') diffBadge='bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400';
+                if(q.difficulty==='hard') diffBadge='bg-rose-100 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400';
+
+                return `
+                <label class="flex items-start gap-3 p-2.5 text-[11px] font-semibold leading-relaxed cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+                    <input type="checkbox" value="${q._id}" ${checked?'checked':''} onchange="toggleInlineQuestionSelection('${sec.id}', '${q._id}')" class="rounded text-indigo-600 focus:ring-0 mt-0.5">
+                    <div class="flex flex-col gap-0.5 w-full min-w-0">
+                        <span class="text-slate-800 dark:text-slate-200 font-extrabold truncate" title="${q.question.replace(/"/g, '&quot;')}">${q.question}</span>
+                        <div class="flex items-center gap-2 mt-0.5">
+                            <span class="px-1.5 py-0.5 rounded text-[8px] uppercase font-bold ${diffBadge}">${q.difficulty}</span>
+                            <span class="text-[8px] text-slate-400 font-bold">${q.marks} marks</span>
+                            <span class="text-[8px] text-slate-500 font-extrabold truncate max-w-[120px]">${q.subcategory?.name || 'General topic'}</span>
+                        </div>
+                    </div>
+                </label>
+                `;
+            }).join('');
+        }
+
+        function handleInlineQuestionSearch(id, val) {
+            const sec = sections.find(s => s.id === id);
+            if(!sec) return;
+            sec.searchQuery = val;
+            const listDiv = document.getElementById(`questionsList-${id}`);
+            if(listDiv) {
+                listDiv.innerHTML = getInlineQuestionsHTML(sec);
+            }
+        }
+
+        function toggleInlineQuestionSelection(secId, qId) {
+            const sec = sections.find(s => s.id === secId);
+            if(!sec) return;
+
+            const idx = sec.selectedQuestions.indexOf(qId);
+            if(idx > -1) sec.selectedQuestions.splice(idx, 1);
+            else sec.selectedQuestions.push(qId);
+
+            const countBadge = document.getElementById(`countBadge-${secId}`);
             if(countBadge) updateVisualCountFeedback(sec, countBadge);
         }
 
@@ -610,7 +664,7 @@
                 const manualBtnId = `manualBtn-${s.id}`;
                 
                 // Get subcategories HTML list if cached
-                let subsHTML = `<p class="text-[10px] text-slate-400 font-bold">Please select a Category first to view topics.</p>`;
+                let subsHTML = ``;
                 if(s.category && s.subcategoriesList) {
                     if(s.subcategoriesList.length === 0) {
                         subsHTML = `<p class="text-[10px] text-slate-400 font-bold">No subcategory topics found for this category.</p>`;
@@ -635,7 +689,7 @@
                             <span id="${countBadgeId}" class="px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
                                 ${s.count} questions to draw automatically
                             </span>
-                            ${sections.length > 1 ? `<button type="button" onclick="removeSection(${s.id})" class="p-1.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-xl transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
+                            ${sections.length > 1 ? `<button type="button" onclick="removeSection('${s.id}')" class="p-1.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-xl transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
                         </div>
                     </div>
 
@@ -645,7 +699,7 @@
                             <label class="text-[9px] font-black uppercase text-slate-400">Category</label>
                             <select onchange="handleCategoryChange('${s.id}', this.value)" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-xs focus:outline-none">
                                 <option value="">Select Category</option>
-                                ${categories.map(c => `<option value="${c._id}" ${s.category === c._id ? 'selected' : ''}>${c.name} (${c.type})</option>`).join('')}
+                                ${categories.map(c => `<option value="${c._id}" ${s.category === c._id ? 'selected' : ''}>${c.name}</option>`).join('')}
                             </select>
                         </div>
                         <div class="flex flex-col gap-1.5">
@@ -672,8 +726,19 @@
                         </div>
                     </div>
 
-                    <!-- Pick Questions Button -->
-                    <div class="flex justify-end pt-2 border-t border-slate-50 dark:border-slate-800/40">
+                    <!-- Inline Questions Container (if manual mode) -->
+                    <div class="${s.mode === 'manual' ? '' : 'hidden'} flex flex-col gap-2.5 border-t border-slate-50 dark:border-slate-800/50 pt-4" id="questionsContainer-${s.id}">
+                        <div class="flex items-center justify-between">
+                            <label class="text-[9px] font-black uppercase text-slate-400">Select Specific Questions</label>
+                            <input type="text" placeholder="Search questions..." value="${s.searchQuery || ''}" oninput="handleInlineQuestionSearch('${s.id}', this.value)" class="px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-[10px] text-slate-900 dark:text-white focus:outline-none w-40">
+                        </div>
+                        <div class="max-h-60 overflow-y-auto border border-slate-100 dark:border-slate-800 rounded-xl divide-y divide-slate-100 dark:divide-slate-800/60 bg-slate-50/20 dark:bg-slate-950/20" id="questionsList-${s.id}">
+                            ${getInlineQuestionsHTML(s)}
+                        </div>
+                    </div>
+
+                    <!-- Pick Questions Button (Hidden) -->
+                    <div class="hidden justify-end pt-2 border-t border-slate-50 dark:border-slate-800/40">
                         <button type="button" onclick="openPickerModal('${s.id}')" id="${manualBtnId}" class="${s.mode==='manual'?'':'hidden'} px-4 py-2 border border-indigo-500/20 bg-indigo-500/10 text-indigo-500 rounded-xl text-xs font-black hover:bg-indigo-500 hover:text-white transition-all flex items-center gap-1.5">
                             <i data-lucide="list-checks" class="w-4 h-4"></i> Select Specific Questions
                         </button>

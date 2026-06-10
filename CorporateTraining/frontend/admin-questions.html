@@ -235,7 +235,7 @@
                 categories = catRes.data;
                 const catFilter = document.getElementById('catFilter');
                 categories.forEach(c => {
-                    catFilter.innerHTML += `<option value="${c._id}">${c.name} (${c.type})</option>`;
+                    catFilter.innerHTML += `<option value="${c._id}">${c.name}</option>`;
                 });
 
                 fetchQuestions();
