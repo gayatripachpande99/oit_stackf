@@ -546,7 +546,6 @@
 
                 // Populate Upcoming Scheduled Tests
                 const upcomingTestsList = document.getElementById('upcomingTestsList');
-                const now = new Date();
                 const upcomingTests = (testsRes.data || []).filter(t => t.startDate && new Date(t.startDate) > now);
 
                 if (upcomingTests.length > 0) {
