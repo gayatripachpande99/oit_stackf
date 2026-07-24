@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Redirecting...</title>
+    <script>
+        const params = new URLSearchParams(window.location.search);
+        params.set('categoryType', 'technical');
+        window.location.replace('admin-question-create.html?' + params.toString());
+    </script>
+</head>
+<body>
+    <p>Redirecting to MCQ Editor...</p>
+</body>
+</html>

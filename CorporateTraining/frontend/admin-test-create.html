@@ -1,0 +1,1183 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - Advanced Test Builder</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+</head>
+<body class="bg-slate-50 dark:bg-[#0a0f1e] text-slate-900 dark:text-white font-sans">
+    <div class="flex h-screen overflow-hidden">
+
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 bg-slate-900 dark:bg-[#0d1117] border-r border-slate-800/60 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
+            <div class="h-16 flex items-center justify-between px-5 border-b border-slate-800/60">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-white text-sm leading-none">OIT_STACK</h1>
+                        <p class="text-[10px] text-slate-500 font-medium mt-0.5">Admin Portal</p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="flex-1 py-3 px-3 overflow-y-auto space-y-0.5">
+                <a href="/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
+                    <i data-lucide="home" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Home
+                </a>
+                <a href="admin-dashboard.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0"></i> Dashboard
+                </a>
+                <a href="admin-students.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="users" class="w-4 h-4 shrink-0"></i> Students
+                </a>
+                <a href="admin-categories.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="folder-tree" class="w-4 h-4 shrink-0"></i> Categories
+                </a>
+                <a href="admin-questions.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="database" class="w-4 h-4 shrink-0"></i> Question Pool
+                </a>
+                <a href="admin-technical-mcq.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="terminal" class="w-4 h-4 shrink-0"></i> Technical MCQs
+                </a>
+                <a href="admin-tests.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-indigo-400 bg-indigo-500/15">
+                    <i data-lucide="file-text" class="w-4 h-4 shrink-0 text-indigo-400"></i> Tests
+                </a>
+                <a href="admin-coding.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="code" class="w-4 h-4 shrink-0"></i> Coding Challenges
+                </a>
+                <a href="admin-interviews.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="mic" class="w-4 h-4 shrink-0"></i> Mock Interviews
+                </a>
+                <a href="admin-results.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="award" class="w-4 h-4 shrink-0"></i> Results
+                </a>
+                <a href="admin-analytics.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="bar-chart-3" class="w-4 h-4 shrink-0"></i> Analytics
+                </a>
+            </nav>
+            <div class="p-3 border-t border-slate-800/60">
+                <button onclick="logout()" class="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl bg-slate-800/50 hover:bg-slate-800 border border-slate-700/40 text-slate-400 hover:text-rose-400 transition-colors">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                    <span class="text-sm font-medium">Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Overlay for mobile sidebar -->
+        <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 hidden lg:hidden"></div>
+
+        <!-- Main Content -->
+        <div class="flex-1 lg:ml-64 flex flex-col min-w-0 h-full">
+            <header class="min-h-[4.5rem] py-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/60 flex flex-col md:flex-row md:items-center justify-between px-4 lg:px-6 shrink-0 z-20 gap-4">
+                <div class="flex items-center gap-3 flex-1">
+                    <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <i data-lucide="menu" class="w-5 h-5 text-slate-600 dark:text-slate-400"></i>
+                    </button>
+                    <div class="flex-1 flex flex-col sm:flex-row sm:items-start md:items-center justify-between gap-4">
+                        <div class="flex flex-col gap-1">
+                            <a href="admin-tests.html" class="inline-flex items-center text-xs text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white transition-colors font-bold mb-1">
+                                <i data-lucide="chevron-left" class="w-3.5 h-3.5 mr-1"></i> Back to Tests List
+                            </a>
+                            <h1 id="pageTitle" class="text-2xl font-black text-slate-900 dark:text-white flex items-center gap-2">
+                                <i data-lucide="sliders" class="w-6 h-6 text-indigo-500"></i>
+                                Advanced Test Builder
+                            </h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a href="/" class="text-sm font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors mr-2">Home</a>
+                    <button onclick="toggleTheme()" class="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                        <i data-lucide="moon" class="w-4 h-4 dark:hidden"></i>
+                        <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+                    </button>
+                </div>
+            </header>
+
+            <main class="flex-1 overflow-y-auto p-4 lg:p-6 bg-slate-50/50 dark:bg-[#0a0f1e]/50">
+
+                <div id="loader" class="flex justify-center py-12">
+                    <div class="animate-spin h-8 w-8 border-4 border-indigo-500 border-t-transparent rounded-full"></div>
+                </div>
+
+                <div id="content" style="display:none" class="flex-col gap-6 p-2 md:p-4 max-w-5xl mx-auto w-full">
+                    <form id="testForm" onsubmit="saveTest(event)" class="grid grid-cols-1 lg:grid-cols-3 gap-6 items-start">
+                        
+                        <!-- Left Details settings -->
+                        <div class="lg:col-span-2 flex flex-col gap-6">
+                            
+                            <!-- Basic details card -->
+                            <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm p-6 flex flex-col gap-5">
+                                <h3 class="font-extrabold text-sm uppercase tracking-wider text-slate-400 pb-2 border-b border-slate-100 dark:border-slate-800 flex items-center gap-1.5">
+                                    <i data-lucide="file-text" class="w-4 h-4 text-indigo-500"></i> Test Overview
+                                </h3>
+                                
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-[10px] font-black uppercase tracking-wider text-slate-400">Test Name</label>
+                                    <input type="text" id="tName" required placeholder="e.g. OIT_STACK Final Placement Mock Challenge" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                                </div>
+
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-[10px] font-black uppercase tracking-wider text-slate-400">Description (Optional)</label>
+                                    <textarea id="tDescription" rows="2" placeholder="e.g. Assessment containing Aptitude, Database, and core technical sections." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20"></textarea>
+                                </div>
+
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-[10px] font-black uppercase tracking-wider text-slate-400">Instructions / Rules (Student facing)</label>
+                                    <textarea id="tInstructions" rows="3" placeholder="e.g. 1. Do not refresh the page. 2. Penalty of -0.25 is applied on wrong answers." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20"></textarea>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                                    <div class="flex flex-col gap-1.5">
+                                        <label class="text-[10px] font-black uppercase tracking-wider text-slate-400">Difficulty</label>
+                                        <select id="tDifficulty" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                                            <option value="mixed">Mixed</option>
+                                            <option value="easy">Easy</option>
+                                            <option value="medium">Medium</option>
+                                            <option value="hard">Hard</option>
+                                        </select>
+                                    </div>
+                                    <div class="flex flex-col gap-1.5">
+                                        <label class="text-[10px] font-black uppercase tracking-wider text-slate-400">Test Time / Duration (mins)</label>
+                                        <input type="number" id="tTime" value="30" required min="1" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                                    </div>
+                                    <div class="flex flex-col gap-1.5">
+                                        <label class="text-[10px] font-black uppercase tracking-wider text-slate-400">Passing Marks</label>
+                                        <input type="number" id="tPass" value="10" required min="0" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                                    </div>
+                                </div>
+
+                                <div class="grid grid-cols-1 sm:grid-cols-2 gap-5 border-t border-slate-100 dark:border-slate-800 pt-4">
+                                    <div class="flex flex-col gap-1.5">
+                                        <label class="text-[10px] font-black uppercase tracking-wider text-slate-400">Start Test Time (Optional)</label>
+                                        <input type="datetime-local" id="tStartDate" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                                    </div>
+                                    <div class="flex flex-col gap-1.5">
+                                        <label class="text-[10px] font-black uppercase tracking-wider text-slate-400">End Test Time (Optional)</label>
+                                        <input type="datetime-local" id="tEndDate" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                                    </div>
+                                </div>
+                            </div>
+
+                            <!-- Dynamic Sections Builder -->
+                            <div class="flex flex-col gap-4">
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <h3 class="font-extrabold text-slate-800 dark:text-white">Structure Sections</h3>
+                                        <p class="text-xs text-slate-400 mt-0.5" id="sectionsSubtitle">0 questions total across 0 section(s)</p>
+                                    </div>
+                                    <button type="button" onclick="addSection()" class="flex items-center gap-1.5 px-4 py-2 bg-indigo-500/10 text-indigo-500 border border-indigo-500/20 rounded-xl text-xs font-black hover:bg-indigo-500 hover:text-white transition-all">
+                                        <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Section
+                                    </button>
+                                </div>
+
+                                <div id="sectionsContainer" class="flex flex-col gap-6">
+                                    <!-- Dynamic section builder items injected here -->
+                                </div>
+                            </div>
+
+                        </div>
+
+                        <!-- Right details card -->
+                        <div class="flex flex-col gap-6">
+                            <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 shadow-sm p-6 flex flex-col gap-5 sticky top-24">
+                                <h3 class="font-extrabold text-sm uppercase tracking-wider text-slate-400 pb-2 border-b border-slate-100 dark:border-slate-800 flex items-center gap-1.5">
+                                    <i data-lucide="settings-2" class="w-4 h-4 text-indigo-500"></i> Rules
+                                </h3>
+
+                                <div class="flex items-center justify-between">
+                                    <div>
+                                        <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Set Active</label>
+                                        <p class="text-[10px] text-slate-400 mt-0.5">Show this test in student lists.</p>
+                                    </div>
+                                    <input type="checkbox" id="tActive" checked class="w-5 h-5 rounded-lg border-slate-300">
+                                </div>
+
+                                <div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-4">
+                                    <div>
+                                        <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Randomize Questions</label>
+                                        <p class="text-[10px] text-slate-400 mt-0.5">Shuffles question sequence</p>
+                                    </div>
+                                    <input type="checkbox" id="tRandomize" checked class="w-5 h-5 rounded-lg border-slate-300">
+                                </div>
+
+                                <div class="flex items-center justify-between border-t border-slate-100 dark:border-slate-800 pt-4">
+                                    <div>
+                                        <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Shuffle Options</label>
+                                        <p class="text-[10px] text-slate-400 mt-0.5">Randomizes multiple choices</p>
+                                    </div>
+                                    <input type="checkbox" id="tShuffle" class="w-5 h-5 rounded-lg border-slate-300">
+                                </div>
+
+                                <div class="border-t border-slate-100 dark:border-slate-800 pt-4 flex flex-col gap-3">
+                                    <div class="flex items-center justify-between">
+                                        <div>
+                                            <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Negative Marking</label>
+                                            <p class="text-[10px] text-slate-400 mt-0.5">Deduct marks on wrong answer</p>
+                                        </div>
+                                        <input type="checkbox" id="tNegativeMarking" onchange="toggleNegativeValue()" class="w-5 h-5 rounded-lg border-slate-300">
+                                    </div>
+                                    
+                                    <div id="negativeValueContainer" class="hidden flex-col gap-1">
+                                        <label class="text-[10px] font-black uppercase text-slate-400">Penalty Amount (marks)</label>
+                                        <input type="number" id="tNegativeValue" value="0.25" step="0.05" min="0" class="w-full px-3 py-1.5 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-sm">
+                                    </div>
+                                </div>
+
+                                <div class="border-t border-slate-100 dark:border-slate-800 pt-4 flex flex-col gap-3">
+                                    <button type="button" onclick="openPreviewModal()" class="w-full py-2.5 bg-slate-100 hover:bg-slate-200 dark:bg-slate-800 dark:hover:bg-slate-750 text-slate-700 dark:text-slate-200 font-bold rounded-xl flex justify-center items-center gap-2 transition-all">
+                                        <i data-lucide="eye" class="w-4 h-4"></i> Preview Test as Student
+                                    </button>
+                                    <button type="submit" id="btnSave" class="w-full py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl flex justify-center items-center gap-2 transition-all shadow-lg shadow-indigo-500/20">
+                                        <i data-lucide="save" class="w-4 h-4"></i> <span id="btnSaveText">Create Test</span>
+                                    </button>
+                                    <button type="button" onclick="window.location.href='admin-tests.html'" class="w-full py-2.5 border border-slate-200 dark:border-slate-800 hover:bg-slate-50 dark:hover:bg-slate-800 text-slate-600 dark:text-slate-300 font-bold rounded-xl text-xs transition-colors">
+                                        Cancel
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Manual Question Picker Overlay Modal -->
+    <div id="pickerModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col h-[80vh]">
+            <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-900/50">
+                <div>
+                    <h3 class="font-extrabold text-base text-slate-800 dark:text-white">Manual Question Selection</h3>
+                    <p class="text-[10px] text-slate-400 font-bold tracking-wide uppercase mt-0.5" id="pickerMeta">Select questions matching category and topics.</p>
+                </div>
+                <button onclick="closePickerModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto flex-1 flex flex-col gap-4">
+                <div class="flex items-center justify-between p-3 rounded-2xl bg-indigo-500/10 border border-indigo-500/20 text-xs text-indigo-500 font-bold" id="pickerCounterBlock">
+                    <span>Target Question Count: <span id="pickerTargetCount" class="font-black">5</span></span>
+                    <span>Selected: <span id="pickerSelectedCount" class="font-black">0</span></span>
+                </div>
+                
+                <div class="relative w-full">
+                    <i data-lucide="search" class="w-4 h-4 absolute left-3 top-1/2 -translate-y-1/2 text-slate-400"></i>
+                    <input type="text" id="pickerSearch" oninput="filterPickerQuestions()" placeholder="Search matching questions..." class="w-full pl-9 pr-4 py-2 bg-slate-50 dark:bg-slate-800 border border-slate-200 dark:border-slate-700 rounded-xl text-xs focus:outline-none transition-all">
+                </div>
+
+                <div class="flex-1 overflow-y-auto divide-y divide-slate-100 dark:divide-slate-800 border border-slate-100 dark:border-slate-800 rounded-2xl bg-slate-50/20 dark:bg-slate-950/20 max-h-[40vh]" id="pickerQuestionsList">
+                    <!-- JS Checkbox checklist loaded -->
+                </div>
+            </div>
+
+            <!-- Footer -->
+            <div class="px-6 py-4 border-t border-slate-100 dark:border-slate-800 flex justify-end gap-3 bg-slate-50 dark:bg-slate-900/50">
+                <button onclick="closePickerModal()" class="px-4 py-2 rounded-xl text-xs font-bold text-slate-600 dark:text-slate-300 hover:bg-slate-200 dark:hover:bg-slate-800">Cancel</button>
+                <button onclick="applyManualSelections()" class="px-5 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md shadow-indigo-500/20">Apply Selection</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Preview Test Modal -->
+    <div id="previewModal" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-50 hidden flex items-center justify-center p-4">
+        <div class="bg-white dark:bg-slate-900 rounded-3xl w-full max-w-2xl overflow-hidden shadow-2xl border border-slate-200 dark:border-slate-800 flex flex-col max-h-[85vh]">
+            <div class="px-6 py-4 border-b border-slate-100 dark:border-slate-800 flex justify-between items-center bg-slate-50 dark:bg-slate-900/50">
+                <h3 class="font-extrabold text-base text-slate-800 dark:text-white flex items-center gap-2">
+                    <i data-lucide="eye" class="w-5 h-5 text-indigo-500"></i> Student-Facing Preview
+                </h3>
+                <button type="button" onclick="closePreviewModal()" class="text-slate-400 hover:text-slate-600 dark:hover:text-slate-300">
+                    <i data-lucide="x" class="w-5 h-5"></i>
+                </button>
+            </div>
+            
+            <!-- Modal Body -->
+            <div class="p-6 overflow-y-auto flex-1 flex flex-col gap-6" id="previewModalBody">
+                <!-- Dynamically rendered student preview -->
+            </div>
+
+            <!-- Footer -->
+            <div class="px-6 py-4 border-t border-slate-100 dark:border-slate-800 flex justify-end bg-slate-50 dark:bg-slate-900/50">
+                <button type="button" onclick="closePreviewModal()" class="px-6 py-2 rounded-xl bg-indigo-600 hover:bg-indigo-700 text-white font-bold text-xs shadow-md shadow-indigo-500/20">Close Preview</button>
+            </div>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="hidden fixed top-4 right-4 z-50 p-4 rounded-xl text-sm font-semibold shadow-lg border"></div>
+
+    <script src="api.js?v=4"></script>
+
+    <script>
+        // HTML escaping helper
+        const esc = s => {
+            if (s === null || s === undefined) return '';
+            return String(s)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        };
+
+        lucide.createIcons();
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            html.classList.toggle('dark');
+            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+        }
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            const overlay = document.getElementById('sidebarOverlay');
+            if(overlay) overlay.classList.toggle('hidden');
+        }
+
+        function logout() {
+            api.removeToken();
+            window.location.href = 'login.html';
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `fixed top-4 right-4 z-50 p-4 rounded-xl text-sm font-semibold shadow-lg border transition-opacity ${
+                type === 'success' 
+                ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white border-slate-200 dark:border-slate-800' 
+                : 'bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800'
+            }`;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 5000);
+        }
+
+        function toggleNegativeValue() {
+            const container = document.getElementById('negativeValueContainer');
+            if(document.getElementById('tNegativeMarking').checked) {
+                container.classList.remove('hidden');
+                container.classList.add('flex');
+            } else {
+                container.classList.add('hidden');
+                container.classList.remove('flex');
+            }
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const testId = urlParams.get('id');
+        const isEdit = !!testId;
+
+        let categories = [];
+        let subcategoriesCache = {}; // categoryId -> [subcategories]
+        let sections = [];
+        let activePickerSectionId = null;
+        let pickerSelectedList = []; // temp list of checkboxes in modal
+        let isDirty = false;
+
+        // Mark form as dirty when inputs change
+        document.addEventListener('input', () => { isDirty = true; });
+        document.addEventListener('change', () => { isDirty = true; });
+        window.addEventListener('beforeunload', (e) => {
+            if (isDirty) {
+                e.preventDefault();
+                e.returnValue = 'You have unsaved changes. Are you sure you want to leave?';
+                return e.returnValue;
+            }
+        });
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            if (!api.getToken()) { window.location.href = 'login.html'; return; }
+            
+            try {
+                const profileRes = await api.auth.getProfile();
+                if (profileRes.data.user.role !== 'admin') {
+                    window.location.href = 'student-dashboard.html';
+                    return;
+                }
+            } catch(e) {
+                api.removeToken();
+                window.location.href='login.html?session=expired';
+                return;
+            }
+
+            try {
+                // Fetch categories
+                const res = await api.request('/categories');
+                categories = res.data || [];
+
+                if (isEdit) {
+                    document.getElementById('pageTitle').textContent = 'Modify Assessment';
+                    document.getElementById('btnSaveText').textContent = 'Save Changes';
+                    await loadTest();
+                } else {
+                    addSection(); // start with one section
+                    document.getElementById('loader').style.display = 'none';
+                    document.getElementById('content').style.display = 'flex';
+                }
+            } catch(e) { 
+                console.error('Error initializing builder', e);
+                showToast('Failed to initialize builder', 'error');
+            }
+        });
+
+        function formatDateForInput(date) {
+            const pad = (n) => String(n).padStart(2, '0');
+            const year = date.getFullYear();
+            const month = pad(date.getMonth() + 1);
+            const day = pad(date.getDate());
+            const hours = pad(date.getHours());
+            const minutes = pad(date.getMinutes());
+            return `${year}-${month}-${day}T${hours}:${minutes}`;
+        }
+
+        async function loadTest() {
+            try {
+                const res = await api.request(`/tests/${testId}`);
+                const test = res.data;
+                document.getElementById('tName').value = test.name || '';
+                document.getElementById('tDescription').value = test.description || '';
+                document.getElementById('tInstructions').value = test.instructions || '';
+                document.getElementById('tDifficulty').value = test.difficulty || 'mixed';
+                document.getElementById('tTime').value = test.totalTime || 30;
+                document.getElementById('tPass').value = test.passingMarks || 10;
+                document.getElementById('tActive').checked = test.isActive !== false;
+                document.getElementById('tRandomize').checked = test.randomizeQuestions !== false;
+                document.getElementById('tShuffle').checked = test.shuffleOptions === true;
+                
+                document.getElementById('tNegativeMarking').checked = test.negativeMarking === true;
+                document.getElementById('tNegativeValue').value = test.negativeMarkValue || 0;
+                toggleNegativeValue();
+
+                if (test.startDate) {
+                    const sDate = new Date(test.startDate);
+                    document.getElementById('tStartDate').value = formatDateForInput(sDate);
+                }
+                if (test.endDate) {
+                    const eDate = new Date(test.endDate);
+                    document.getElementById('tEndDate').value = formatDateForInput(eDate);
+                }
+
+                // If saved test has sections
+                if (test.sections && test.sections.length > 0) {
+                    sections = [];
+                    for (const sec of test.sections) {
+                        const secId = (Date.now() + Math.random()).toString();
+                        const catId = sec.category?._id || sec.category;
+                        
+                        await fetchSubcategoriesForCache(catId);
+                        let questionsPool = [];
+                        try {
+                            const qRes = await api.request(`/questions?category=${catId}&limit=200`);
+                            questionsPool = qRes.data.questions || [];
+                        } catch (err) {
+                            console.error(err);
+                        }
+
+                        sections.push({
+                            id: secId,
+                            name: sec.name,
+                            category: catId,
+                            subcategories: sec.subcategories.map(sub => sub._id || sub),
+                            count: sec.count,
+                            mode: sec.mode || 'auto',
+                            selectedQuestions: (sec.questionIds || []).map(q => q._id || q),
+                            marksPerQuestion: sec.marksPerQuestion || 1,
+                            subcategoriesList: subcategoriesCache[catId] || [],
+                            questionsPool: questionsPool
+                        });
+                    }
+                } else if(test.questions && test.questions.length > 0) {
+                    // Try to group questions by category to reconstruct sections (legacy fallback)
+                    const grouped = {};
+                    test.questions.forEach(q => {
+                        const catId = q.category?._id || q.category || 'other';
+                        if(!grouped[catId]) grouped[catId] = [];
+                        grouped[catId].push(q._id || q);
+                    });
+
+                    sections = [];
+                    for(const catId of Object.keys(grouped)) {
+                        const secId = (Date.now() + Math.random()).toString();
+                        const catObj = categories.find(c => c._id === catId);
+                        
+                        let questionsPool = [];
+                        if(catId !== 'other') {
+                            await fetchSubcategoriesForCache(catId);
+                            try {
+                                const qRes = await api.request(`/questions?category=${catId}&limit=200`);
+                                questionsPool = qRes.data.questions || [];
+                            } catch (e) {
+                                console.error(e);
+                            }
+                        }
+
+                        sections.push({
+                            id: secId,
+                            name: catObj ? `${catObj.name} Section` : 'Reconstructed Section',
+                            category: catId !== 'other' ? catId : '',
+                            subcategories: [],
+                            count: grouped[catId].length,
+                            mode: 'manual',
+                            selectedQuestions: grouped[catId],
+                            marksPerQuestion: 1,
+                            subcategoriesList: subcategoriesCache[catId] || [],
+                            questionsPool: questionsPool
+                        });
+                    }
+                } else {
+                    addSection();
+                }
+
+                renderSections();
+                document.getElementById('loader').style.display = 'none';
+                document.getElementById('content').style.display = 'flex';
+
+            } catch(e) {
+                console.error(e);
+                showToast('Failed to load test specifications', 'error');
+                setTimeout(() => window.location.href = 'admin-tests.html', 1500);
+            }
+        }
+
+        async function fetchSubcategoriesForCache(catId) {
+            if (subcategoriesCache[catId]) return subcategoriesCache[catId];
+            try {
+                const res = await api.request(`/categories/${catId}/subcategories`);
+                subcategoriesCache[catId] = res.data || [];
+                return subcategoriesCache[catId];
+            } catch(e) {
+                console.error('Error caching topics', e);
+                return [];
+            }
+        }
+
+        async function addSection() {
+            const id = (Date.now() + Math.random()).toString();
+            sections.push({
+                id,
+                name: `Section ${sections.length + 1}`,
+                category: '',
+                subcategories: [],
+                count: 5,
+                mode: 'auto',
+                selectedQuestions: [],
+                marksPerQuestion: 1,
+                subcategoriesList: [],
+                questionsPool: []
+            });
+            renderSections();
+        }
+
+        function removeSection(id) {
+            if(sections.length <= 1) { showToast('At least one section is required to build a test.', 'error'); return; }
+            sections = sections.filter(s => s.id !== id);
+            isDirty = true;
+            renderSections();
+        }
+
+        function updateSectionName(id, val) {
+            const sec = sections.find(s => s.id === id);
+            if(sec) sec.name = val;
+        }
+
+        function updateSectionCount(id, val) {
+            const sec = sections.find(s => s.id === id);
+            if(sec) {
+                sec.count = parseInt(val) || 0;
+                renderSubtitle();
+                const countBadge = document.getElementById(`countBadge-${id}`);
+                if(countBadge) {
+                    updateVisualCountFeedback(sec, countBadge);
+                }
+            }
+        }
+
+        function updateSectionMarks(id, val) {
+            const sec = sections.find(s => s.id === id);
+            if(sec) {
+                sec.marksPerQuestion = parseFloat(val) || 1;
+            }
+        }
+
+        function moveSection(id, direction) {
+            const idx = sections.findIndex(s => s.id === id);
+            if (idx === -1) return;
+            const targetIdx = idx + direction;
+            if (targetIdx < 0 || targetIdx >= sections.length) return;
+            
+            // Swap sections
+            const temp = sections[idx];
+            sections[idx] = sections[targetIdx];
+            sections[targetIdx] = temp;
+            
+            isDirty = true;
+            renderSections();
+        }
+
+        async function handleCategoryChange(id, catId) {
+            const sec = sections.find(s => s.id === id);
+            if(!sec) return;
+
+            sec.category = catId;
+            sec.subcategories = [];
+            sec.selectedQuestions = [];
+            sec.searchQuery = '';
+            sec.questionsPool = [];
+
+            if(!catId) {
+                sec.subcategoriesList = [];
+                renderSections();
+                return;
+            }
+
+            const loaderDiv = document.getElementById(`subLoader-${id}`);
+            if(loaderDiv) loaderDiv.classList.remove('hidden');
+
+            try {
+                const topics = await fetchSubcategoriesForCache(catId);
+                sec.subcategoriesList = topics;
+
+                // Lazy load category questions pool
+                const qRes = await api.request(`/questions?category=${catId}&limit=200`);
+                sec.questionsPool = qRes.data.questions || [];
+            } catch(e) {
+                console.error(e);
+                showToast("Failed to load questions pool for category", "error");
+            } finally {
+                if(loaderDiv) loaderDiv.classList.add('hidden');
+            }
+            
+            renderSections();
+        }
+
+        function toggleSubcategory(id, subId) {
+            const sec = sections.find(s => s.id === id);
+            if(!sec) return;
+
+            const idx = sec.subcategories.indexOf(subId);
+            if(idx > -1) sec.subcategories.splice(idx, 1);
+            else sec.subcategories.push(subId);
+            
+            if(sec.mode === 'manual') {
+                sec.selectedQuestions = [];
+                const countBadge = document.getElementById(`countBadge-${id}`);
+                if(countBadge) updateVisualCountFeedback(sec, countBadge);
+
+                // Update the inline questions list
+                const listDiv = document.getElementById(`questionsList-${id}`);
+                if(listDiv) {
+                    listDiv.innerHTML = getInlineQuestionsHTML(sec);
+                }
+            } else {
+                const countBadge = document.getElementById(`countBadge-${id}`);
+                if(countBadge) updateVisualCountFeedback(sec, countBadge);
+            }
+        }
+
+        function handleModeChange(id, mode) {
+            const sec = sections.find(s => s.id === id);
+            if(!sec) return;
+
+            sec.mode = mode;
+            sec.selectedQuestions = [];
+            sec.searchQuery = '';
+
+            renderSections();
+        }
+
+        function getPoolForSection(sec) {
+            return (sec.questionsPool || []).filter(q => {
+                if(sec.subcategories.length > 0) {
+                    const subId = q.subcategory?._id || q.subcategory;
+                    return sec.subcategories.includes(subId);
+                }
+                return true;
+            });
+        }
+
+        function getInlineQuestionsHTML(sec) {
+            if(!sec.category) {
+                return `<p class="text-[10px] text-slate-400 font-bold p-3">Please select a Category first to view questions.</p>`;
+            }
+
+            const pool = getPoolForSection(sec);
+            const search = (sec.searchQuery || '').toLowerCase();
+            const filtered = pool.filter(q => q.question.toLowerCase().includes(search));
+
+            if(filtered.length === 0) {
+                return `<div class="p-4 text-center text-[10px] font-bold text-slate-400 leading-normal">No matching questions found.</div>`;
+            }
+
+            return filtered.map(q => {
+                const checked = sec.selectedQuestions.includes(q._id);
+                let diffBadge = '';
+                if(q.difficulty==='easy') diffBadge='bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400';
+                if(q.difficulty==='medium') diffBadge='bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400';
+                if(q.difficulty==='hard') diffBadge='bg-rose-100 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400';
+
+                return `
+                <label class="flex items-start gap-3 p-2.5 text-[11px] font-semibold leading-relaxed cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+                    <input type="checkbox" value="${q._id}" ${checked?'checked':''} onchange="toggleInlineQuestionSelection('${sec.id}', '${q._id}')" class="rounded text-indigo-600 focus:ring-0 mt-0.5">
+                    <div class="flex flex-col gap-0.5 w-full min-w-0">
+                        <span class="text-slate-800 dark:text-slate-200 font-extrabold truncate" title="${q.question.replace(/"/g, '&quot;')}">${q.question}</span>
+                        <div class="flex items-center gap-2 mt-0.5">
+                            <span class="px-1.5 py-0.5 rounded text-[8px] uppercase font-bold ${diffBadge}">${q.difficulty}</span>
+                            <span class="text-[8px] text-slate-400 font-bold">${q.marks} marks</span>
+                            <span class="text-[8px] text-slate-500 font-extrabold truncate max-w-[120px]">${q.subcategory?.name || 'General topic'}</span>
+                        </div>
+                    </div>
+                </label>
+                `;
+            }).join('');
+        }
+
+        function handleInlineQuestionSearch(id, val) {
+            const sec = sections.find(s => s.id === id);
+            if(!sec) return;
+            sec.searchQuery = val;
+            const listDiv = document.getElementById(`questionsList-${id}`);
+            if(listDiv) {
+                listDiv.innerHTML = getInlineQuestionsHTML(sec);
+            }
+        }
+
+        function toggleInlineQuestionSelection(secId, qId) {
+            const sec = sections.find(s => s.id === secId);
+            if(!sec) return;
+
+            const idx = sec.selectedQuestions.indexOf(qId);
+            if(idx > -1) sec.selectedQuestions.splice(idx, 1);
+            else sec.selectedQuestions.push(qId);
+
+            const countBadge = document.getElementById(`countBadge-${secId}`);
+            if(countBadge) updateVisualCountFeedback(sec, countBadge);
+        }
+
+        function updateVisualCountFeedback(sec, badge) {
+            const pool = getPoolForSection(sec);
+            if(sec.mode === 'auto') {
+                if (pool.length < sec.count) {
+                    badge.className = "px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase bg-rose-500/10 text-rose-500 border border-rose-500/20";
+                    badge.textContent = `Insufficient Pool: Draw ${sec.count} from ${pool.length} available`;
+                } else {
+                    badge.className = "px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase bg-emerald-500/10 text-emerald-500 border border-emerald-500/20";
+                    badge.textContent = `${sec.count} Questions to draw automatically`;
+                }
+            } else {
+                const len = sec.selectedQuestions.length;
+                if(len === sec.count) {
+                    badge.className = "px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase bg-emerald-500/10 text-emerald-500 border border-emerald-500/20";
+                    badge.textContent = `Balanced: ${len} of ${sec.count} selected`;
+                } else if(len < sec.count) {
+                    badge.className = "px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase bg-rose-500/10 text-rose-500 border border-rose-500/20";
+                    badge.textContent = `Under: Selected ${len} of ${sec.count} required`;
+                } else {
+                    badge.className = "px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase bg-amber-500/10 text-amber-500 border border-amber-500/20";
+                    badge.textContent = `Over: Selected ${len} of ${sec.count} required`;
+                }
+            }
+        }
+
+        function renderSubtitle() {
+            const total = sections.reduce((sum, s) => sum + parseInt(s.count || 0), 0);
+            document.getElementById('sectionsSubtitle').textContent = `${total} questions total across ${sections.length} section(s)`;
+        }
+
+        function renderSections() {
+            renderSubtitle();
+            const container = document.getElementById('sectionsContainer');
+            
+            container.innerHTML = sections.map((s, idx) => {
+                const countBadgeId = `countBadge-${s.id}`;
+                const manualBtnId = `manualBtn-${s.id}`;
+                
+                let subsHTML = ``;
+                if(s.category && s.subcategoriesList) {
+                    if(s.subcategoriesList.length === 0) {
+                        subsHTML = `<p class="text-[10px] text-slate-400 font-bold col-span-3">No subcategory topics found for this category.</p>`;
+                    } else {
+                        subsHTML = s.subcategoriesList.map(sub => `
+                            <label class="flex items-center gap-1.5 p-2 rounded-lg bg-slate-50 dark:bg-slate-800/40 text-[11px] font-bold border border-slate-100 dark:border-slate-800/80 cursor-pointer">
+                                <input type="checkbox" value="${sub._id}" ${s.subcategories.includes(sub._id)?'checked':''} onchange="toggleSubcategory('${s.id}', '${sub._id}')" class="rounded text-indigo-600 focus:ring-0">
+                                <span>${sub.name}</span>
+                            </label>
+                        `).join('');
+                    }
+                }
+
+                return `
+                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800/60 shadow-sm p-6 flex flex-col gap-5">
+                    <div class="flex items-center justify-between">
+                        <div class="flex items-center gap-2">
+                            <span class="w-6 h-6 rounded-lg bg-indigo-500/10 text-indigo-500 flex items-center justify-center font-black text-xs">${idx + 1}</span>
+                            <input type="text" value="${s.name}" oninput="updateSectionName('${s.id}', this.value)" class="font-extrabold text-sm text-slate-800 dark:text-white bg-transparent border-b border-transparent focus:border-indigo-500 focus:outline-none py-0.5">
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <span id="${countBadgeId}" class="px-2.5 py-1 rounded-md text-[10px] font-bold tracking-wide uppercase bg-emerald-500/10 text-emerald-500 border border-emerald-500/20">
+                                ${s.count} questions to draw automatically
+                            </span>
+                            <div class="flex items-center gap-1 shrink-0">
+                                <button type="button" onclick="moveSection('${s.id}', -1)" ${idx === 0 ? 'disabled' : ''} class="p-1.5 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-30 rounded-xl transition-colors" title="Move Section Up">
+                                    <i data-lucide="chevron-up" class="w-4 h-4"></i>
+                                </button>
+                                <button type="button" onclick="moveSection('${s.id}', 1)" ${idx === sections.length - 1 ? 'disabled' : ''} class="p-1.5 text-slate-500 hover:bg-slate-100 dark:hover:bg-slate-800 disabled:opacity-30 rounded-xl transition-colors" title="Move Section Down">
+                                    <i data-lucide="chevron-down" class="w-4 h-4"></i>
+                                </button>
+                            </div>
+                            ${sections.length > 1 ? `<button type="button" onclick="removeSection('${s.id}')" class="p-1.5 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-xl transition-colors"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
+                        </div>
+                    </div>
+
+                    <!-- Category & count rows -->
+                    <div class="grid grid-cols-1 sm:grid-cols-4 gap-4 border-t border-slate-50 dark:border-slate-800/50 pt-4">
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-[9px] font-black uppercase text-slate-400">Category</label>
+                            <select onchange="handleCategoryChange('${s.id}', this.value)" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-xs focus:outline-none">
+                                <option value="">Select Category</option>
+                                ${categories.map(c => `<option value="${c._id}" ${s.category === c._id ? 'selected' : ''}>${c.name}</option>`).join('')}
+                            </select>
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-[9px] font-black uppercase text-slate-400">Number of Questions</label>
+                            <input type="number" oninput="updateSectionCount('${s.id}', this.value)" value="${s.count}" min="1" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-xs focus:outline-none">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-[9px] font-black uppercase text-slate-400">Marks Per Question</label>
+                            <input type="number" oninput="updateSectionMarks('${s.id}', this.value)" value="${s.marksPerQuestion || 1}" min="1" step="0.5" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-xs focus:outline-none">
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-[9px] font-black uppercase text-slate-400">Selection Mode</label>
+                            <select onchange="handleModeChange('${s.id}', this.value)" class="w-full px-3 py-2 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-xs focus:outline-none">
+                                <option value="auto" ${s.mode==='auto'?'selected':''}>Automatically (Random Draw)</option>
+                                <option value="manual" ${s.mode==='manual'?'selected':''}>Manually (Pick Specific)</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <!-- Subcategories multiselect checkboxes -->
+                    <div class="flex flex-col gap-2">
+                        <div class="flex items-center gap-1.5">
+                            <label class="text-[9px] font-black uppercase text-slate-400">Select Multiple Subcategories / Topics</label>
+                            <div class="hidden animate-spin h-3.5 w-3.5 border-2 border-indigo-500 border-t-transparent rounded-full" id="subLoader-${s.id}"></div>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-3 gap-2.5" id="subcategoriesContainer-${s.id}">
+                            ${subsHTML}
+                        </div>
+                    </div>
+
+                    <!-- Inline Questions Container (if manual mode) -->
+                    <div class="${s.mode === 'manual' ? '' : 'hidden'} flex flex-col gap-2.5 border-t border-slate-50 dark:border-slate-800/50 pt-4" id="questionsContainer-${s.id}">
+                        <div class="flex items-center justify-between">
+                            <label class="text-[9px] font-black uppercase text-slate-400">Select Specific Questions</label>
+                            <input type="text" placeholder="Search questions..." value="${s.searchQuery || ''}" oninput="handleInlineQuestionSearch('${s.id}', this.value)" class="px-2.5 py-1 rounded-lg border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-[10px] text-slate-900 dark:text-white focus:outline-none w-40">
+                        </div>
+                        <div class="max-h-60 overflow-y-auto border border-slate-100 dark:border-slate-800 rounded-xl divide-y divide-slate-100 dark:divide-slate-800/60 bg-slate-50/20 dark:bg-slate-950/20" id="questionsList-${s.id}">
+                            ${getInlineQuestionsHTML(s)}
+                        </div>
+                    </div>
+                </div>
+                `;
+            }).join('');
+            
+            sections.forEach(s => {
+                const badge = document.getElementById(`countBadge-${s.id}`);
+                if(badge) updateVisualCountFeedback(s, badge);
+            });
+
+            lucide.createIcons();
+        }
+
+        function openPickerModal(secId) {
+            const sec = sections.find(s => s.id === secId);
+            if(!sec || !sec.category) { showToast('Please select a Category before choosing questions.', 'error'); return; }
+
+            activePickerSectionId = secId;
+            pickerSelectedList = [...sec.selectedQuestions];
+
+            document.getElementById('pickerTargetCount').textContent = sec.count;
+            document.getElementById('pickerSelectedCount').textContent = pickerSelectedList.length;
+
+            const categoryName = categories.find(c => c._id === sec.category)?.name || 'Technical';
+            document.getElementById('pickerMeta').textContent = `Pick questions under "${categoryName}" for section "${sec.name}"`;
+
+            renderPickerQuestionsList();
+            document.getElementById('pickerModal').classList.remove('hidden');
+        }
+
+        function closePickerModal() {
+            document.getElementById('pickerModal').classList.add('hidden');
+            activePickerSectionId = null;
+        }
+
+        function getMatchingPickerQuestions() {
+            const sec = sections.find(s => s.id === activePickerSectionId);
+            if(!sec) return [];
+            return getPoolForSection(sec);
+        }
+
+        function renderPickerQuestionsList() {
+            const questions = getMatchingPickerQuestions();
+            const listDiv = document.getElementById('pickerQuestionsList');
+            const search = document.getElementById('pickerSearch').value.toLowerCase();
+            
+            const filtered = questions.filter(q => q.question.toLowerCase().includes(search));
+
+            if(filtered.length === 0) {
+                listDiv.innerHTML = `<div class="p-6 text-center text-xs font-bold text-slate-400 leading-normal"><i data-lucide="alert-circle" class="w-8 h-8 mx-auto mb-2 text-slate-300"></i> No matching questions pool found.<br/>Try broadening your topics.</div>`;
+                lucide.createIcons();
+                return;
+            }
+
+            listDiv.innerHTML = filtered.map(q => {
+                const checked = pickerSelectedList.includes(q._id);
+                let diffBadge = '';
+                if(q.difficulty==='easy') diffBadge='bg-emerald-100 text-emerald-600 dark:bg-emerald-500/20 dark:text-emerald-400';
+                if(q.difficulty==='medium') diffBadge='bg-amber-100 text-amber-600 dark:bg-amber-500/20 dark:text-amber-400';
+                if(q.difficulty==='hard') diffBadge='bg-rose-100 text-rose-600 dark:bg-rose-500/20 dark:text-rose-400';
+
+                return `
+                <label class="flex items-start gap-3 p-3 text-xs font-semibold leading-relaxed cursor-pointer hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+                    <input type="checkbox" value="${q._id}" ${checked?'checked':''} onchange="togglePickerSelection('${q._id}')" class="rounded text-indigo-600 focus:ring-0 mt-0.5">
+                    <div class="flex flex-col gap-1 w-full min-w-0">
+                        <span class="text-slate-800 dark:text-slate-200 font-extrabold truncate" title="${q.question.replace(/"/g, '&quot;')}">${q.question}</span>
+                        <div class="flex items-center gap-2 mt-0.5">
+                            <span class="px-2 py-0.5 rounded text-[9px] uppercase font-bold ${diffBadge}">${q.difficulty}</span>
+                            <span class="text-[9px] text-slate-400 font-bold">${q.marks} marks</span>
+                            <span class="text-[9px] text-slate-500 font-extrabold truncate max-w-[120px]">${q.subcategory?.name || 'General topic'}</span>
+                        </div>
+                    </div>
+                </label>
+                `;
+            }).join('');
+        }
+
+        function togglePickerSelection(qId) {
+            const idx = pickerSelectedList.indexOf(qId);
+            if(idx > -1) pickerSelectedList.splice(idx, 1);
+            else pickerSelectedList.push(qId);
+
+            document.getElementById('pickerSelectedCount').textContent = pickerSelectedList.length;
+        }
+
+        function filterPickerQuestions() {
+            renderPickerQuestionsList();
+        }
+
+        function applyManualSelections() {
+            const sec = sections.find(s => s.id === activePickerSectionId);
+            if(!sec) return;
+
+            sec.selectedQuestions = [...pickerSelectedList];
+            
+            const countBadge = document.getElementById(`countBadge-${sec.id}`);
+            if(countBadge) updateVisualCountFeedback(sec, countBadge);
+
+            closePickerModal();
+            showToast('Manual selections applied!');
+        }
+
+        function openPreviewModal() {
+            const name = document.getElementById('tName').value.trim() || 'Untitled Test';
+            const desc = document.getElementById('tDescription').value.trim() || 'No description provided.';
+            const instructions = document.getElementById('tInstructions').value.trim() || 'No specific instructions provided.';
+            const time = document.getElementById('tTime').value || '30';
+            const pass = document.getElementById('tPass').value || '10';
+            
+            const difficulty = document.getElementById('tDifficulty').value;
+            const negMarking = document.getElementById('tNegativeMarking').checked;
+            const negValue = negMarking ? document.getElementById('tNegativeValue').value : '0';
+
+            const validSections = sections.filter(s => s.category);
+            let sectionsHTML = '';
+            if(validSections.length === 0) {
+                sectionsHTML = `<p class="text-xs text-rose-500 font-bold">Please add at least one section with category.</p>`;
+            } else {
+                sectionsHTML = validSections.map((s, idx) => {
+                    const catObj = categories.find(c => c._id === s.category);
+                    const catName = catObj ? catObj.name : 'Unknown';
+                    const modeText = s.mode === 'auto' ? 'Random Selection' : 'Manual Selection';
+                    return `
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800/80 flex flex-col gap-2">
+                        <div class="flex justify-between items-center">
+                            <span class="text-xs font-extrabold text-slate-800 dark:text-slate-200">Section ${idx+1}: ${s.name}</span>
+                            <span class="px-2 py-0.5 rounded text-[8px] uppercase font-bold bg-indigo-100 text-indigo-700 dark:bg-indigo-500/20 dark:text-indigo-400">${modeText}</span>
+                        </div>
+                        <div class="grid grid-cols-2 sm:grid-cols-4 gap-3 text-[10px] font-bold text-slate-500 mt-1">
+                            <div>
+                                <span class="block text-slate-400 uppercase text-[8px]">Category</span>
+                                <span class="text-slate-700 dark:text-slate-300 font-extrabold">${catName}</span>
+                            </div>
+                            <div>
+                                <span class="block text-slate-400 uppercase text-[8px]">Questions Count</span>
+                                <span class="text-slate-700 dark:text-slate-300 font-extrabold">${s.count} Qs</span>
+                            </div>
+                            <div>
+                                <span class="block text-slate-400 uppercase text-[8px]">Marks Per Q</span>
+                                <span class="text-slate-700 dark:text-slate-300 font-extrabold">${s.marksPerQuestion || 1} mark(s)</span>
+                            </div>
+                            <div>
+                                <span class="block text-slate-400 uppercase text-[8px]">Total Marks</span>
+                                <span class="text-slate-700 dark:text-slate-300 font-extrabold">${(s.count * (s.marksPerQuestion || 1))} marks</span>
+                            </div>
+                        </div>
+                    </div>
+                    `;
+                }).join('');
+            }
+
+            const body = document.getElementById('previewModalBody');
+            body.innerHTML = `
+                <div class="flex flex-col gap-1">
+                    <h2 class="text-xl font-black text-slate-900 dark:text-white">${esc(name)}</h2>
+                    <p class="text-xs text-slate-500 dark:text-slate-400 leading-relaxed">${esc(desc)}</p>
+                </div>
+
+                <div class="grid grid-cols-2 sm:grid-cols-4 gap-4 p-4 rounded-2xl bg-indigo-500/5 border border-indigo-500/10 text-xs">
+                    <div>
+                        <span class="block text-slate-400 font-bold uppercase text-[9px]">Duration</span>
+                        <span class="font-extrabold text-slate-800 dark:text-slate-200 flex items-center gap-1 mt-0.5">
+                            <i data-lucide="clock" class="w-3.5 h-3.5 text-indigo-500"></i> ${time} mins
+                        </span>
+                    </div>
+                    <div>
+                        <span class="block text-slate-400 font-bold uppercase text-[9px]">Passing Marks</span>
+                        <span class="font-extrabold text-slate-800 dark:text-slate-200 flex items-center gap-1 mt-0.5">
+                            <i data-lucide="award" class="w-3.5 h-3.5 text-indigo-500"></i> ${pass} marks
+                        </span>
+                    </div>
+                    <div>
+                        <span class="block text-slate-400 font-bold uppercase text-[9px]">Difficulty</span>
+                        <span class="font-extrabold text-slate-800 dark:text-slate-200 uppercase mt-0.5 block">${difficulty}</span>
+                    </div>
+                    <div>
+                        <span class="block text-slate-400 font-bold uppercase text-[9px]">Negative Marking</span>
+                        <span class="font-extrabold text-slate-800 dark:text-slate-200 mt-0.5 block">
+                            ${negMarking ? `Yes (-${negValue})` : 'No'}
+                        </span>
+                    </div>
+                </div>
+
+                <div class="flex flex-col gap-2">
+                    <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Instructions</h4>
+                    <div class="p-4 rounded-2xl bg-slate-50 dark:bg-slate-800/50 border border-slate-100 dark:border-slate-800/80 text-xs text-slate-700 dark:text-slate-300 leading-relaxed whitespace-pre-wrap">${esc(instructions)}</div>
+                </div>
+
+                <div class="flex flex-col gap-3">
+                    <h4 class="text-xs font-extrabold uppercase tracking-wider text-slate-400">Sections Breakdown</h4>
+                    <div class="flex flex-col gap-3">
+                        ${sectionsHTML}
+                    </div>
+                </div>
+            `;
+
+            document.getElementById('previewModal').classList.remove('hidden');
+            lucide.createIcons();
+        }
+
+        function closePreviewModal() {
+            document.getElementById('previewModal').classList.add('hidden');
+        }
+
+        async function saveTest(e) {
+            e.preventDefault();
+            const btn = document.getElementById('btnSave');
+            btn.disabled = true;
+            btn.innerHTML = `<div class="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div> <span>Compiling...</span>`;
+
+            try {
+                const validSections = sections.filter(s => s.category);
+                if(validSections.length === 0) throw new Error('At least one section with category selected is required.');
+
+                // Validate question counts against loaded pool sizes
+                for (const sec of validSections) {
+                    const pool = getPoolForSection(sec);
+                    if (sec.mode === 'auto') {
+                        if (pool.length < sec.count) {
+                            throw new Error(`Section "${sec.name}" requests ${sec.count} questions, but only ${pool.length} are available in the category pool.`);
+                        }
+                    } else {
+                        if (sec.selectedQuestions.length === 0) {
+                            throw new Error(`Section "${sec.name}" has manual mode enabled but zero questions selected.`);
+                        }
+                        if (sec.selectedQuestions.length !== sec.count) {
+                            throw new Error(`Section "${sec.name}" requires exactly ${sec.count} selected questions (currently ${sec.selectedQuestions.length} selected).`);
+                        }
+                    }
+                }
+
+                const active = document.getElementById('tActive').checked;
+                const randomize = document.getElementById('tRandomize').checked;
+                const shuffle = document.getElementById('tShuffle').checked;
+                
+                const negMarking = document.getElementById('tNegativeMarking').checked;
+                const negValue = negMarking ? parseFloat(document.getElementById('tNegativeValue').value) || 0 : 0;
+
+                const startDateVal = document.getElementById('tStartDate').value;
+                const endDateVal = document.getElementById('tEndDate').value;
+
+                if (startDateVal && endDateVal && new Date(startDateVal) >= new Date(endDateVal)) {
+                    throw new Error('Start Test Time must be earlier than End Test Time.');
+                }
+
+                // Map sections to payload matching database schema
+                const payload = {
+                    name: document.getElementById('tName').value.trim(),
+                    description: document.getElementById('tDescription').value.trim(),
+                    instructions: document.getElementById('tInstructions').value.trim(),
+                    category: validSections[0].category, // compatibility field
+                    difficulty: document.getElementById('tDifficulty').value,
+                    totalTime: parseInt(document.getElementById('tTime').value) || 30,
+                    passingMarks: parseFloat(document.getElementById('tPass').value) || 10,
+                    isActive: active,
+                    randomizeQuestions: randomize,
+                    shuffleOptions: shuffle,
+                    negativeMarking: negMarking,
+                    negativeMarkValue: negValue,
+                    startDate: startDateVal ? new Date(startDateVal).toISOString() : null,
+                    endDate: endDateVal ? new Date(endDateVal).toISOString() : null,
+                    questions: [], // sections are primary now
+                    totalQuestions: validSections.reduce((sum, s) => sum + parseInt(s.count || 0), 0),
+                    sections: validSections.map(s => ({
+                        name: s.name,
+                        category: s.category,
+                        subcategories: s.subcategories,
+                        count: s.count,
+                        mode: s.mode,
+                        questionIds: s.mode === 'manual' ? s.selectedQuestions : [],
+                        marksPerQuestion: s.marksPerQuestion || 1
+                    }))
+                };
+
+                // Clear dirty state on successful save to prevent beforeunload prompt
+                isDirty = false;
+
+                if (isEdit) {
+                    await api.request(`/tests/${testId}`, { method: 'PUT', body: JSON.stringify(payload) });
+                    showToast('Assessment modified successfully!');
+                } else {
+                    await api.request('/tests', { method: 'POST', body: JSON.stringify(payload) });
+                    showToast('Advanced test created successfully!');
+                }
+
+                setTimeout(() => window.location.href = 'admin-tests.html', 1200);
+
+            } catch (err) {
+                showToast(err.message || 'Error compiling test sections.', 'error');
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="save" class="w-4 h-4"></i> <span>${isEdit ? 'Save Changes' : 'Create Test'}</span>`;
+                lucide.createIcons();
+            }
+        }
+    </script>
+</body>
+</html>

@@ -1,0 +1,625 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OIT_STACK - Add Coding Problem</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    <!-- Lucide Icons -->
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <!-- API Config -->
+    <script src="api.js?v=4"></script>
+</head>
+<body class="bg-slate-50 dark:bg-[#0a0f1e] text-slate-900 dark:text-white font-sans overflow-hidden">
+    <div class="flex h-screen">
+
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 bg-slate-900 dark:bg-[#0d1117] border-r border-slate-800/60 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
+            <div class="h-16 flex items-center justify-between px-5 border-b border-slate-800/60">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-white text-sm leading-none">OIT_STACK</h1>
+                        <p class="text-[10px] text-slate-500 font-medium mt-0.5">Admin Portal</p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="flex-1 py-3 px-3 overflow-y-auto space-y-0.5">
+                <a href="/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
+                    <i data-lucide="home" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Home
+                </a>
+                <a href="admin-dashboard.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0"></i> Dashboard
+                </a>
+                <a href="admin-students.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="users" class="w-4 h-4 shrink-0"></i> Students
+                </a>
+                <a href="admin-categories.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="folder-tree" class="w-4 h-4 shrink-0"></i> Categories
+                </a>
+                <a href="admin-questions.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="database" class="w-4 h-4 shrink-0"></i> Question Pool
+                </a>
+                <a href="admin-technical-mcq.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="terminal" class="w-4 h-4 shrink-0"></i> Technical MCQs
+                </a>
+                <a href="admin-tests.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="file-text" class="w-4 h-4 shrink-0"></i> Tests
+                </a>
+                <a href="admin-coding.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="code" class="w-4 h-4 shrink-0"></i> Coding Challenges
+                </a>
+                <a href="admin-interviews.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="mic" class="w-4 h-4 shrink-0"></i> Mock Interviews
+                </a>
+                <a href="admin-results.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="award" class="w-4 h-4 shrink-0"></i> Results
+                </a>
+                <a href="admin-analytics.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="bar-chart-3" class="w-4 h-4 shrink-0"></i> Analytics
+                </a>
+            </nav>
+            <div class="p-3 border-t border-slate-800/60">
+                <button onclick="logout()" class="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl bg-slate-800/50 hover:bg-slate-800 border border-slate-700/40 text-slate-400 hover:text-rose-400 transition-colors">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                    <span class="text-sm font-medium">Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Overlay for mobile sidebar -->
+        <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 hidden lg:hidden"></div>
+
+        <!-- Main Content -->
+        <div class="flex-1 lg:ml-64 flex flex-col min-w-0 h-full">
+            <header class="min-h-[4.5rem] py-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/60 flex flex-col md:flex-row md:items-center justify-between px-4 lg:px-6 shrink-0 z-20 gap-4">
+                <div class="flex items-center gap-3 flex-1">
+                    <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <i data-lucide="menu" class="w-5 h-5 text-slate-600 dark:text-slate-400"></i>
+                    </button>
+                    <div class="flex-1 flex flex-col sm:flex-row sm:items-start md:items-center justify-between gap-4">
+                        <div class="flex flex-col gap-1">
+                            <a href="admin-coding.html" class="inline-flex items-center text-xs text-slate-500 hover:text-slate-800 dark:text-slate-400 dark:hover:text-white transition-colors font-bold mb-1">
+                                <i data-lucide="chevron-left" class="w-3.5 h-3.5 mr-1"></i> Back to Coding Problems
+                            </a>
+                            <h1 id="pageTitle" class="text-2xl font-black text-slate-900 dark:text-white">Add Coding Challenge</h1>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a href="/" class="text-sm font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors mr-2">Home</a>
+                    <button onclick="toggleTheme()" class="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                        <i data-lucide="moon" class="w-4 h-4 dark:hidden"></i>
+                        <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+                    </button>
+                </div>
+            </header>
+
+            <main class="flex-1 overflow-y-auto p-4 lg:p-6 bg-slate-50/50 dark:bg-[#0a0f1e]/50">
+                <div id="loader" class="flex justify-center py-12">
+                    <div class="animate-spin h-8 w-8 border-4 border-indigo-500 border-t-transparent rounded-full"></div>
+                </div>
+
+                <div id="content" class="hidden flex-col gap-6 p-6 max-w-4xl mx-auto w-full">
+                    <form id="problemForm" onsubmit="saveProblem(event)" class="flex flex-col gap-6">
+
+                        <!-- Basic Panel -->
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm p-6 flex flex-col gap-5">
+                            <h3 class="font-bold text-slate-800 dark:text-white pb-2 border-b border-slate-50 dark:border-slate-800">Problem Metadata</h3>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                                <div class="sm:col-span-2 flex flex-col gap-1.5">
+                                    <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Problem Title</label>
+                                    <input type="text" id="pTitle" required placeholder="e.g. Find First Duplicate Index" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                                </div>
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Difficulty Level</label>
+                                    <select id="pDifficulty" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                                        <option value="easy">Easy</option>
+                                        <option value="medium" selected>Medium</option>
+                                        <option value="hard">Hard</option>
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Parent Category</label>
+                                    <select id="pCategory" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                                        <option value="">Select Category</option>
+                                    </select>
+                                </div>
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Reward Points</label>
+                                    <input type="number" id="pPoints" required min="1" value="100" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                                </div>
+                            </div>
+
+                            <div class="flex flex-col gap-1.5">
+                                <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Problem Description</label>
+                                <textarea id="pDesc" rows="5" required placeholder="Provide a detailed outline of the task, constraints, input criteria..." class="w-full py-2.5 px-4 rounded-xl text-sm transition-all duration-300 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:outline-none"></textarea>
+                            </div>
+
+                            <div class="grid grid-cols-1 sm:grid-cols-3 gap-5">
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">CPU Time (Secs)</label>
+                                    <input type="number" step="0.1" min="0.1" id="pTime" required value="2" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                                </div>
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Memory (MB)</label>
+                                    <input type="number" min="1" id="pMem" required value="256" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                                </div>
+                                <div class="flex items-center justify-between border border-slate-200 dark:border-slate-700 rounded-xl px-4 py-2 mt-4 sm:mt-0 select-none bg-slate-50 dark:bg-slate-800">
+                                    <label class="text-xs font-bold text-slate-700 dark:text-slate-300">Set Active</label>
+                                    <input type="checkbox" id="pActive" checked class="w-5 h-5 rounded-lg border-slate-300">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Formats and constraints -->
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm p-6 flex flex-col gap-5">
+                            <h3 class="font-bold text-slate-800 dark:text-white pb-2 border-b border-slate-50 dark:border-slate-800">Formatting & Constraints</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Input format description</label>
+                                    <textarea id="pInputFormat" rows="2" placeholder="e.g. First line contains integer N, followed by N integers..." class="w-full py-2.5 px-4 rounded-xl text-sm transition-all duration-300 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:outline-none"></textarea>
+                                </div>
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Output format description</label>
+                                    <textarea id="pOutputFormat" rows="2" placeholder="e.g. Return the duplicate element value, or -1 if no duplicates exist." class="w-full py-2.5 px-4 rounded-xl text-sm transition-all duration-300 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:outline-none"></textarea>
+                                </div>
+                            </div>
+                            <div class="flex flex-col gap-1.5">
+                                <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Constraints</label>
+                                <textarea id="pConstraints" rows="2" placeholder="e.g. 1 <= N <= 10^5" class="w-full py-2.5 px-4 rounded-xl text-sm transition-all duration-300 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:outline-none"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Starter Boilerplate Code Panel -->
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm p-6 flex flex-col gap-4">
+                            <h3 class="font-bold text-slate-800 dark:text-white pb-2 border-b border-slate-50 dark:border-slate-800">Starter Boilerplate Code</h3>
+                            <div class="flex flex-wrap gap-2 border-b border-slate-100 dark:border-slate-800 pb-2">
+                                <button type="button" onclick="switchLangTab('javascript')" id="tab-lang-javascript" class="lang-tab px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-500/10 text-indigo-500 border border-indigo-500/20">JavaScript</button>
+                                <button type="button" onclick="switchLangTab('python')" id="tab-lang-python" class="lang-tab px-3 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:bg-slate-800/40 hover:text-slate-200">Python</button>
+                                <button type="button" onclick="switchLangTab('java')" id="tab-lang-java" class="lang-tab px-3 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:bg-slate-800/40 hover:text-slate-200">Java</button>
+                                <button type="button" onclick="switchLangTab('cpp')" id="tab-lang-cpp" class="lang-tab px-3 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:bg-slate-800/40 hover:text-slate-200">C++</button>
+                                <button type="button" onclick="switchLangTab('c')" id="tab-lang-c" class="lang-tab px-3 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:bg-slate-800/40 hover:text-slate-200">C</button>
+                            </div>
+                            <div class="lang-editor-container">
+                                <textarea id="code-javascript" rows="8" placeholder="function solution() {&#10;    // write code here&#10;}" class="lang-editor w-full font-mono py-2.5 px-4 rounded-xl text-xs transition-all duration-300 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:outline-none"></textarea>
+                                <textarea id="code-python" rows="8" placeholder="def solution():&#10;    # write code here&#10;    pass" class="lang-editor w-full font-mono py-2.5 px-4 rounded-xl text-xs transition-all duration-300 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:outline-none hidden"></textarea>
+                                <textarea id="code-java" rows="8" placeholder="public class Solution {&#10;    public static void main(String[] args) {&#10;        // write code here&#10;    }&#10;}" class="lang-editor w-full font-mono py-2.5 px-4 rounded-xl text-xs transition-all duration-300 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:outline-none hidden"></textarea>
+                                <textarea id="code-cpp" rows="8" placeholder="#include &lt;iostream&gt;&#10;using namespace std;&#10;&#10;int main() {&#10;    // write code here&#10;    return 0;&#10;}" class="lang-editor w-full font-mono py-2.5 px-4 rounded-xl text-xs transition-all duration-300 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:outline-none hidden"></textarea>
+                                <textarea id="code-c" rows="8" placeholder="#include &lt;stdio.h&gt;&#10;&#10;int main() {&#10;    // write code here&#10;    return 0;&#10;}" class="lang-editor w-full font-mono py-2.5 px-4 rounded-xl text-xs transition-all duration-300 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:outline-none hidden"></textarea>
+                            </div>
+                        </div>
+
+                        <!-- Tags & Companies Panel -->
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm p-6 flex flex-col gap-5">
+                            <h3 class="font-bold text-slate-800 dark:text-white pb-2 border-b border-slate-50 dark:border-slate-800">Metadata & Tagging</h3>
+                            <div class="grid grid-cols-1 sm:grid-cols-2 gap-5">
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Tags (comma-separated)</label>
+                                    <input type="text" id="pTags" placeholder="e.g. arrays, dynamic-programming, hash-map" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                                </div>
+                                <div class="flex flex-col gap-1.5">
+                                    <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Target Companies (comma-separated)</label>
+                                    <input type="text" id="pCompanies" placeholder="e.g. Google, Amazon, Microsoft" class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-slate-50 dark:bg-slate-800 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Example cases panel -->
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm p-6 flex flex-col gap-4">
+                            <div class="flex justify-between items-center pb-2 border-b border-slate-50 dark:border-slate-800">
+                                <h3 class="font-bold text-slate-800 dark:text-white">Example Cases (<span id="exCount">1</span>)</h3>
+                                <button type="button" onclick="addExample()" class="text-xs font-bold text-indigo-500 hover:text-indigo-600 inline-flex items-center gap-1">
+                                    <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Case
+                                </button>
+                            </div>
+                            <div id="examplesContainer" class="flex flex-col gap-4"></div>
+                        </div>
+
+                        <!-- Compiler test cases -->
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 shadow-sm p-6 flex flex-col gap-4">
+                            <div class="flex justify-between items-center pb-2 border-b border-slate-50 dark:border-slate-800">
+                                <h3 class="font-bold text-slate-800 dark:text-white">Compiler Test Cases (<span id="tcCount">1</span>)</h3>
+                                <button type="button" onclick="addTestCase()" class="text-xs font-bold text-indigo-500 hover:text-indigo-600 inline-flex items-center gap-1">
+                                    <i data-lucide="plus" class="w-3.5 h-3.5"></i> Add Testcase
+                                </button>
+                            </div>
+                            <div id="testCasesContainer" class="flex flex-col gap-4"></div>
+                        </div>
+
+                        <div class="flex gap-4">
+                            <button type="submit" id="btnSave" class="px-8 py-3 bg-indigo-600 hover:bg-indigo-700 text-white font-bold rounded-xl flex items-center gap-2 transition-colors shadow-lg shadow-indigo-500/20">
+                                <i data-lucide="save" class="w-4 h-4"></i> <span id="btnSaveText">Save Problem</span>
+                            </button>
+                            <a href="admin-coding.html" class="px-8 py-3 bg-slate-100 dark:bg-slate-800 hover:bg-slate-200 dark:hover:bg-slate-700 text-slate-800 dark:text-white font-bold rounded-xl flex items-center transition-colors">
+                                Cancel
+                            </a>
+                        </div>
+
+                    </form>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="hidden fixed top-4 right-4 z-50 p-4 rounded-xl text-sm font-semibold shadow-lg border"></div>
+
+    <script>
+        lucide.createIcons();
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            const overlay = document.getElementById('sidebarOverlay');
+            if(overlay) overlay.classList.toggle('hidden');
+        }
+
+        function logout() {
+            api.removeToken();
+            window.location.href = 'login.html';
+        }
+
+        // Highlight active link
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentPath = window.location.pathname.split('/').pop();
+            document.querySelectorAll('.nav-link').forEach(link => {
+                if(link.getAttribute('href') === currentPath) {
+                    link.classList.remove('text-slate-400');
+                    link.classList.add('bg-indigo-500/15', 'text-indigo-400', 'border', 'border-indigo-500/20');
+                    const icon = link.querySelector('i');
+                    if(icon) { icon.classList.remove('text-slate-500'); icon.classList.add('text-indigo-400'); }
+                }
+            });
+        });
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            html.classList.toggle('dark');
+            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+        }
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `fixed top-4 right-4 z-50 p-4 rounded-xl text-sm font-semibold shadow-lg border transition-opacity ${
+                type === 'success' 
+                ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white border-slate-200 dark:border-slate-800' 
+                : 'bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800'
+            }`;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 5000);
+        }
+
+        const urlParams = new URLSearchParams(window.location.search);
+        const problemId = urlParams.get('id');
+        const isEdit = !!problemId;
+
+        let isDirty = false;
+        let exampleCounter = 1;
+        let testCaseCounter = 1;
+        
+        function getNextExampleId() {
+            return `ex-${Date.now()}-${exampleCounter++}-${Math.random().toString(36).substr(2, 9)}`;
+        }
+        function getNextTestCaseId() {
+            return `tc-${Date.now()}-${testCaseCounter++}-${Math.random().toString(36).substr(2, 9)}`;
+        }
+
+        let examples = [];
+        let testCases = [];
+
+        function escapeHtml(str) {
+            if (typeof str !== 'string') return str || '';
+            return str
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = api.getToken();
+            if (!token) { window.location.href = 'login.html'; return; }
+            
+            try {
+                const profileRes = await api.auth.getProfile();
+                if (profileRes.data.user.role !== 'admin') {
+                    window.location.href = 'student-dashboard.html';
+                    return;
+                }
+            } catch(e) {
+                api.removeToken();
+                window.location.href = 'login.html?session=expired';
+                return;
+            }
+
+            let categoriesLoaded = false;
+            try {
+                const catRes = await api.request('/categories?type=coding');
+                const catSelect = document.getElementById('pCategory');
+                catRes.data.forEach(c => {
+                    const opt = document.createElement('option');
+                    opt.value = c._id;
+                    opt.textContent = c.name;
+                    catSelect.appendChild(opt);
+                });
+                categoriesLoaded = true;
+            } catch(e) { 
+                console.error('Error fetching categories', e); 
+            }
+
+            if (isEdit) {
+                document.getElementById('pageTitle').textContent = 'Modify Coding Challenge';
+                await loadProblem(categoriesLoaded);
+            } else {
+                examples = [{ id: getNextExampleId(), input: '', output: '', explanation: '' }];
+                testCases = [{ id: getNextTestCaseId(), input: '', expectedOutput: '', isHidden: false }];
+                renderExamples();
+                renderTestCases();
+                document.getElementById('loader')?.classList.add('hidden');
+                document.getElementById('content')?.classList.remove('hidden');
+                document.getElementById('content')?.classList.add('flex');
+            }
+
+            // Unsaved changes dirty logic
+            document.getElementById('problemForm').addEventListener('input', () => {
+                isDirty = true;
+            });
+            window.addEventListener('beforeunload', (e) => {
+                if (isDirty) {
+                    e.preventDefault();
+                    e.returnValue = '';
+                }
+            });
+        });
+
+        async function loadProblem(categoriesLoaded) {
+            try {
+                const res = await api.request(`/coding/${problemId}`);
+                const p = res.data;
+
+                document.getElementById('pTitle').value = p.title;
+                document.getElementById('pDifficulty').value = p.difficulty || 'medium';
+                if(p.category && categoriesLoaded) {
+                    document.getElementById('pCategory').value = p.category._id || p.category;
+                }
+                document.getElementById('pPoints').value = p.points || 100;
+                document.getElementById('pDesc').value = p.description;
+                document.getElementById('pTime').value = p.timeLimit || 2;
+                document.getElementById('pMem').value = p.memoryLimit || 256;
+                document.getElementById('pActive').checked = p.isActive !== false;
+                document.getElementById('pInputFormat').value = p.inputFormat || '';
+                document.getElementById('pOutputFormat').value = p.outputFormat || '';
+                document.getElementById('pConstraints').value = p.constraints || '';
+
+                if (p.tags) document.getElementById('pTags').value = p.tags.join(', ');
+                if (p.companies) document.getElementById('pCompanies').value = p.companies.join(', ');
+
+                if (p.starterCode) {
+                    document.getElementById('code-javascript').value = p.starterCode.javascript || '';
+                    document.getElementById('code-python').value = p.starterCode.python || '';
+                    document.getElementById('code-java').value = p.starterCode.java || '';
+                    document.getElementById('code-cpp').value = p.starterCode.cpp || '';
+                    document.getElementById('code-c').value = p.starterCode.c || '';
+                }
+
+                if (p.examples && p.examples.length > 0) {
+                    examples = p.examples.map((ex) => ({ id: getNextExampleId(), input: ex.input, output: ex.output, explanation: ex.explanation || '' }));
+                } else {
+                    examples = [{ id: getNextExampleId(), input: '', output: '', explanation: '' }];
+                }
+
+                if (p.testCases && p.testCases.length > 0) {
+                    testCases = p.testCases.map((tc) => ({ id: getNextTestCaseId(), input: tc.input, expectedOutput: tc.expectedOutput, isHidden: !!tc.isHidden }));
+                } else {
+                    testCases = [{ id: getNextTestCaseId(), input: '', expectedOutput: '', isHidden: false }];
+                }
+
+                renderExamples();
+                renderTestCases();
+
+                document.getElementById('loader')?.classList.add('hidden');
+                document.getElementById('content')?.classList.remove('hidden');
+                document.getElementById('content')?.classList.add('flex');
+            } catch(e) {
+                console.error(e);
+                showToast('Failed to load problem details', 'error');
+                setTimeout(() => window.location.href = 'admin-coding.html', 1500);
+            }
+        }
+
+        function switchLangTab(lang) {
+            const langs = ['javascript', 'python', 'java', 'cpp', 'c'];
+            langs.forEach(l => {
+                const btn = document.getElementById(`tab-lang-${l}`);
+                const editor = document.getElementById(`code-${l}`);
+                if (l === lang) {
+                    btn.className = "lang-tab px-3 py-1.5 rounded-lg text-xs font-bold bg-indigo-500/10 text-indigo-500 border border-indigo-500/20";
+                    editor.classList.remove('hidden');
+                } else {
+                    btn.className = "lang-tab px-3 py-1.5 rounded-lg text-xs font-bold text-slate-400 hover:bg-slate-800/40 hover:text-slate-200";
+                    editor.classList.add('hidden');
+                }
+            });
+        }
+
+        function addExample() {
+            examples.push({ id: getNextExampleId(), input: '', output: '', explanation: '' });
+            isDirty = true;
+            renderExamples();
+        }
+
+        function removeExample(id) {
+            if (examples.length <= 1) { showToast('Must have at least 1 example.', 'error'); return; }
+            examples = examples.filter(ex => ex.id !== id);
+            isDirty = true;
+            renderExamples();
+        }
+
+        function updateExample(id, field, value) {
+            const ex = examples.find(e => e.id === id);
+            if(ex) {
+                ex[field] = value;
+                isDirty = true;
+            }
+        }
+
+        function renderExamples() {
+            document.getElementById('exCount').textContent = examples.length;
+            const container = document.getElementById('examplesContainer');
+            container.innerHTML = examples.map((ex, idx) => `
+                <div class="p-4 bg-slate-50/50 dark:bg-slate-800/25 rounded-2xl border border-slate-100 dark:border-slate-800/40 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm uppercase font-bold text-slate-400">Example ${idx + 1}</span>
+                        ${examples.length > 1 ? `<button type="button" onclick="removeExample('${ex.id}')" class="p-1 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-lg"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-sm font-bold text-slate-400 uppercase">Input</label>
+                            <textarea rows="2" oninput="updateExample('${ex.id}', 'input', this.value)" class="w-full py-2 px-3 rounded-xl text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:outline-none transition-all">${escapeHtml(ex.input)}</textarea>
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-sm font-bold text-slate-400 uppercase">Output</label>
+                            <textarea rows="2" oninput="updateExample('${ex.id}', 'output', this.value)" class="w-full py-2 px-3 rounded-xl text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:outline-none transition-all">${escapeHtml(ex.output)}</textarea>
+                        </div>
+                    </div>
+                    <div class="flex flex-col gap-1.5">
+                        <label class="text-xs font-semibold uppercase tracking-wider text-slate-500 dark:text-slate-400">Explanation</label>
+                        <input type="text" oninput="updateExample('${ex.id}', 'explanation', this.value)" value="${escapeHtml(ex.explanation)}" placeholder="Describe why this input gives this output..." class="w-full px-4 py-2.5 rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-900 text-slate-900 dark:text-white text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500/20">
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        function addTestCase() {
+            testCases.push({ id: getNextTestCaseId(), input: '', expectedOutput: '', isHidden: false });
+            isDirty = true;
+            renderTestCases();
+        }
+
+        function removeTestCase(id) {
+            if (testCases.length <= 1) { showToast('Must have at least 1 test case.', 'error'); return; }
+            testCases = testCases.filter(tc => tc.id !== id);
+            isDirty = true;
+            renderTestCases();
+        }
+
+        function updateTestCase(id, field, value) {
+            const tc = testCases.find(t => t.id === id);
+            if(tc) {
+                tc[field] = value;
+                isDirty = true;
+            }
+        }
+
+        function renderTestCases() {
+            document.getElementById('tcCount').textContent = testCases.length;
+            const container = document.getElementById('testCasesContainer');
+            container.innerHTML = testCases.map((tc, idx) => `
+                <div class="p-4 bg-slate-50/50 dark:bg-slate-800/25 rounded-2xl border border-slate-100 dark:border-slate-800/40 space-y-3">
+                    <div class="flex justify-between items-center">
+                        <span class="text-sm uppercase font-bold text-slate-400">Test Case ${idx + 1}</span>
+                        <div class="flex items-center gap-3">
+                            <div class="flex items-center gap-1.5">
+                                <input type="checkbox" onchange="updateTestCase('${tc.id}', 'isHidden', this.checked)" ${tc.isHidden ? 'checked' : ''} id="hide-${tc.id}" class="w-4 h-4 rounded text-indigo-600 border-slate-300">
+                                <label for="hide-${tc.id}" class="text-sm font-bold text-slate-500 select-none cursor-pointer">Hidden Case</label>
+                            </div>
+                            ${testCases.length > 1 ? `<button type="button" onclick="removeTestCase('${tc.id}')" class="p-1 text-rose-500 hover:bg-rose-50 dark:hover:bg-rose-500/10 rounded-lg"><i data-lucide="trash-2" class="w-4 h-4"></i></button>` : ''}
+                        </div>
+                    </div>
+                    <div class="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-sm font-bold text-slate-400 uppercase">Input stdin</label>
+                            <textarea rows="2" oninput="updateTestCase('${tc.id}', 'input', this.value)" class="w-full py-2 px-3 rounded-xl text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:outline-none transition-all">${escapeHtml(tc.input)}</textarea>
+                        </div>
+                        <div class="flex flex-col gap-1.5">
+                            <label class="text-sm font-bold text-slate-400 uppercase">Expected stdout</label>
+                            <textarea rows="2" oninput="updateTestCase('${tc.id}', 'expectedOutput', this.value)" class="w-full py-2 px-3 rounded-xl text-xs bg-white dark:bg-slate-900 border border-slate-200 dark:border-slate-700 focus:border-indigo-500 focus:outline-none transition-all">${escapeHtml(tc.expectedOutput)}</textarea>
+                        </div>
+                    </div>
+                </div>
+            `).join('');
+            lucide.createIcons();
+        }
+
+        async function saveProblem(e) {
+            e.preventDefault();
+
+            const validExamples = examples.filter(ex => ex.input.trim() || ex.output.trim()).map(ex => ({
+                input: ex.input.trim(),
+                output: ex.output.trim(),
+                explanation: ex.explanation.trim()
+            }));
+
+            const validTestCases = testCases.filter(tc => tc.input.trim() || tc.expectedOutput.trim()).map(tc => ({
+                input: tc.input.trim(),
+                expectedOutput: tc.expectedOutput.trim(),
+                isHidden: tc.isHidden
+            }));
+
+            if(validTestCases.length === 0) { showToast('Please configure at least one testcase.', 'error'); return; }
+
+            const btn = document.getElementById('btnSave');
+            btn.disabled = true;
+            btn.innerHTML = `<div class="animate-spin h-4 w-4 border-2 border-white border-t-transparent rounded-full"></div> <span>Saving...</span>`;
+
+            const payload = {
+                title: document.getElementById('pTitle').value.trim(),
+                description: document.getElementById('pDesc').value.trim(),
+                difficulty: document.getElementById('pDifficulty').value,
+                category: document.getElementById('pCategory').value || null,
+                constraints: document.getElementById('pConstraints').value.trim(),
+                inputFormat: document.getElementById('pInputFormat').value.trim(),
+                outputFormat: document.getElementById('pOutputFormat').value.trim(),
+                examples: validExamples,
+                testCases: validTestCases,
+                timeLimit: parseFloat(document.getElementById('pTime').value),
+                memoryLimit: parseInt(document.getElementById('pMem').value),
+                points: parseInt(document.getElementById('pPoints').value),
+                isActive: document.getElementById('pActive').checked,
+                tags: document.getElementById('pTags').value.split(',').map(s => s.trim()).filter(Boolean),
+                companies: document.getElementById('pCompanies').value.split(',').map(s => s.trim()).filter(Boolean),
+                starterCode: {
+                    javascript: document.getElementById('code-javascript').value.trim(),
+                    python: document.getElementById('code-python').value.trim(),
+                    java: document.getElementById('code-java').value.trim(),
+                    cpp: document.getElementById('code-cpp').value.trim(),
+                    c: document.getElementById('code-c').value.trim(),
+                }
+            };
+
+            try {
+                isDirty = false; // reset dirty flag so navigation doesn't trigger confirm
+                if (isEdit) {
+                    await api.request(`/coding/${problemId}`, { method: 'PUT', body: JSON.stringify(payload) });
+                    showToast('Coding problem saved successfully!');
+                } else {
+                    await api.request('/coding', { method: 'POST', body: JSON.stringify(payload) });
+                    showToast('Coding problem created successfully!');
+                }
+                setTimeout(() => window.location.href = 'admin-coding.html', 1000);
+            } catch(err) {
+                showToast(err.message || 'Failed to save coding problem.', 'error');
+                btn.disabled = false;
+                btn.innerHTML = `<i data-lucide="save" class="w-4 h-4"></i> <span>Save Problem</span>`;
+                lucide.createIcons();
+            }
+        }
+    </script>
+</body>
+</html>

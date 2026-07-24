@@ -1,0 +1,365 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OIT_STACK — Login</title>
+    <meta name="description" content="Sign in to OIT_STACK Corporate Training portal to access your aptitude tests, coding challenges, and placement preparation resources.">
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>tailwind.config = { darkMode: 'class' }</script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="api.js?v=4"></script>
+    <link rel="stylesheet" href="css/auth.css">
+</head>
+<body class="relative min-h-[100dvh] lg:h-[100dvh] lg:overflow-hidden bg-slate-50 dark:bg-slate-950 flex flex-col font-sans transition-colors duration-300">
+
+    <!-- ── Navbar ── -->
+    <nav class="relative z-10 h-14 shrink-0 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/60 flex items-center justify-between px-6">
+        <div class="flex items-center gap-2.5">
+            <img src="./image/logo.jpg" alt="OIT_STACK logo" class="w-10 h-10 object-cover rounded-lg shadow-sm">
+            <span class="font-bold text-slate-900 dark:text-white text-lg">OIT_STACK</span>
+        </div>
+        <div class="flex items-center gap-2">
+            <a href="/" class="text-sm font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors mr-3">Home</a>
+            <button id="themeToggleBtn" onclick="toggleTheme()" aria-label="Toggle colour theme" class="p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors text-slate-500 dark:text-slate-400">
+                <i data-lucide="moon" class="w-4 h-4 dark:hidden"></i>
+                <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+            </button>
+        </div>
+    </nav>
+
+    <!-- ── Toast ── -->
+    <div id="toast" role="alert" aria-live="polite"
+         class="hidden fixed top-4 right-4 z-50 max-w-xs w-full p-4 pr-10 rounded-xl text-sm font-semibold shadow-xl border">
+        <button onclick="dismissToast()" aria-label="Dismiss notification"
+                class="absolute top-3 right-3 text-current opacity-60 hover:opacity-100 transition-opacity">
+            <i data-lucide="x" class="w-4 h-4"></i>
+        </button>
+        <span id="toastMsg"></span>
+    </div>
+
+    <!-- ── Split-screen ── -->
+    <div class="flex-1 flex flex-col lg:flex-row overflow-y-auto lg:overflow-hidden">
+
+        <!-- LEFT PANEL -->
+        <div class="hidden lg:flex lg:w-1/2 xl:w-[55%] relative overflow-hidden bg-gradient-to-br from-[#02123b] via-[#0033a8] to-[#005cff] left-panel-bg flex-col justify-center px-12 xl:px-20 text-white">
+            <div class="relative z-10">
+                <h1 class="text-4xl xl:text-5xl font-black leading-tight mb-5">
+                    Welcome to
+                    <span class="block text-[#33d6ff]">OIT_STACK</span>
+                </h1>
+                <p class="text-blue-100 text-lg mb-8 max-w-lg leading-relaxed">
+                    Empowering organisations with intelligent solutions in technology, analytics, surveys and training.
+                </p>
+
+                <!-- Services -->
+                <div class="space-y-4 mb-10">
+                    <a href="../../service-software.html" class="flex items-center gap-4 text-lg font-semibold hover:text-[#33d6ff] transition-colors">
+                        <div class="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center shrink-0">
+                            <img src="../../assets/software-icon.png" class="w-6 h-6 object-contain" alt="" onerror="this.style.display='none';this.nextElementSibling.classList.remove('hidden')">
+                            <span class="hidden">💻</span>
+                        </div>
+                        Software Development
+                    </a>
+                    <a href="../../service-analytics.html" class="flex items-center gap-4 text-lg font-semibold hover:text-[#33d6ff] transition-colors">
+                        <div class="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center shrink-0">
+                            <img src="../../assets/analysis-icon.png" class="w-6 h-6 object-contain" alt="" onerror="this.style.display='none';this.nextElementSibling.classList.remove('hidden')">
+                            <span class="hidden">📊</span>
+                        </div>
+                        Data Analysis
+                    </a>
+                    <a href="../../service-campaign.html" class="flex items-center gap-4 text-lg font-semibold hover:text-[#33d6ff] transition-colors">
+                        <div class="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center shrink-0">
+                            <img src="../../assets/campaign-icon1.png" class="w-6 h-6 object-contain" alt="" onerror="this.style.display='none';this.nextElementSibling.classList.remove('hidden')">
+                            <span class="hidden">📣</span>
+                        </div>
+                        Campaign Management
+                    </a>
+                    <a href="../../service-surveys.html" class="flex items-center gap-4 text-lg font-semibold hover:text-[#33d6ff] transition-colors">
+                        <div class="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center shrink-0">
+                            <img src="../../assets/election-icon.png" class="w-6 h-6 object-contain" alt="" onerror="this.style.display='none';this.nextElementSibling.classList.remove('hidden')">
+                            <span class="hidden">🗳</span>
+                        </div>
+                        Election Survey
+                    </a>
+                    <a href="../../service-training.html" class="flex items-center gap-4 text-lg font-semibold hover:text-[#33d6ff] transition-colors">
+                        <div class="w-10 h-10 rounded-xl bg-white/10 border border-white/20 flex items-center justify-center shrink-0">
+                            <img src="../../assets/corporate-icon.png" class="w-6 h-6 object-contain" alt="" onerror="this.style.display='none';this.nextElementSibling.classList.remove('hidden')">
+                            <span class="hidden">🎓</span>
+                        </div>
+                        Corporate Training
+                    </a>
+                </div>
+            </div>
+        </div>
+
+        <!-- RIGHT PANEL -->
+        <div class="w-full lg:w-1/2 xl:w-[45%] flex flex-col items-center justify-center p-6 sm:p-8 lg:p-12 overflow-y-auto relative bg-[#f8fbff] dark:bg-slate-900">
+            <!-- Floating boxes -->
+            <div class="absolute inset-0 overflow-hidden pointer-events-none z-0">
+                <ul class="circles">
+                    <li></li><li></li><li></li><li></li><li></li>
+                    <li></li><li></li><li></li><li></li><li></li>
+                    <li></li><li></li><li></li><li></li><li></li>
+                    <li></li><li></li><li></li><li></li><li></li>
+                </ul>
+            </div>
+
+            <!-- Login card -->
+            <div class="w-full max-w-[480px] relative z-10 rounded-[30px] p-5 sm:p-12">
+                <h2 class="text-3xl sm:text-4xl font-bold text-slate-800 dark:text-white text-center mb-2">Welcome Back</h2>
+                <p class="text-sm text-slate-500 dark:text-slate-400 text-center mb-8">Sign in to continue to your account</p>
+
+                <!-- Failed attempts warning -->
+                <div id="failedWarning" class="hidden mb-4 p-3 rounded-xl bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800/60 text-xs font-semibold text-amber-700 dark:text-amber-400 flex items-center gap-2">
+                    <i data-lucide="alert-triangle" class="w-4 h-4 shrink-0"></i>
+                    <span id="failedWarningText"></span>
+                </div>
+
+                <form id="loginForm" class="space-y-5" novalidate>
+                    <!-- Email -->
+                    <div>
+                        <label for="email" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Email Address</label>
+                        <div class="relative">
+                            <i data-lucide="mail" class="absolute left-4 top-4 w-5 h-5 text-slate-400 pointer-events-none"></i>
+                            <input
+                                id="email"
+                                name="email"
+                                type="email"
+                                autocomplete="email"
+                                required
+                                placeholder="you@example.com"
+                                class="w-full pl-12 pr-4 h-[56px] rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition text-sm"
+                            >
+                        </div>
+                        <p id="emailError" role="alert" class="mt-1.5 text-xs text-red-500 hidden"></p>
+                    </div>
+
+                    <!-- Password -->
+                    <div>
+                        <label for="password" class="block text-sm font-medium text-slate-700 dark:text-slate-300 mb-1.5">Password</label>
+                        <div class="relative">
+                            <i data-lucide="lock" class="absolute left-4 top-4 w-5 h-5 text-slate-400 pointer-events-none"></i>
+                            <input
+                                id="password"
+                                name="password"
+                                type="password"
+                                autocomplete="current-password"
+                                required
+                                placeholder="Enter your password"
+                                class="w-full pl-12 pr-12 h-[56px] rounded-xl border border-slate-200 dark:border-slate-700 bg-white dark:bg-slate-800 text-slate-900 dark:text-white placeholder-slate-400 focus:outline-none focus:ring-2 focus:ring-blue-500/20 focus:border-blue-500 transition text-sm"
+                            >
+                            <button type="button" id="pwToggle" onclick="togglePassword('password','eyeIcon')" aria-label="Toggle password visibility"
+                                    class="absolute inset-y-0 right-0 pr-4 flex items-center text-slate-400 hover:text-slate-600 transition-colors">
+                                <svg id="eyeIcon" xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" fill="none" viewBox="0 0 24 24" stroke-width="2" stroke="currentColor">
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.964-7.178z"/>
+                                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>
+                                </svg>
+                            </button>
+                        </div>
+                        <p id="passwordError" role="alert" class="mt-1.5 text-xs text-red-500 hidden"></p>
+                    </div>
+
+                    <!-- Remember me + Forgot password -->
+                    <div class="flex items-center justify-between text-sm">
+                        <label class="flex items-center gap-2 cursor-pointer text-slate-600 dark:text-slate-400 select-none">
+                            <input id="rememberMe" type="checkbox" autocomplete="off"
+                                   class="w-4 h-4 rounded border-slate-300 dark:border-slate-700 text-blue-600 focus:ring-blue-500 cursor-pointer">
+                            <span>Remember me</span>
+                        </label>
+                        <a href="forgot-password.html" class="text-blue-600 dark:text-blue-400 hover:underline font-semibold">Forgot Password?</a>
+                    </div>
+
+                    <!-- Submit -->
+                    <button id="submitBtn" type="submit"
+                            class="w-full h-[56px] rounded-xl bg-gradient-to-r from-blue-600 to-indigo-600 hover:from-blue-700 hover:to-indigo-700 shadow-lg shadow-blue-500/25 hover:shadow-blue-500/40 text-white font-semibold flex items-center justify-center gap-2 transition-all duration-300 hover:-translate-y-0.5 active:translate-y-0 disabled:opacity-70 disabled:cursor-not-allowed disabled:translate-y-0">
+                        <span id="btnText" class="flex items-center gap-2">
+                            <i data-lucide="log-in" class="w-5 h-5"></i> Sign In
+                        </span>
+                        <div id="btnSpinner" class="hidden animate-spin h-5 w-5 border-2 border-white border-t-transparent rounded-full"></div>
+                    </button>
+                </form>
+
+                <div class="text-center mt-8 text-sm text-slate-500 dark:text-slate-400">
+                    New to OIT_STACK?
+                    <a href="register.html" class="text-blue-600 dark:text-blue-400 hover:underline font-semibold">Create Account</a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // ── Theme ──────────────────────────────────────────────────────────
+        function toggleTheme() {
+            const html = document.documentElement;
+            html.classList.toggle('dark');
+            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+        }
+        if (localStorage.getItem('theme') === 'dark' ||
+            (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+
+        lucide.createIcons();
+
+        // ── Password toggle (no Lucide re-render) ─────────────────────────
+        function togglePassword(inputId, svgId) {
+            const input = document.getElementById(inputId);
+            const svg   = document.getElementById(svgId);
+            const show  = input.type === 'password';
+            input.type  = show ? 'text' : 'password';
+            // Swap eye paths inline — no createIcons() call needed
+            svg.innerHTML = show
+                ? `<path stroke-linecap="round" stroke-linejoin="round" d="M3.98 8.223A10.477 10.477 0 001.934 12C3.226 16.338 7.244 19.5 12 19.5c.993 0 1.953-.138 2.863-.395M6.228 6.228A10.45 10.45 0 0112 4.5c4.756 0 8.773 3.162 10.065 7.498a10.523 10.523 0 01-4.293 5.774M6.228 6.228L3 3m3.228 3.228l3.65 3.65m7.894 7.894L21 21m-3.228-3.228l-3.65-3.65m0 0a3 3 0 10-4.243-4.243m4.242 4.242L9.88 9.88"/>`
+                : `<path stroke-linecap="round" stroke-linejoin="round" d="M2.036 12.322a1.012 1.012 0 010-.639C3.423 7.51 7.36 4.5 12 4.5c4.638 0 8.573 3.007 9.963 7.178.07.207.07.431 0 .639C20.577 16.49 16.64 19.5 12 19.5c-4.638 0-8.573-3.007-9.964-7.178z"/><path stroke-linecap="round" stroke-linejoin="round" d="M15 12a3 3 0 11-6 0 3 3 0 016 0z"/>`;
+        }
+
+        // ── Toast ─────────────────────────────────────────────────────────
+        let _toastTimer;
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            document.getElementById('toastMsg').textContent = message;
+            clearTimeout(_toastTimer);
+            toast.className = [
+                'fixed top-4 right-4 z-50 max-w-xs w-full p-4 pr-10 rounded-xl text-sm font-semibold shadow-xl border toast-enter',
+                type === 'success'
+                    ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white border-slate-200 dark:border-slate-800'
+                    : type === 'warning'
+                    ? 'bg-amber-50 dark:bg-amber-900/30 text-amber-700 dark:text-amber-400 border-amber-200 dark:border-amber-800'
+                    : 'bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800'
+            ].join(' ');
+            toast.classList.remove('hidden');
+            lucide.createIcons({ nodes: [toast] });
+            _toastTimer = setTimeout(dismissToast, 4000);
+        }
+        function dismissToast() {
+            document.getElementById('toast').classList.add('hidden');
+        }
+
+        // ── Remember Me — pre-fill email ──────────────────────────────────
+        const savedEmail = localStorage.getItem('rememberEmail');
+        if (savedEmail) {
+            document.getElementById('email').value = savedEmail;
+            document.getElementById('rememberMe').checked = true;
+        }
+
+        // ── Failed-attempt tracking ────────────────────────────────────────
+        const MAX_ATTEMPTS = 5;
+        let failedAttempts = parseInt(sessionStorage.getItem('loginFails') || '0', 10);
+
+        function updateFailedWarning() {
+            const warn = document.getElementById('failedWarning');
+            const txt  = document.getElementById('failedWarningText');
+            if (failedAttempts > 0) {
+                const left = MAX_ATTEMPTS - failedAttempts;
+                txt.textContent = left > 0
+                    ? `${failedAttempts} failed attempt${failedAttempts > 1 ? 's' : ''}. ${left} attempt${left > 1 ? 's' : ''} remaining before temporary lockout.`
+                    : 'Too many failed attempts. Please wait a moment before trying again.';
+                warn.classList.remove('hidden');
+                lucide.createIcons({ nodes: [warn] });
+            } else {
+                warn.classList.add('hidden');
+            }
+        }
+        updateFailedWarning();
+
+        // ── Validate email (proper regex) ─────────────────────────────────
+        function isValidEmail(v) {
+            return /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v.trim());
+        }
+
+        // ── Form submit ───────────────────────────────────────────────────
+        document.getElementById('loginForm').addEventListener('submit', async (e) => {
+            e.preventDefault();
+
+            // Throttle after MAX_ATTEMPTS
+            if (failedAttempts >= MAX_ATTEMPTS) {
+                showToast('Too many failed attempts. Please wait before retrying.', 'error');
+                return;
+            }
+
+            const email    = document.getElementById('email').value.trim();
+            const password = document.getElementById('password').value;
+            const remember = document.getElementById('rememberMe').checked;
+
+            // Reset inline errors
+            ['emailError', 'passwordError'].forEach(id => {
+                document.getElementById(id).classList.add('hidden');
+            });
+
+            let valid = true;
+            if (!isValidEmail(email)) {
+                const el = document.getElementById('emailError');
+                el.textContent = 'Please enter a valid email address.';
+                el.classList.remove('hidden');
+                valid = false;
+            }
+            if (!password) {
+                const el = document.getElementById('passwordError');
+                el.textContent = 'Password is required.';
+                el.classList.remove('hidden');
+                valid = false;
+            }
+            if (!valid) return;
+
+            const submitBtn = document.getElementById('submitBtn');
+            const btnText   = document.getElementById('btnText');
+            const spinner   = document.getElementById('btnSpinner');
+            submitBtn.disabled = true;
+            btnText.classList.add('hidden');
+            spinner.classList.remove('hidden');
+
+            try {
+                const response = await api.auth.login({ email, password });
+                api.setToken(response.data.token);
+
+                // Handle Remember Me
+                if (remember) {
+                    localStorage.setItem('rememberEmail', email);
+                } else {
+                    localStorage.removeItem('rememberEmail');
+                }
+
+                // Reset failed attempts on success
+                sessionStorage.removeItem('loginFails');
+
+                showToast(`Welcome back, ${response.data.user.name.split(' ')[0]}! 🎉`);
+
+                // Role-based redirect with safe fallback
+                setTimeout(() => {
+                    const role = response.data.user.role;
+                    if (role === 'admin') {
+                        window.location.href = 'admin-dashboard.html';
+                    } else if (role === 'student') {
+                        window.location.href = 'student-dashboard.html';
+                    } else {
+                        // Unknown role — default to student dashboard
+                        window.location.href = 'student-dashboard.html';
+                    }
+                }, 1000);
+
+            } catch (error) {
+                failedAttempts++;
+                sessionStorage.setItem('loginFails', failedAttempts);
+                updateFailedWarning();
+                showToast(error.message || 'Login failed. Please try again.', 'error');
+            } finally {
+                submitBtn.disabled = false;
+                btnText.classList.remove('hidden');
+                spinner.classList.add('hidden');
+            }
+        });
+
+        // ── Session expired banner ─────────────────────────────────────────
+        document.addEventListener('DOMContentLoaded', () => {
+            const params = new URLSearchParams(window.location.search);
+            if (params.get('session') === 'expired') {
+                showToast('Your session has expired. Please log in again.', 'warning');
+            }
+            if (params.get('registered') === '1') {
+                showToast('Account created! Please sign in.', 'success');
+            }
+        });
+    </script>
+</body>
+</html>

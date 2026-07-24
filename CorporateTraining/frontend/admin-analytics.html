@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin - System Analytics</title>
+    <!-- Tailwind CSS -->
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+        tailwind.config = { darkMode: 'class' }
+    </script>
+    <script src="https://unpkg.com/lucide@latest"></script>
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+    <!-- API Config -->
+    <script src="api.js?v=4"></script>
+</head>
+<body class="bg-slate-50 dark:bg-[#0a0f1e] text-slate-900 dark:text-white font-sans overflow-hidden">
+    <div class="flex h-screen">
+
+        <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 bg-slate-900 dark:bg-[#0d1117] border-r border-slate-800/60 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
+            <div class="h-16 flex items-center justify-between px-5 border-b border-slate-800/60">
+                <div class="flex items-center gap-3">
+                    <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
+                        <i data-lucide="shield-check" class="w-4 h-4 text-white"></i>
+                    </div>
+                    <div>
+                        <h1 class="font-bold text-white text-sm leading-none">OIT_STACK</h1>
+                        <p class="text-[10px] text-slate-500 font-medium mt-0.5">Admin Portal</p>
+                    </div>
+                </div>
+            </div>
+            
+            <nav class="flex-1 py-3 px-3 overflow-y-auto space-y-0.5">
+                <a href="/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
+                    <i data-lucide="home" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Home
+                </a>
+                <a href="admin-dashboard.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0"></i> Dashboard
+                </a>
+                <a href="admin-students.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="users" class="w-4 h-4 shrink-0"></i> Students
+                </a>
+                <a href="admin-categories.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="folder-tree" class="w-4 h-4 shrink-0"></i> Categories
+                </a>
+                <a href="admin-questions.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="database" class="w-4 h-4 shrink-0"></i> Question Pool
+                </a>
+                <a href="admin-technical-mcq.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="terminal" class="w-4 h-4 shrink-0"></i> Technical MCQs
+                </a>
+                <a href="admin-tests.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="file-text" class="w-4 h-4 shrink-0"></i> Tests
+                </a>
+                <a href="admin-coding.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="code" class="w-4 h-4 shrink-0"></i> Coding Challenges
+                </a>
+                <a href="admin-interviews.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="mic" class="w-4 h-4 shrink-0"></i> Mock Interviews
+                </a>
+                <a href="admin-results.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="award" class="w-4 h-4 shrink-0"></i> Results
+                </a>
+                <a href="admin-analytics.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
+                    <i data-lucide="bar-chart-3" class="w-4 h-4 shrink-0"></i> Analytics
+                </a>
+            </nav>
+            <div class="p-3 border-t border-slate-800/60">
+                <button onclick="logout()" class="w-full flex items-center justify-center gap-2 p-2.5 rounded-xl bg-slate-800/50 hover:bg-slate-800 border border-slate-700/40 text-slate-400 hover:text-rose-400 transition-colors">
+                    <i data-lucide="log-out" class="w-4 h-4"></i>
+                    <span class="text-sm font-medium">Logout</span>
+                </button>
+            </div>
+        </aside>
+
+        <!-- Overlay for mobile sidebar -->
+        <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 hidden lg:hidden"></div>
+
+        <!-- Main Content -->
+        <div class="flex-1 lg:ml-64 flex flex-col min-w-0 h-full">
+            <header class="min-h-[4.5rem] py-3 bg-white/80 dark:bg-slate-900/80 backdrop-blur-xl border-b border-slate-200/80 dark:border-slate-800/60 flex flex-col md:flex-row md:items-center justify-between px-4 lg:px-6 shrink-0 z-20 gap-4">
+                <div class="flex items-center gap-3 flex-1">
+                    <button onclick="toggleSidebar()" class="lg:hidden p-2 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800">
+                        <i data-lucide="menu" class="w-5 h-5 text-slate-600 dark:text-slate-400"></i>
+                    </button>
+                    <div class="flex-1 flex flex-col sm:flex-row sm:items-center justify-between gap-4">
+                        <div>
+                            <h1 class="text-2xl font-black text-slate-850 dark:text-white">Performance Analytics</h1>
+                        </div>
+                        <div class="flex items-center gap-3">
+                            <select id="rangeSelect" onchange="changeRange(this.value)" class="px-3 py-2 text-xs font-bold rounded-xl border border-slate-200 dark:border-slate-800 bg-white dark:bg-slate-900 text-slate-600 dark:text-slate-300 focus:outline-none">
+                                <option value="all">All Time</option>
+                                <option value="today">Today</option>
+                                <option value="week">This Week</option>
+                                <option value="month">This Month</option>
+                            </select>
+                            <button onclick="exportCSV()" class="px-3 py-2 text-xs font-bold bg-indigo-600 hover:bg-indigo-700 text-white rounded-xl flex items-center gap-1.5 transition-colors shadow-lg shadow-indigo-500/10">
+                                <i data-lucide="download" class="w-3.5 h-3.5"></i> Export CSV
+                            </button>
+                        </div>
+                    </div>
+                </div>
+                <div class="flex items-center gap-2">
+                    <a href="/" class="text-sm font-bold text-slate-500 hover:text-slate-900 dark:text-slate-400 dark:hover:text-white transition-colors mr-2">Home</a>
+                    <button onclick="toggleTheme()" class="p-2.5 rounded-xl hover:bg-slate-100 dark:hover:bg-slate-800 transition-colors">
+                        <i data-lucide="moon" class="w-4 h-4 dark:hidden"></i>
+                        <i data-lucide="sun" class="w-4 h-4 hidden dark:block"></i>
+                    </button>
+                </div>
+            </header>
+
+            <main class="flex-1 overflow-y-auto p-4 lg:p-6 bg-slate-50/50 dark:bg-[#0a0f1e]/50">
+                <div class="max-w-6xl mx-auto flex flex-col gap-6 pb-12">
+                    
+                    <!-- Stats Bar Container -->
+                    <div id="statsBar" class="grid grid-cols-2 lg:grid-cols-4 gap-4">
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 p-5 flex items-center gap-4 shadow-sm">
+                            <div class="w-12 h-12 rounded-xl bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center shrink-0">
+                                <i data-lucide="send" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Submissions</p>
+                                <h3 id="statSubmissions" class="text-xl font-black text-slate-800 dark:text-white mt-0.5">-</h3>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 p-5 flex items-center gap-4 shadow-sm">
+                            <div class="w-12 h-12 rounded-xl bg-blue-50 dark:bg-blue-500/10 text-blue-600 dark:text-blue-400 flex items-center justify-center shrink-0">
+                                <i data-lucide="bar-chart-2" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Avg Score</p>
+                                <h3 id="statAvgScore" class="text-xl font-black text-slate-800 dark:text-white mt-0.5">-</h3>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 p-5 flex items-center gap-4 shadow-sm">
+                            <div class="w-12 h-12 rounded-xl bg-emerald-50 dark:bg-emerald-500/10 text-emerald-600 dark:text-emerald-400 flex items-center justify-center shrink-0">
+                                <i data-lucide="check-square" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Pass Rate</p>
+                                <h3 id="statPassRate" class="text-xl font-black text-slate-800 dark:text-white mt-0.5">-</h3>
+                            </div>
+                        </div>
+                        <div class="bg-white dark:bg-slate-900 rounded-2xl border border-slate-100 dark:border-slate-800 p-5 flex items-center gap-4 shadow-sm">
+                            <div class="w-12 h-12 rounded-xl bg-purple-50 dark:bg-purple-500/10 text-purple-600 dark:text-purple-400 flex items-center justify-center shrink-0">
+                                <i data-lucide="users" class="w-6 h-6"></i>
+                            </div>
+                            <div>
+                                <p class="text-[10px] font-bold text-slate-400 uppercase tracking-wider">Active Students</p>
+                                <h3 id="statActiveStudents" class="text-xl font-black text-slate-800 dark:text-white mt-0.5">-</h3>
+                            </div>
+                        </div>
+                    </div>
+
+                    <!-- Tabs -->
+                    <div role="tablist" class="flex border-b border-slate-200 dark:border-slate-800 gap-6 mt-2">
+                        <button onclick="switchTab('students')" id="tab-students" role="tab" aria-selected="true" aria-controls="content-students" tabindex="0" class="pb-3 font-bold text-sm transition-colors relative flex items-center gap-2 text-indigo-600 dark:text-indigo-400 focus:outline-none">
+                            <i data-lucide="users" class="w-4 h-4"></i> Student Performance
+                            <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-600 dark:bg-indigo-400 rounded-full indicator"></span>
+                        </button>
+                        <button onclick="switchTab('tests')" id="tab-tests" role="tab" aria-selected="false" aria-controls="content-tests" tabindex="-1" class="pb-3 font-bold text-sm transition-colors relative flex items-center gap-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 focus:outline-none">
+                            <i data-lucide="clipboard-list" class="w-4 h-4"></i> Exam Performance
+                            <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-600 dark:bg-indigo-400 rounded-full indicator hidden"></span>
+                        </button>
+                        <button onclick="switchTab('categories')" id="tab-categories" role="tab" aria-selected="false" aria-controls="content-categories" tabindex="-1" class="pb-3 font-bold text-sm transition-colors relative flex items-center gap-2 text-slate-400 hover:text-slate-600 dark:hover:text-slate-300 focus:outline-none">
+                            <i data-lucide="layers" class="w-4 h-4"></i> Content Dist
+                            <span class="absolute bottom-0 left-0 right-0 h-0.5 bg-indigo-600 dark:bg-indigo-400 rounded-full indicator hidden"></span>
+                        </button>
+                    </div>
+
+                    <div id="loader" class="flex justify-center py-12">
+                        <div class="animate-spin h-8 w-8 border-4 border-indigo-500 border-t-transparent rounded-full"></div>
+                    </div>
+
+                    <div id="analyticsContent" class="hidden flex flex-col gap-6">
+                        
+                        <!-- Students Tab -->
+                        <div id="content-students" class="flex flex-col gap-6">
+                            <div class="grid grid-cols-1 lg:grid-cols-2 gap-6">
+                                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 p-6 flex flex-col gap-4 shadow-sm">
+                                    <h3 class="font-bold text-slate-800 dark:text-white flex items-center gap-2"><i data-lucide="bar-chart-3" class="w-4 h-4 text-indigo-500"></i> Score Distribution</h3>
+                                    <div class="w-full h-80"><canvas id="scoreDistChart"></canvas></div>
+                                </div>
+                                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 p-6 flex flex-col gap-4 shadow-sm">
+                                    <h3 class="font-bold text-slate-800 dark:text-white flex items-center gap-2"><i data-lucide="activity" class="w-4 h-4 text-indigo-500"></i> Avg Score by Category</h3>
+                                    <div class="w-full h-80"><canvas id="avgCatChart"></canvas></div>
+                                </div>
+                            </div>
+                            
+                            <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 p-6 flex flex-col gap-4 shadow-sm">
+                                <h3 class="font-bold text-slate-800 dark:text-white flex items-center gap-2"><i data-lucide="award" class="w-5 h-5 text-amber-500"></i> Elite Performers (Top 5)</h3>
+                                <div class="overflow-x-auto">
+                                    <table class="w-full text-left border-collapse">
+                                        <thead>
+                                            <tr class="border-b border-slate-100 dark:border-slate-800 text-xs font-bold text-slate-400 uppercase">
+                                                <th class="py-3 px-4">Rank</th>
+                                                <th class="py-3 px-4">Student</th>
+                                                <th class="py-3 px-4">Branch & College</th>
+                                                <th class="py-3 px-4 text-center">Tests Finished</th>
+                                                <th class="py-3 px-4 text-right">Aggregate Score</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="topPerformersBody" class="divide-y divide-slate-50 dark:divide-slate-800/40 text-sm">
+                                            <!-- JS Inject -->
+                                        </tbody>
+                                    </table>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Tests Tab -->
+                        <div id="content-tests" class="hidden flex flex-col gap-6">
+                            <div class="grid grid-cols-1 lg:grid-cols-3 gap-6">
+                                <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 p-6 flex flex-col gap-4 shadow-sm">
+                                    <h3 class="font-bold text-slate-800 dark:text-white flex items-center gap-2"><i data-lucide="pie-chart" class="w-4 h-4 text-indigo-500"></i> Tests by Difficulty</h3>
+                                    <div class="w-full h-64 flex justify-center"><canvas id="testDiffChart"></canvas></div>
+                                </div>
+                                <div class="lg:col-span-2 bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 p-6 flex flex-col gap-4 shadow-sm">
+                                    <h3 class="font-bold text-slate-800 dark:text-white flex items-center gap-2"><i data-lucide="check-circle" class="w-4 h-4 text-emerald-500"></i> Placement Test Insights</h3>
+                                    <div class="overflow-y-auto max-h-[300px]">
+                                        <table class="w-full text-left border-collapse">
+                                            <thead>
+                                                <tr class="border-b border-slate-100 dark:border-slate-800 text-[10px] font-bold text-slate-400 uppercase">
+                                                    <th class="py-2.5 px-3">Test Name</th>
+                                                    <th class="py-2.5 px-3 text-center">Submissions</th>
+                                                    <th class="py-2.5 px-3 text-center">Avg Score</th>
+                                                    <th class="py-2.5 px-3 text-right">Pass Rate</th>
+                                                </tr>
+                                            </thead>
+                                            <tbody id="testInsightsBody" class="divide-y divide-slate-50 dark:divide-slate-800/40 text-xs">
+                                                <!-- JS Inject -->
+                                            </tbody>
+                                        </table>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- Categories Tab -->
+                        <div id="content-categories" class="hidden grid grid-cols-1 md:grid-cols-2 gap-6">
+                            <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 p-6 flex flex-col gap-4 shadow-sm">
+                                <h3 class="font-bold text-slate-800 dark:text-white flex items-center gap-2"><i data-lucide="help-circle" class="w-4 h-4 text-purple-500"></i> MCQ Questions by Category</h3>
+                                <div class="w-full h-80 flex justify-center"><canvas id="qCatChart"></canvas></div>
+                            </div>
+                            <div class="bg-white dark:bg-slate-900 rounded-3xl border border-slate-100 dark:border-slate-800 p-6 flex flex-col gap-4 shadow-sm">
+                                <h3 class="font-bold text-slate-800 dark:text-white flex items-center gap-2"><i data-lucide="book-open" class="w-4 h-4 text-blue-500"></i> Tests by Category</h3>
+                                <div class="w-full h-80 flex justify-center"><canvas id="tCatChart"></canvas></div>
+                            </div>
+                        </div>
+
+                    </div>
+                </div>
+            </main>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="hidden fixed top-4 right-4 z-50 p-4 rounded-xl text-sm font-semibold shadow-lg border"></div>
+
+    <script>
+        lucide.createIcons();
+
+        function toggleTheme() {
+            const html = document.documentElement;
+            html.classList.toggle('dark');
+            localStorage.setItem('theme', html.classList.contains('dark') ? 'dark' : 'light');
+            
+            // Re-render active charts immediately with the correct styles
+            if (currentTab === 'students' && loadedData.students) {
+                renderStudents(loadedData.students);
+            } else if (currentTab === 'tests' && loadedData.tests) {
+                renderTests(loadedData.tests);
+            } else if (currentTab === 'categories' && loadedData.categories) {
+                renderCategories(loadedData.categories);
+            }
+        }
+        if (localStorage.getItem('theme') === 'dark' || (!localStorage.getItem('theme') && window.matchMedia('(prefers-color-scheme: dark)').matches)) {
+            document.documentElement.classList.add('dark');
+        }
+
+        function toggleSidebar() {
+            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            const overlay = document.getElementById('sidebarOverlay');
+            if(overlay) overlay.classList.toggle('hidden');
+        }
+
+        function logout() {
+            api.removeToken();
+            window.location.href = 'login.html';
+        }
+
+        function showToast(message, type = 'success') {
+            const toast = document.getElementById('toast');
+            toast.textContent = message;
+            toast.className = `fixed top-4 right-4 z-50 p-4 rounded-xl text-sm font-semibold shadow-lg border transition-opacity ${
+                type === 'success' 
+                ? 'bg-white dark:bg-slate-900 text-slate-900 dark:text-white border-slate-200 dark:border-slate-800' 
+                : 'bg-red-50 dark:bg-red-900/30 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800'
+            }`;
+            toast.classList.remove('hidden');
+            setTimeout(() => toast.classList.add('hidden'), 5000);
+        }
+
+        let currentTab = 'students';
+        let activeRange = 'all';
+        let charts = {};
+        let loadedData = {
+            dashboard: null,
+            students: null,
+            tests: null,
+            categories: null
+        };
+
+        const chartColors = ['#4F46E5', '#10B981', '#F59E0B', '#EF4444', '#8B5CF6', '#EC4899', '#06B6D4'];
+
+        function destroyChart(name) {
+            if (charts[name]) {
+                charts[name].destroy();
+                delete charts[name];
+            }
+        }
+
+        function getChartThemeOptions() {
+            const isDark = document.documentElement.classList.contains('dark');
+            const labelColor = isDark ? '#94a3b8' : '#64748b'; // slate-400 : slate-500
+            const gridColor = isDark ? 'rgba(51, 65, 85, 0.3)' : 'rgba(226, 232, 240, 0.8)'; // slate-800 : slate-200
+            
+            return {
+                plugins: {
+                    legend: {
+                        labels: {
+                            color: labelColor,
+                            font: { weight: 'bold', family: 'Inter, sans-serif' }
+                        }
+                    }
+                },
+                scales: {
+                    x: {
+                        ticks: { color: labelColor, font: { family: 'Inter, sans-serif' } },
+                        grid: { color: gridColor }
+                    },
+                    y: {
+                        ticks: { color: labelColor, font: { family: 'Inter, sans-serif' } },
+                        grid: { color: gridColor }
+                    }
+                }
+            };
+        }
+
+        // Highlight active sidebar link
+        document.addEventListener('DOMContentLoaded', () => {
+            const currentPath = window.location.pathname.split('/').pop();
+            document.querySelectorAll('.nav-link').forEach(link => {
+                if(link.getAttribute('href') === currentPath) {
+                    link.classList.remove('text-slate-400');
+                    link.classList.add('bg-indigo-500/15', 'text-indigo-400', 'border', 'border-indigo-500/20');
+                    const icon = link.querySelector('i');
+                    if(icon) { icon.classList.remove('text-slate-500'); icon.classList.add('text-indigo-400'); }
+                }
+            });
+        });
+
+        // Tab Navigation with Keyboards & URL Hash
+        document.addEventListener('DOMContentLoaded', async () => {
+            const token = api.getToken();
+            if(!token) { window.location.href='login.html'; return; }
+
+            try {
+                const profileRes = await api.auth.getProfile();
+                if (profileRes.data.user.role !== 'admin') {
+                    window.location.href = 'student-dashboard.html';
+                    return;
+                }
+            } catch(e) {
+                api.removeToken();
+                window.location.href='login.html?session=expired';
+                return;
+            }
+
+            const hash = window.location.hash.replace('#', '');
+            if (['students', 'tests', 'categories'].includes(hash)) {
+                currentTab = hash;
+            }
+
+            await loadDashboardStats();
+            switchTab(currentTab, false);
+
+            window.addEventListener('hashchange', () => {
+                const newHash = window.location.hash.replace('#', '');
+                if (['students', 'tests', 'categories'].includes(newHash) && newHash !== currentTab) {
+                    switchTab(newHash, false);
+                }
+            });
+        });
+
+        const tabs = ['students', 'tests', 'categories'];
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'ArrowRight' || e.key === 'ArrowLeft') {
+                const activeEl = document.activeElement;
+                if (activeEl && activeEl.getAttribute('role') === 'tab') {
+                    let idx = tabs.indexOf(activeEl.id.replace('tab-', ''));
+                    if (idx !== -1) {
+                        if (e.key === 'ArrowRight') {
+                            idx = (idx + 1) % tabs.length;
+                        } else {
+                            idx = (idx - 1 + tabs.length) % tabs.length;
+                        }
+                        const nextTabId = `tab-${tabs[idx]}`;
+                        document.getElementById(nextTabId).focus();
+                        switchTab(tabs[idx]);
+                    }
+                }
+            }
+        });
+
+        function switchTab(tab, updateHash = true) {
+            currentTab = tab;
+            if (updateHash) {
+                window.location.hash = tab;
+            }
+
+            tabs.forEach(t => {
+                const btn = document.getElementById(`tab-${t}`);
+                const content = document.getElementById(`content-${t}`);
+                const indicator = btn.querySelector('.indicator');
+                const isSelected = t === tab;
+
+                btn.setAttribute('aria-selected', isSelected ? 'true' : 'false');
+                btn.setAttribute('tabindex', isSelected ? '0' : '-1');
+
+                if (isSelected) {
+                    btn.classList.add('text-indigo-600', 'dark:text-indigo-400');
+                    btn.classList.remove('text-slate-400');
+                    if (indicator) indicator.classList.remove('hidden');
+                    content.classList.remove('hidden');
+                    
+                    if (t === 'students') content.classList.add('flex');
+                    if (t === 'tests') content.classList.add('flex');
+                    if (t === 'categories') content.classList.add('grid');
+                } else {
+                    btn.classList.remove('text-indigo-600', 'dark:text-indigo-400');
+                    btn.classList.add('text-slate-400');
+                    if (indicator) indicator.classList.add('hidden');
+                    content.classList.add('hidden');
+                    content.classList.remove('flex', 'grid');
+                }
+            });
+
+            loadAnalyticsData(tab);
+        }
+
+        async function loadDashboardStats(forceRefresh = false) {
+            if (!forceRefresh && loadedData.dashboard) {
+                renderDashboardStats(loadedData.dashboard);
+                return;
+            }
+            try {
+                const res = await api.request(`/analytics/dashboard?range=${activeRange}`);
+                loadedData.dashboard = res.data;
+                renderDashboardStats(res.data);
+            } catch (e) {
+                console.error('Error loading dashboard stats', e);
+            }
+        }
+
+        function renderDashboardStats(data) {
+            const stats = data.stats || {};
+            document.getElementById('statSubmissions').textContent = stats.totalSubmissions ?? 0;
+            document.getElementById('statAvgScore').textContent = (stats.avgScore ?? 0) + '%';
+            document.getElementById('statPassRate').textContent = (stats.overallPassRate ?? 0) + '%';
+            document.getElementById('statActiveStudents').textContent = stats.activeStudentsThisWeek ?? 0;
+        }
+
+        async function loadAnalyticsData(tabName, forceRefresh = false) {
+            const loader = document.getElementById('loader');
+            const analyticsContent = document.getElementById('analyticsContent');
+            
+            if (!forceRefresh && loadedData[tabName]) {
+                renderTab(tabName, loadedData[tabName]);
+                loader.classList.add('hidden');
+                analyticsContent.classList.remove('hidden');
+                return;
+            }
+            
+            loader.classList.remove('hidden');
+            analyticsContent.classList.add('hidden');
+            
+            try {
+                const res = await api.request(`/analytics/${tabName}?range=${activeRange}`);
+                loadedData[tabName] = res.data;
+                renderTab(tabName, res.data);
+            } catch (e) {
+                console.error(`Error loading ${tabName} analytics`, e);
+                showToast(`Error loading ${tabName} analytics`, 'error');
+            } finally {
+                loader.classList.add('hidden');
+                analyticsContent.classList.remove('hidden');
+            }
+        }
+
+        function renderTab(tabName, data) {
+            if (tabName === 'students') {
+                renderStudents(data);
+            } else if (tabName === 'tests') {
+                renderTests(data);
+            } else if (tabName === 'categories') {
+                renderCategories(data);
+            }
+        }
+
+        function changeRange(range) {
+            activeRange = range;
+            // Invalidate cache
+            loadedData.dashboard = null;
+            loadedData.students = null;
+            loadedData.tests = null;
+            loadedData.categories = null;
+            
+            loadDashboardStats(true);
+            loadAnalyticsData(currentTab, true);
+        }
+
+        function renderStudents(data) {
+            destroyChart('score');
+            destroyChart('avg');
+
+            const ranges = data.performanceRanges || [];
+            const ctx1 = document.getElementById('scoreDistChart').getContext('2d');
+            const themeOpts = getChartThemeOptions();
+
+            charts.score = new Chart(ctx1, {
+                type: 'bar',
+                data: {
+                    labels: ranges.map(r => r.name),
+                    datasets: [{
+                        label: 'Students Count',
+                        data: ranges.map(r => r.count),
+                        backgroundColor: '#6366F1',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: themeOpts.plugins,
+                    scales: themeOpts.scales
+                }
+            });
+
+            const avg = data.averageScoresByCategory || [];
+            const ctx2 = document.getElementById('avgCatChart').getContext('2d');
+            charts.avg = new Chart(ctx2, {
+                type: 'bar',
+                data: {
+                    labels: avg.map(a => a.categoryName),
+                    datasets: [{
+                        label: 'Avg Score %',
+                        data: avg.map(a => a.avgPercentage),
+                        backgroundColor: '#3B82F6',
+                        borderRadius: 6
+                    }]
+                },
+                options: {
+                    indexAxis: 'y',
+                    responsive: true,
+                    maintainAspectRatio: false,
+                    plugins: themeOpts.plugins,
+                    scales: {
+                        x: {
+                            beginAtZero: true,
+                            max: 100,
+                            ticks: themeOpts.scales.x.ticks,
+                            grid: themeOpts.scales.x.grid
+                        },
+                        y: {
+                            ticks: themeOpts.scales.y.ticks,
+                            grid: themeOpts.scales.y.grid
+                        }
+                    }
+                }
+            });
+
+            const top = data.topPerformers || [];
+            const tbody = document.getElementById('topPerformersBody');
+            tbody.innerHTML = top.filter(item => item.user?.email !== 'admin@oitstack.com').map((item, idx) => `
+                <tr class="hover:bg-slate-50/40 dark:hover:bg-slate-800/20">
+                    <td class="py-3.5 px-4 font-bold text-slate-700 dark:text-slate-300">
+                        ${idx === 0 ? '<span class="text-amber-500">🏆 #1</span>' : idx === 1 ? '<span class="text-slate-400">🥈 #2</span>' : idx === 2 ? '<span class="text-amber-700">🥉 #3</span>' : `#${idx + 1}`}
+                    </td>
+                    <td class="py-3.5 px-4">
+                        <div class="flex items-center gap-2.5">
+                            <div class="w-8 h-8 rounded-lg bg-indigo-50 dark:bg-indigo-500/10 text-indigo-600 dark:text-indigo-400 flex items-center justify-center font-bold text-xs shrink-0">
+                                ${item.user?.name ? item.user.name.charAt(0).toUpperCase() : '?'}
+                            </div>
+                            <div>
+                                <p class="font-bold text-slate-800 dark:text-white">${item.user?.name || 'Unknown'}</p>
+                                <p class="text-[10px] text-slate-400">${item.user?.email || ''}</p>
+                            </div>
+                        </div>
+                    </td>
+                    <td class="py-3.5 px-4 text-slate-600 dark:text-slate-300 text-xs">
+                        <p class="font-semibold">${item.user?.branch || 'N/A'}</p>
+                        <p class="text-[10px] text-slate-400">${item.user?.college || 'OIT_STACK'}</p>
+                    </td>
+                    <td class="py-3.5 px-4 text-center font-semibold text-slate-700 dark:text-slate-300">
+                        ${item.testsCompleted || 0}
+                    </td>
+                    <td class="py-3.5 px-4 text-right font-black text-indigo-600 dark:text-indigo-400">
+                        ${item.totalScore || 0} pts
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderTests(data) {
+            destroyChart('testDiff');
+
+            const diff = data.testDifficultyCount || [];
+            const ctx1 = document.getElementById('testDiffChart').getContext('2d');
+            const themeOpts = getChartThemeOptions();
+
+            charts.testDiff = new Chart(ctx1, {
+                type: 'doughnut',
+                data: {
+                    labels: diff.map(d => d._id),
+                    datasets: [{
+                        data: diff.map(d => d.count),
+                        backgroundColor: diff.map((d, i) => chartColors[i % chartColors.length]),
+                        borderWidth: 0
+                    }]
+                },
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    plugins: themeOpts.plugins
+                }
+            });
+
+            const perfs = data.testPerformance || [];
+            const tbody = document.getElementById('testInsightsBody');
+            tbody.innerHTML = perfs.map(test => `
+                <tr class="hover:bg-slate-50/40 dark:hover:bg-slate-800/20">
+                    <td class="py-3 px-3 font-bold text-slate-800 dark:text-white">${test.testName}</td>
+                    <td class="py-3 px-3 text-center font-semibold text-slate-600 dark:text-slate-400">${test.totalSubmissions}</td>
+                    <td class="py-3 px-3 text-center font-bold text-slate-700 dark:text-slate-300">${test.averagePercentage}%</td>
+                    <td class="py-3 px-3 text-right">
+                        <span class="font-black ${test.passRate >= 60 ? 'text-emerald-500' : 'text-amber-500'}">${test.passRate}%</span>
+                    </td>
+                </tr>
+            `).join('');
+        }
+
+        function renderCategories(data) {
+            destroyChart('qCat');
+            destroyChart('tCat');
+
+            const qD = data.questionsDistribution || [];
+            const ctx1 = document.getElementById('qCatChart').getContext('2d');
+            const themeOpts = getChartThemeOptions();
+
+            charts.qCat = new Chart(ctx1, {
+                type: 'pie',
+                data: {
+                    labels: qD.map(d => d.categoryName),
+                    datasets: [{
+                        data: qD.map(d => d.count),
+                        backgroundColor: chartColors,
+                        borderWidth: 0
+                    }]
+                },
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    plugins: themeOpts.plugins
+                }
+            });
+
+            const tD = data.testsDistribution || [];
+            const ctx2 = document.getElementById('tCatChart').getContext('2d');
+
+            charts.tCat = new Chart(ctx2, {
+                type: 'pie',
+                data: {
+                    labels: tD.map(d => d.categoryName),
+                    datasets: [{
+                        data: tD.map(d => d.count),
+                        backgroundColor: chartColors,
+                        borderWidth: 0
+                    }]
+                },
+                options: { 
+                    responsive: true, 
+                    maintainAspectRatio: false,
+                    plugins: themeOpts.plugins
+                }
+            });
+        }
+
+        function exportCSV() {
+            let csvContent = "";
+            let fileName = "";
+            
+            if (currentTab === 'students') {
+                const data = loadedData.students;
+                if (!data || !data.topPerformers) {
+                    showToast("No student data available to export", "error");
+                    return;
+                }
+                fileName = `student_performance_${activeRange}.csv`;
+                csvContent = "Rank,Student Name,Email,Branch,College,Tests Completed,Total Score\n";
+                data.topPerformers.filter(item => item.user?.email !== 'admin@oitstack.com').forEach((item, idx) => {
+                    const rank = idx + 1;
+                    const name = `"${(item.user?.name || 'Unknown').replace(/"/g, '""')}"`;
+                    const email = `"${item.user?.email || ''}"`;
+                    const branch = `"${(item.user?.branch || 'N/A').replace(/"/g, '""')}"`;
+                    const college = `"${(item.user?.college || 'OIT_STACK').replace(/"/g, '""')}"`;
+                    const completed = item.testsCompleted || 0;
+                    const score = item.totalScore || 0;
+                    csvContent += `${rank},${name},${email},${branch},${college},${completed},${score}\n`;
+                });
+            } else if (currentTab === 'tests') {
+                const data = loadedData.tests;
+                if (!data || !data.testPerformance) {
+                    showToast("No test data available to export", "error");
+                    return;
+                }
+                fileName = `test_insights_${activeRange}.csv`;
+                csvContent = "Test Name,Submissions,Avg Score (%),Pass Rate (%)\n";
+                data.testPerformance.forEach(test => {
+                    const name = `"${test.testName.replace(/"/g, '""')}"`;
+                    const subs = test.totalSubmissions;
+                    const avg = test.averagePercentage;
+                    const pass = test.passRate;
+                    csvContent += `${name},${subs},${avg},${pass}\n`;
+                });
+            } else if (currentTab === 'categories') {
+                const data = loadedData.categories;
+                if (!data) {
+                    showToast("No category data available to export", "error");
+                    return;
+                }
+                fileName = `category_distribution_${activeRange}.csv`;
+                csvContent = "Category Name,Type,Count\n";
+                if (data.questionsDistribution) {
+                    data.questionsDistribution.forEach(d => {
+                        csvContent += `"${d.categoryName.replace(/"/g, '""')}",MCQ Question,${d.count}\n`;
+                    });
+                }
+                if (data.testsDistribution) {
+                    data.testsDistribution.forEach(d => {
+                        csvContent += `"${d.categoryName.replace(/"/g, '""')}",Test,${d.count}\n`;
+                    });
+                }
+            }
+            
+            const blob = new Blob([csvContent], { type: 'text/csv;charset=utf-8;' });
+            const link = document.createElement("a");
+            const url = URL.createObjectURL(blob);
+            link.setAttribute("href", url);
+            link.setAttribute("download", fileName);
+            link.style.visibility = 'hidden';
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+    </script>
+</body>
+</html>
