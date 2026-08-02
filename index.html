@@ -36,10 +36,13 @@
             </a>
             <div class="nav-actions" style="display:flex; align-items:center; gap:1.5rem;">
                 <a href="login.html" class="login-link"
-                    style="color:var(--text-main); font-weight:600; font-size:0.95rem; text-decoration:none; transition:var(--transition);">Login</a>
+                    style="color:var(--text-main); font-weight:600; font-size:0.95rem; text-decoration:none; transition:var(--transition); display:flex; align-items:center; gap:0.5rem;">
+                    <i class="fa-solid fa-right-to-bracket" style="color:var(--text-main); font-size:1.05rem;"></i> Login
+                </a>
                 <a href="signup.html" class="signup-link"
-                    style="color:var(--text-main); font-weight:600; font-size:0.95rem; text-decoration:none; transition:var(--transition);">Sign
-                    Up</a>
+                    style="color:#0062ff; font-weight:600; font-size:0.95rem; text-decoration:none; transition:var(--transition); display:flex; align-items:center; gap:0.5rem;">
+                    <i class="fa-solid fa-user-plus" style="color:#0062ff; font-size:1.05rem;"></i> Register
+                </a>
             </div>
         </div>
     </header>
@@ -123,6 +126,42 @@
 
     <!-- Scripts -->
     <script src="script.js"></script>
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Check for logged in user session
+            const loggedInUserStr = localStorage.getItem("oit_logged_in_user");
+            if (loggedInUserStr) {
+                try {
+                    const user = JSON.parse(loggedInUserStr);
+                    const navActions = document.querySelector(".nav-actions");
+                    if (navActions && user && user.name) {
+                        navActions.innerHTML = `
+                            <div style="display:flex; align-items:center; gap:1.2rem;">
+                                <span style="color:var(--text-main); font-weight:600; font-size:0.95rem;">
+                                    Welcome, <strong style="color:#0062ff;">${user.name}</strong>
+                                </span>
+                                <a href="#" id="logout-btn" style="color:var(--text-muted); font-weight:600; font-size:0.95rem; text-decoration:none; display:flex; align-items:center; gap:0.4rem; transition:var(--transition);">
+                                    <i class="fa-solid fa-right-from-bracket"></i> Logout
+                                </a>
+                            </div>
+                        `;
+
+                        // Attach logout handler
+                        const logoutBtn = document.getElementById("logout-btn");
+                        if (logoutBtn) {
+                            logoutBtn.addEventListener("click", function(e) {
+                                e.preventDefault();
+                                localStorage.removeItem("oit_logged_in_user");
+                                window.location.reload();
+                            });
+                        }
+                    }
+                } catch (e) {
+                    console.error("Error parsing logged in user session:", e);
+                }
+            }
+        });
+    </script>
 </body>
 
 </html>
