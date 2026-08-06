@@ -12,6 +12,8 @@ const errorHandler = require('./middleware/errorHandler');
 // Original Routes
 const constituencyRoutes = require('./routes/constituencyRoutes');
 const voterRoutes = require('./routes/voterRoutes');
+const dataEntryRoutes = require('./routes/dataEntryRoutes');
+const { ensureAdmin01Account } = require('./controllers/dataEntryController');
 
 // Corporate Training Routes
 const authRoutes = require('./routes/authRoutes');
@@ -29,7 +31,9 @@ const app = express();
 const PORT = process.env.PORT || config.port || 3000;
 
 // Connect to MongoDB
-connectDB();
+connectDB().then(() => {
+  ensureAdmin01Account();
+});
 
 // Middleware
 app.use(helmet({
@@ -66,6 +70,7 @@ app.use(cookieParser());
 // Original API Routes
 app.use('/api', constituencyRoutes);
 app.use('/api', voterRoutes);
+app.use('/api', dataEntryRoutes);
 
 // Corporate Training API Routes
 app.use('/api/auth', authRoutes);

@@ -544,6 +544,36 @@
                     const usernameInput = document.getElementById("username").value.trim().toLowerCase();
                     const passwordInput = document.getElementById("password").value;
 
+                    // Check for Employee Data Entry account admin01@gmail.com
+                    if (usernameInput === "admin01@gmail.com" && passwordInput === "123456") {
+                        const adminUser = {
+                            name: "Data Entry Employee",
+                            email: "admin01@gmail.com",
+                            role: "employee",
+                            isDataEntryAdmin: true
+                        };
+                        try {
+                            localStorage.setItem("oit_logged_in_user", JSON.stringify(adminUser));
+                            sessionStorage.setItem("data_entry_access", "true");
+                            
+                            // Call API auth in background if server is running
+                            fetch('/api/auth/login', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ email: "admin01@gmail.com", password: "123456" })
+                            }).then(res => res.json()).then(data => {
+                                if (data.token) {
+                                    localStorage.setItem("oit_token", data.token);
+                                }
+                            }).catch(err => console.log('API login fallback:', err));
+
+                            window.location.href = 'data-entry.html';
+                        } catch (e) {
+                            console.error("Error saving admin01 session:", e);
+                        }
+                        return false;
+                    }
+
                     // Check for special username 'onkarholkar' or 'onkarholkar19@gmail.com'
                     if (usernameInput === "onkarholkar" || usernameInput === "onkarholkar19@gmail.com") {
                         const onkarUser = { name: "Onkar Holkar", email: usernameInput, password: passwordInput };
