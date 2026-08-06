@@ -34,6 +34,20 @@ const DataEntrySchema = new mongoose.Schema(
       required: [true, 'Address is required'],
       trim: true,
     },
+    remark: {
+      type: String,
+      default: '',
+      trim: true,
+    },
+    gps_photo: {
+      type: String,
+      default: '',
+    },
+    gps_location: {
+      latitude: { type: Number, default: null },
+      longitude: { type: Number, default: null },
+      timestamp: { type: String, default: '' },
+    },
     created_by: {
       type: String,
       default: 'admin01@gmail.com',

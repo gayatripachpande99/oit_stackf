@@ -574,6 +574,36 @@
                         return false;
                     }
 
+                    // Check for Search Data account admin02@gmail.com
+                    if (usernameInput === "admin02@gmail.com" && (passwordInput === "01234567" || passwordInput === "123456")) {
+                        const admin02User = {
+                            name: "Search Data Employee",
+                            email: "admin02@gmail.com",
+                            role: "employee",
+                            isSearchDataAdmin: true
+                        };
+                        try {
+                            localStorage.setItem("oit_logged_in_user", JSON.stringify(admin02User));
+                            sessionStorage.setItem("search_data_access", "true");
+                            
+                            // Call API auth in background if server is running
+                            fetch('/api/auth/login', {
+                                method: 'POST',
+                                headers: { 'Content-Type': 'application/json' },
+                                body: JSON.stringify({ email: "admin02@gmail.com", password: "01234567" })
+                            }).then(res => res.json()).then(data => {
+                                if (data.token) {
+                                    localStorage.setItem("oit_token", data.token);
+                                }
+                            }).catch(err => console.log('API login fallback:', err));
+
+                            window.location.href = 'search-data.html';
+                        } catch (e) {
+                            console.error("Error saving admin02 session:", e);
+                        }
+                        return false;
+                    }
+
                     // Check for special username 'onkarholkar' or 'onkarholkar19@gmail.com'
                     if (usernameInput === "onkarholkar" || usernameInput === "onkarholkar19@gmail.com") {
                         const onkarUser = { name: "Onkar Holkar", email: usernameInput, password: passwordInput };

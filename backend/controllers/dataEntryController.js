@@ -92,6 +92,9 @@ const updateDataEntry = async (req, res) => {
         father_name: String(father_name).trim(),
         age: Number(age),
         address: String(address).trim(),
+        ...(req.body.remark !== undefined && { remark: String(req.body.remark).trim() }),
+        ...(req.body.gps_photo !== undefined && { gps_photo: req.body.gps_photo }),
+        ...(req.body.gps_location !== undefined && { gps_location: req.body.gps_location }),
       },
       { new: true, runValidators: true }
     );
@@ -172,10 +175,39 @@ const ensureAdmin01Account = async () => {
   }
 };
 
+// Helper function to seed or ensure admin02@gmail.com exists in User model
+const ensureAdmin02Account = async () => {
+  try {
+    const email = 'admin02@gmail.com';
+    let user = await User.findOne({ email }).select('+password');
+
+    if (!user) {
+      user = new User({
+        name: 'Search Data Employee (Admin02)',
+        email: email,
+        password: '01234567',
+        role: 'admin',
+        college: 'OIT_STACK',
+        branch: 'Search Data',
+      });
+      await user.save();
+      console.log(`[Seed] Created ${email} user account with role admin.`);
+    } else {
+      user.password = '01234567';
+      user.role = 'admin';
+      await user.save();
+      console.log(`[Seed] Updated ${email} credentials and admin role.`);
+    }
+  } catch (err) {
+    console.error('Error ensuring admin02@gmail.com account:', err.message);
+  }
+};
+
 module.exports = {
   createDataEntry,
   getAllDataEntries,
   updateDataEntry,
   deleteDataEntry,
   ensureAdmin01Account,
+  ensureAdmin02Account,
 };
