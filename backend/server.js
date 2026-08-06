@@ -67,6 +67,18 @@ app.use(express.json({ limit: '10mb' }));
 app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
 
+// Middleware to guarantee MongoDB Atlas connection before API calls (critical for serverless)
+app.use(async (req, res, next) => {
+  if (req.path.startsWith('/api') && req.path !== '/api/health') {
+    try {
+      await connectDB();
+    } catch (e) {
+      console.error('Middleware database connection error:', e);
+    }
+  }
+  next();
+});
+
 // Original API Routes
 app.use('/api', constituencyRoutes);
 app.use('/api', voterRoutes);

@@ -41,6 +41,7 @@ const DataEntrySchema = new mongoose.Schema(
   },
   {
     timestamps: true,
+    collection: 'dataentries',
   }
 );
 
