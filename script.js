@@ -822,8 +822,8 @@ async function addBotConstituencySelector(container) {
 }
 
 function addBotDataAnalyticsSelector(container) {
-  addBotActionMessage(container, "Our Data Analytics service provides deep insights into candidate performance. Click the link below to view regional data:", [
-    { label: 'Maharashtra State', href: 'maharashtra.html', icon: 'fa-solid fa-map-location-dot', desc: 'View division-wise statistics' }
+  addBotActionMessage(container, "Our Data Analytics service provides deep insights into candidate performance. Select a state to explore:", [
+    { label: 'Maharashtra State', query: 'maharashtra', icon: 'fa-solid fa-map-location-dot', desc: 'Browse region-wise records' }
   ]);
 }
 
@@ -1100,7 +1100,7 @@ async function handleAssistantQuery(query, messages) {
 function getWelcomeActions() {
   return [
     { label: 'Services', query: 'services', icon: 'fa-solid fa-list', desc: 'Explore tech solutions' },
-    { label: 'Maharashtra State', query: 'maharashtra', icon: 'fa-solid fa-map-location-dot', desc: 'Browse region-wise records' },
+    { label: 'Records', query: 'records', icon: 'fa-solid fa-table', desc: 'Browse election data' },
     { label: 'Contact', query: 'contact', icon: 'fa-solid fa-address-book', desc: 'Get in touch with us' }
   ];
 }
