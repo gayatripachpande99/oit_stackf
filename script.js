@@ -827,8 +827,211 @@ function addBotDataAnalyticsSelector(container) {
   ]);
 }
 
+// Maharashtra divisions and their districts mapping
+const maharashtraDivisions = {
+  nashik: {
+    name: "Nashik Division",
+    districts: [
+      { id: "nandurbar", name: "Nandurbar" },
+      { id: "dhule", name: "Dhule" },
+      { id: "jalgaon", name: "Jalgaon" },
+      { id: "nashik", name: "Nashik" },
+      { id: "ahmednagar", name: "Ahmednagar" }
+    ]
+  },
+  konkan: {
+    name: "Konkan Division",
+    districts: [
+      { id: "palghar", name: "Palghar" },
+      { id: "thane", name: "Thane" },
+      { id: "mumbai-suburban", name: "Mumbai Suburban" },
+      { id: "mumbai-city", name: "Mumbai City" },
+      { id: "raigad", name: "Raigad" },
+      { id: "ratnagiri", name: "Ratnagiri" },
+      { id: "sindhudurg", name: "Sindhudurg" }
+    ]
+  },
+  pune: {
+    name: "Pune Division",
+    districts: [
+      { id: "pune", name: "Pune" },
+      { id: "satara", name: "Satara" },
+      { id: "sangli", name: "Sangli" },
+      { id: "kolhapur", name: "Kolhapur" },
+      { id: "solapur", name: "Solapur" }
+    ]
+  },
+  aurangabad: {
+    name: "Aurangabad Division",
+    districts: [
+      { id: "aurangabad", name: "Aurangabad" },
+      { id: "jalna", name: "Jalna" },
+      { id: "beed", name: "Beed" },
+      { id: "osmanabad", name: "Usmanabad" },
+      { id: "parbhani", name: "Parbhani" },
+      { id: "latur", name: "Latur" },
+      { id: "hingoli", name: "Hingoli" },
+      { id: "nanded", name: "Nanded" }
+    ]
+  },
+  amravati: {
+    name: "Amravati Division",
+    districts: [
+      { id: "buldhana", name: "Buldhana" },
+      { id: "akola", name: "Akola" },
+      { id: "washim", name: "Washim" },
+      { id: "amravati", name: "Amravati" },
+      { id: "yavatmal", name: "Yavatmal" }
+    ]
+  },
+  nagpur: {
+    name: "Nagpur Division",
+    districts: [
+      { id: "wardha", name: "Wardha" },
+      { id: "nagpur", name: "Nagpur" },
+      { id: "chandrapur", name: "Chandrapur" },
+      { id: "bhandara", name: "Bhandara" },
+      { id: "gondia", name: "Gondia" },
+      { id: "gadchiroli", name: "Gadchiroli" }
+    ]
+  }
+};
+
+async function ensureDistrictData() {
+  if (typeof districtData !== 'undefined' && districtData) {
+    return districtData;
+  }
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = 'constituencies.js';
+    script.onload = () => {
+      if (typeof districtData !== 'undefined' && districtData) {
+        resolve(districtData);
+      } else {
+        reject(new Error('districtData is not defined after loading constituencies.js'));
+      }
+    };
+    script.onerror = () => {
+      reject(new Error('Failed to load constituencies.js dynamically'));
+    };
+    document.head.appendChild(script);
+  });
+}
+
+async function addBotDistrictConstituencySelector(container, districtId) {
+  setAssistantTyping(container, true);
+  let data;
+  try {
+    data = await ensureDistrictData();
+  } catch (err) {
+    console.error(err);
+  }
+  const index = await getConstituencyIndex();
+  setAssistantTyping(container, false);
+
+  if (!data || !data[districtId]) {
+    addBotMessage(container, "Sorry, I could not load the constituencies list for this district.");
+    return;
+  }
+
+  const district = data[districtId];
+  const message = document.createElement('div');
+  message.className = 'chatbot-message bot chatbot-selector-message animate-message';
+
+  const body = document.createElement('p');
+  body.className = 'chatbot-message-text';
+  body.innerHTML = `<strong>Select a Constituency in ${district.name} District</strong><br>Choose a constituency from the list below to view its election records:`;
+  message.appendChild(body);
+
+  const form = document.createElement('form');
+  form.className = 'chatbot-selector-form';
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const select = form.querySelector('select');
+    const selectedId = select.value;
+    if (selectedId) {
+      const selectedItem = index.find(item => item.id === selectedId);
+      if (selectedItem) {
+        addUserMessage(container, `Selected: ${selectedItem.name}`);
+        handleAssistantQuery(selectedId, container);
+      }
+    }
+  });
+
+  const select = document.createElement('select');
+  select.className = 'chatbot-constituency-select';
+  select.required = true;
+
+  const defaultOption = document.createElement('option');
+  defaultOption.value = '';
+  defaultOption.textContent = '-- Choose a constituency --';
+  defaultOption.disabled = true;
+  defaultOption.selected = true;
+  select.appendChild(defaultOption);
+
+  district.assemblies.forEach(assembly => {
+    const match = assembly.match(/^(\d{1,3})\s+-\s+(.+)$/);
+    if (match) {
+      const option = document.createElement('option');
+      option.value = match[1];
+      option.textContent = assembly;
+      select.appendChild(option);
+    }
+  });
+
+  form.appendChild(select);
+
+  const button = document.createElement('button');
+  button.type = 'submit';
+  button.className = 'chatbot-selector-btn';
+  button.innerHTML = 'View Records <i class="fa-solid fa-arrow-right"></i>';
+  form.appendChild(button);
+
+  message.appendChild(form);
+  container.appendChild(message);
+  container.scrollTo({
+    top: container.scrollHeight,
+    behavior: 'smooth'
+  });
+}
+
 async function handleAssistantQuery(query, messages) {
   const normalized = query.toLowerCase();
+
+  // Handle Maharashtra division / district selection flows
+  if (normalized === 'maharashtra' || normalized === 'maharashtra state') {
+    addBotActionMessage(messages, "Select a region/division of Maharashtra State to view its districts:", [
+      { label: 'Nashik Division', query: 'maharashtra_division_nashik', icon: 'fa-solid fa-map' },
+      { label: 'Konkan Division', query: 'maharashtra_division_konkan', icon: 'fa-solid fa-map' },
+      { label: 'Pune Division', query: 'maharashtra_division_pune', icon: 'fa-solid fa-map' },
+      { label: 'Aurangabad Division', query: 'maharashtra_division_aurangabad', icon: 'fa-solid fa-map' },
+      { label: 'Amravati Division', query: 'maharashtra_division_amravati', icon: 'fa-solid fa-map' },
+      { label: 'Nagpur Division', query: 'maharashtra_division_nagpur', icon: 'fa-solid fa-map' }
+    ]);
+    return;
+  }
+
+  if (normalized.startsWith('maharashtra_division_')) {
+    const divisionId = normalized.replace('maharashtra_division_', '');
+    const division = maharashtraDivisions[divisionId];
+    if (division) {
+      const districtActions = division.districts.map(dist => ({
+        label: dist.name,
+        query: `maharashtra_district_${dist.id}`,
+        icon: 'fa-solid fa-location-dot'
+      }));
+      addBotActionMessage(messages, `Select a district in <strong>${division.name}</strong>:`, districtActions);
+    } else {
+      addBotMessage(messages, "Sorry, I could not find that division.");
+    }
+    return;
+  }
+
+  if (normalized.startsWith('maharashtra_district_')) {
+    const districtId = normalized.replace('maharashtra_district_', '');
+    await addBotDistrictConstituencySelector(messages, districtId);
+    return;
+  }
 
   if (normalized === 'data_analytics' || normalized === 'data analytics' || normalized === 'analytics') {
     addBotDataAnalyticsSelector(messages);
@@ -897,7 +1100,7 @@ async function handleAssistantQuery(query, messages) {
 function getWelcomeActions() {
   return [
     { label: 'Services', query: 'services', icon: 'fa-solid fa-list', desc: 'Explore tech solutions' },
-    { label: 'Records', query: 'records', icon: 'fa-solid fa-table', desc: 'Browse election data' },
+    { label: 'Maharashtra State', query: 'maharashtra', icon: 'fa-solid fa-map-location-dot', desc: 'Browse region-wise records' },
     { label: 'Contact', query: 'contact', icon: 'fa-solid fa-address-book', desc: 'Get in touch with us' }
   ];
 }
