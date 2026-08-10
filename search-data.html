@@ -334,6 +334,15 @@
             font-size: 0.78rem;
         }
 
+        .badge-relation {
+            background: rgba(59, 130, 246, 0.1);
+            color: #1E40AF;
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            font-weight: 600;
+            font-size: 0.78rem;
+        }
+
         /* Remark cell */
         .remark-cell {
             max-width: 180px;
@@ -732,7 +741,8 @@
                             <th>Constituency</th>
                             <th>Booth No.</th>
                             <th>Candidate Name</th>
-                            <th>Father Name</th>
+                            <th>Relation</th>
+                            <th>Father/Husband Name</th>
                             <th>Age</th>
                             <th>Address</th>
                             <th>Remark</th>
@@ -962,6 +972,7 @@
                     <td><span class="badge-constituency">#${escapeHtml(entry.constituency_number)}</span></td>
                     <td><span class="badge-booth">${escapeHtml(entry.booth_number)}</span></td>
                     <td><strong>${escapeHtml(entry.candidate_name)}</strong></td>
+                    <td><span class="badge-relation">${escapeHtml(entry.relation_type || 'Father')}</span></td>
                     <td>${escapeHtml(entry.father_name)}</td>
                     <td>${escapeHtml(entry.age)} yrs</td>
                     <td style="max-width:180px; white-space:normal;">${escapeHtml(entry.address)}</td>
@@ -1185,12 +1196,14 @@
         // ── CSV Export ──
         function exportToCSV() {
             if (!allEntries || allEntries.length === 0) { showToast('No data to export.', 'error'); return; }
-            const headers = ['Constituency #', 'Booth #', 'Candidate Name', 'Father Name', 'Age', 'Address', 'Remark', 'GPS Lat', 'GPS Lng', 'Created'];
+            const headers = ['Constituency #', 'Booth #', 'Candidate Name', 'Relation Type', 'Father/Husband Name', 'Age', 'Address', 'Remark', 'GPS Lat', 'GPS Lng', 'Created'];
             const rows = allEntries.map(e => {
                 const loc = e.gps_location || {};
                 return [
                     `"${e.constituency_number || ''}"`, `"${e.booth_number || ''}"`,
-                    `"${(e.candidate_name || '').replace(/"/g, '""')}"`, `"${(e.father_name || '').replace(/"/g, '""')}"`,
+                    `"${(e.candidate_name || '').replace(/"/g, '""')}"`,
+                    `"${e.relation_type || 'Father'}"`,
+                    `"${(e.father_name || '').replace(/"/g, '""')}"`,
                     `"${e.age || ''}"`, `"${(e.address || '').replace(/"/g, '""')}"`,
                     `"${(e.remark || '').replace(/"/g, '""')}"`,
                     `"${loc.latitude || ''}"`, `"${loc.longitude || ''}"`,

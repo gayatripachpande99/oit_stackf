@@ -20,8 +20,13 @@ const DataEntrySchema = new mongoose.Schema(
     },
     father_name: {
       type: String,
-      required: [true, 'Father name is required'],
+      required: [true, 'Father/Husband name is required'],
       trim: true,
+    },
+    relation_type: {
+      type: String,
+      enum: ['Father', 'Husband'],
+      default: 'Father',
     },
     age: {
       type: Number,

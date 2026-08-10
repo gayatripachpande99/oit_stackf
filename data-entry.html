@@ -448,6 +448,15 @@
             font-size: 0.8rem;
         }
 
+        .badge-relation {
+            background: #EFF6FF;
+            color: #1E40AF;
+            font-weight: 600;
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+
         .btn-action {
             width: 32px;
             height: 32px;
@@ -691,7 +700,18 @@
                     </div>
 
                     <div class="form-group">
-                        <label for="father_name">Father Name <span>*</span></label>
+                        <label for="relation_type">Relation Type <span>*</span></label>
+                        <div class="input-box">
+                            <i class="fa-solid fa-people-arrows"></i>
+                            <select id="relation_type" required style="width:100%;border:none;outline:none;font-size:0.92rem;font-family:'Inter',sans-serif;background:transparent;color:var(--text-dark);padding:0.1rem 0;">
+                                <option value="Father">Father</option>
+                                <option value="Husband">Husband</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="father_name" id="relation_label">Father Name <span>*</span></label>
                         <div class="input-box">
                             <i class="fa-solid fa-user-group"></i>
                             <input type="text" id="father_name" placeholder="Father's full name" required>
@@ -745,7 +765,8 @@
                                 <th>Constituency</th>
                                 <th>Booth No.</th>
                                 <th>Candidate Name</th>
-                                <th>Father Name</th>
+                                <th>Relation</th>
+                                <th>Father/Husband Name</th>
                                 <th>Age</th>
                                 <th>Address</th>
                                 <th>Actions</th>
@@ -796,7 +817,17 @@
                     </div>
                 </div>
                 <div class="form-group">
-                    <label>Father Name</label>
+                    <label>Relation Type</label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-people-arrows"></i>
+                        <select id="edit_relation_type" required style="width:100%;border:none;outline:none;font-size:0.92rem;font-family:'Inter',sans-serif;background:transparent;color:var(--text-dark);padding:0.1rem 0;">
+                            <option value="Father">Father</option>
+                            <option value="Husband">Husband</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label id="edit_relation_label">Father/Husband Name</label>
                     <div class="input-box">
                         <i class="fa-solid fa-user-group"></i>
                         <input type="text" id="edit_father_name" required>
@@ -915,6 +946,24 @@
             document.getElementById('search-input').addEventListener('input', (e) => {
                 filterTable(e.target.value);
             });
+
+            // Relation Type Change Listeners
+            const relType = document.getElementById('relation_type');
+            const relLabel = document.getElementById('relation_label');
+            if (relType && relLabel) {
+                relType.addEventListener('change', (e) => {
+                    relLabel.innerHTML = `${e.target.value} Name <span>*</span>`;
+                    document.getElementById('father_name').placeholder = `${e.target.value}'s full name`;
+                });
+            }
+
+            const editRelType = document.getElementById('edit_relation_type');
+            const editRelLabel = document.getElementById('edit_relation_label');
+            if (editRelType && editRelLabel) {
+                editRelType.addEventListener('change', (e) => {
+                    editRelLabel.innerText = `${e.target.value} Name`;
+                });
+            }
         });
 
         // Fetch All Data Entries directly from MongoDB API
@@ -996,6 +1045,7 @@
                         booth_number: item.booth_number,
                         candidate_name: item.candidate_name,
                         father_name: item.father_name,
+                        relation_type: item.relation_type || 'Father',
                         age: item.age,
                         address: item.address,
                         created_by: item.created_by || 'admin01@gmail.com'
@@ -1040,6 +1090,7 @@
                     <td><span class="badge-constituency">#${escapeHtml(entry.constituency_number)}</span></td>
                     <td><span class="badge-booth">${escapeHtml(entry.booth_number)}</span></td>
                     <td><strong>${escapeHtml(entry.candidate_name)}</strong></td>
+                    <td><span class="badge-relation">${escapeHtml(entry.relation_type || 'Father')}</span></td>
                     <td>${escapeHtml(entry.father_name)}</td>
                     <td>${escapeHtml(entry.age)} yrs</td>
                     <td style="max-width: 200px; white-space: normal;">${escapeHtml(entry.address)}</td>
@@ -1068,6 +1119,7 @@
                 constituency_number: document.getElementById('constituency_number').value,
                 booth_number: document.getElementById('booth_number').value,
                 candidate_name: document.getElementById('candidate_name').value,
+                relation_type: document.getElementById('relation_type').value,
                 father_name: document.getElementById('father_name').value,
                 age: document.getElementById('age').value,
                 address: document.getElementById('address').value,
@@ -1091,6 +1143,7 @@
                 if (res.ok && data.success) {
                     showToast('Candidate saved to MongoDB database successfully!', 'success');
                     document.getElementById('data-entry-form').reset();
+                    document.getElementById('relation_label').innerHTML = 'Father Name <span>*</span>';
                     await fetchEntries();
                 } else {
                     throw new Error(data.message || `Failed to save entry to MongoDB database (HTTP ${res.status})`);
@@ -1113,6 +1166,8 @@
             document.getElementById('edit_constituency_number').value = item.constituency_number;
             document.getElementById('edit_booth_number').value = item.booth_number;
             document.getElementById('edit_candidate_name').value = item.candidate_name;
+            document.getElementById('edit_relation_type').value = item.relation_type || 'Father';
+            document.getElementById('edit_relation_label').innerText = `${item.relation_type || 'Father'} Name`;
             document.getElementById('edit_father_name').value = item.father_name;
             document.getElementById('edit_age').value = item.age;
             document.getElementById('edit_address').value = item.address;
@@ -1132,6 +1187,7 @@
                 constituency_number: document.getElementById('edit_constituency_number').value,
                 booth_number: document.getElementById('edit_booth_number').value,
                 candidate_name: document.getElementById('edit_candidate_name').value,
+                relation_type: document.getElementById('edit_relation_type').value,
                 father_name: document.getElementById('edit_father_name').value,
                 age: document.getElementById('edit_age').value,
                 address: document.getElementById('edit_address').value
@@ -1234,11 +1290,12 @@
                 return;
             }
 
-            const headers = ['Constituency Number', 'Booth Number', 'Candidate Name', 'Father Name', 'Age', 'Address', 'Created Date'];
+            const headers = ['Constituency Number', 'Booth Number', 'Candidate Name', 'Relation Type', 'Father/Husband Name', 'Age', 'Address', 'Created Date'];
             const rows = allEntries.map(e => [
                 `"${e.constituency_number || ''}"`,
                 `"${e.booth_number || ''}"`,
                 `"${(e.candidate_name || '').replace(/"/g, '""')}"`,
+                `"${e.relation_type || 'Father'}"`,
                 `"${(e.father_name || '').replace(/"/g, '""')}"`,
                 `"${e.age || ''}"`,
                 `"${(e.address || '').replace(/"/g, '""')}"`,
