@@ -2431,49 +2431,20 @@ body.single-screen-home .nav-auth-link.register-link:hover i {
     align-items: center;
     justify-content: center;
     min-height: calc(100vh - 72px - 210px);
-    background: radial-gradient(circle at 50% 45%, #051d45 0%, #030d22 55%, #010613 100%);
+    background: #021a3e url('assets/hero-bg-clean.png') center center / cover no-repeat;
     overflow: hidden;
     padding: 3.5rem 1.5rem;
 }
 
-.hero-bg-overlay {
-    position: absolute;
-    inset: 0;
-    pointer-events: none;
-    z-index: 1;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    background-image: radial-gradient(rgba(0, 191, 255, 0.12) 1px, transparent 1px);
-    background-size: 36px 36px;
-}
-
-.hero-art-left {
-    position: absolute;
-    left: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 100%;
-    max-height: 460px;
-    width: auto;
-    object-fit: contain;
-    mix-blend-mode: screen;
-    opacity: 0.95;
-    pointer-events: none;
-}
-
-.hero-art-right {
-    position: absolute;
-    right: 0;
-    top: 50%;
-    transform: translateY(-50%);
-    height: 100%;
-    max-height: 460px;
-    width: auto;
-    object-fit: contain;
-    mix-blend-mode: screen;
-    opacity: 0.95;
-    pointer-events: none;
+/* Hide floating robot head/launcher on the home page as requested */
+body.single-screen-home .chatbot-widget,
+body.single-screen-home .chatbot-launcher,
+body.single-screen-home .chatbot-dance-robot,
+body.single-screen-home .astro-bot-head {
+    display: none !important;
+    visibility: hidden !important;
+    opacity: 0 !important;
+    pointer-events: none !important;
 }
 
 .hero-center-content {
