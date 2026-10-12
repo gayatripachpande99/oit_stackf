@@ -548,7 +548,6 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 function initSiteAssistant() {
-  if (document.body.classList.contains('single-screen-home')) return;
   if (document.querySelector('.chatbot-widget')) return;
 
   const widget = document.createElement('div');

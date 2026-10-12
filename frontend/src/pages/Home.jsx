@@ -3,7 +3,7 @@ import { Link } from 'react-router-dom';
 
 export default function Home() {
   return (
-    <section className="services-hero">
+    <section className="services-hero" style={{ background: "#020b1e url('/hero-bg.png') center center / cover no-repeat" }}>
       <div className="container hero-center-content animate-on-scroll">
         <h1 className="services-title">
           Our <span className="cyan-gradient-text">Services</span>

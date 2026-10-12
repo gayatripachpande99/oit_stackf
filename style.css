@@ -2431,20 +2431,9 @@ body.single-screen-home .nav-auth-link.register-link:hover i {
     align-items: center;
     justify-content: center;
     min-height: calc(100vh - 72px - 210px);
-    background: #021a3e url('assets/hero-bg-clean.png') center center / cover no-repeat;
+    background: #020b1e url('assets/hero-bg.png') center center / cover no-repeat;
     overflow: hidden;
     padding: 3.5rem 1.5rem;
-}
-
-/* Hide floating robot head/launcher on the home page as requested */
-body.single-screen-home .chatbot-widget,
-body.single-screen-home .chatbot-launcher,
-body.single-screen-home .chatbot-dance-robot,
-body.single-screen-home .astro-bot-head {
-    display: none !important;
-    visibility: hidden !important;
-    opacity: 0 !important;
-    pointer-events: none !important;
 }
 
 .hero-center-content {
