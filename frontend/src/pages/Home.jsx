@@ -3,28 +3,44 @@ import { Link } from 'react-router-dom';
 
 export default function Home() {
   return (
-    <section className="hero" style={{ minHeight: '80vh', display: 'flex', alignItems: 'center' }}>
-      <div className="container hero-content animate-on-scroll" style={{ opacity: 1, transform: 'none' }}>
-        <h1 style={{ fontSize: '3.5rem', marginBottom: '1.5rem', color: 'white' }}>Our Services</h1>
-        <p className="hero-subtitle" style={{ fontSize: '1.25rem', color: 'rgba(255,255,255,0.85)', maxWidth: '800px', margin: '0 auto 3rem' }}>
-          Empowering your business with cutting-edge software, political data analytics, and corporate training.
-        </p>
-        <div className="hero-btns" style={{ display: 'flex', flexWrap: 'wrap', justifyContent: 'center', gap: '1rem' }}>
-          <Link to="/services/software" className="btn btn-outline" style={{ color: 'white', borderColor: 'white', textDecoration: 'none' }}>
-            <i className="fa-solid fa-code"></i> Software Development
-          </Link>
-          <Link to="/services/analytics" className="btn btn-outline" style={{ color: 'white', borderColor: 'white', textDecoration: 'none' }}>
-            <i className="fa-solid fa-chart-line"></i> Data Analytics
-          </Link>
-          <Link to="/services/campaign" className="btn btn-outline" style={{ color: 'white', borderColor: 'white', textDecoration: 'none' }}>
-            <i className="fa-solid fa-bullhorn"></i> Campaign Management
-          </Link>
-          <Link to="/services/training" className="btn btn-outline" style={{ color: 'white', borderColor: 'white', textDecoration: 'none' }}>
-            <i className="fa-solid fa-users-viewfinder"></i> Corporate Training
-          </Link>
-          <Link to="/services/surveys" className="btn btn-outline" style={{ color: 'white', borderColor: 'white', textDecoration: 'none' }}>
-            <i className="fa-solid fa-square-poll-vertical"></i> Political Surveys
-          </Link>
+    <section className="services-hero">
+      <div className="hero-bg-overlay">
+        <img src="/hero-globe.png" alt="" className="hero-art-left" aria-hidden="true" />
+        <img src="/hero-waves.png" alt="" className="hero-art-right" aria-hidden="true" />
+      </div>
+
+      <div className="container hero-center-content animate-on-scroll">
+        <h1 className="services-title">
+          Our <span className="cyan-gradient-text">Services</span>
+        </h1>
+        <div className="cyan-accent-bar"></div>
+
+        <div className="services-pills-container">
+          <div className="services-pill-row row-top">
+            <Link to="/services/software" className="service-pill-btn">
+              <i className="fa-solid fa-code pill-icon"></i>
+              <span>Software Development</span>
+            </Link>
+            <Link to="/services/analytics" className="service-pill-btn">
+              <i className="fa-solid fa-chart-line pill-icon"></i>
+              <span>Data Analytics</span>
+            </Link>
+            <Link to="/services/campaign" className="service-pill-btn">
+              <i className="fa-solid fa-bullhorn pill-icon"></i>
+              <span>Campaign Management</span>
+            </Link>
+          </div>
+
+          <div className="services-pill-row row-bottom">
+            <Link to="/services/training" className="service-pill-btn">
+              <i className="fa-solid fa-users-viewfinder pill-icon"></i>
+              <span>Corporate Training</span>
+            </Link>
+            <Link to="/services/surveys" className="service-pill-btn">
+              <i className="fa-solid fa-square-poll-vertical pill-icon"></i>
+              <span>Political Surveys</span>
+            </Link>
+          </div>
         </div>
       </div>
     </section>

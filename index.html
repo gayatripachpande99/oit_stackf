@@ -6,12 +6,12 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>OIT_Stack | OnYX Integrated Tech Stack</title>
     <!-- Google Fonts -->
-    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap"
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap"
         rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- CSS -->
-    <link rel="stylesheet" href="style.css?v=light-theme">
+    <link rel="stylesheet" href="style.css?v=2.3">
 </head>
 
 <body class="single-screen-home">
@@ -20,109 +20,147 @@
         <div class="loader"></div>
     </div>
 
-    <!-- Header -->
-    <header>
+    <!-- Header / Navbar -->
+    <header class="navbar-wrapper">
         <div class="container navbar">
-            <a href="index.html" class="logo"
-                style="display:flex; align-items:center; gap:0.75rem; text-decoration:none;">
-                <img src="assets/Logo2.png" alt="OIT_Stack"
-                    style="height:45px; width:45px; object-fit:cover; border-radius:50%; box-shadow:0 0 10px rgba(0,191,255,0.5);">
-                <div style="display:flex; flex-direction:column; justify-content:center;">
-                    <span class="logo-text" style="line-height:1; margin-bottom:2px;">OIT_Stack</span>
-                    <span
-                        style="font-size:0.65rem; color:var(--text-muted); font-weight:700; letter-spacing:0.5px; text-transform:uppercase;">OnYX
-                        Integrated Tech Stack</span>
+            <a href="index.html" class="logo">
+                <img src="assets/Logo2.png" alt="OIT_Stack" class="logo-img">
+                <div class="logo-meta">
+                    <span class="logo-text">OIT_Stack</span>
+                    <span class="logo-tagline">OnYX Integrated Tech Stack</span>
                 </div>
             </a>
-            <div class="nav-actions" style="display:flex; align-items:center; gap:1.5rem;">
-                <a href="login.html" class="login-link"
-                    style="color:var(--text-main); font-weight:600; font-size:0.95rem; text-decoration:none; transition:var(--transition);">Login</a>
-                <a href="signup.html" class="signup-link"
-                    style="color:var(--text-main); font-weight:600; font-size:0.95rem; text-decoration:none; transition:var(--transition);">Sign
-                    Up</a>
+            <div class="nav-actions">
+                <a href="login.html" class="nav-auth-link login-link">
+                    <i class="fa-solid fa-right-to-bracket"></i>
+                    <span>Login</span>
+                </a>
+                <a href="signup.html" class="nav-auth-link register-link">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <span>Register</span>
+                </a>
             </div>
         </div>
     </header>
 
-    <!-- Hero -->
-    <section class="hero">
-        <div class="container hero-content animate-on-scroll">
-            <h1>Our Services</h1>
-            <!-- <p class="hero-subtitle">Empowering your business with cutting-edge software, political data analytics, and
-                corporate training.</p> -->
-            <div class="hero-btns">
-                <a href="service-software.html" class="btn btn-outline" style="color: white; border-color: white;"><i
-                        class="fa-solid fa-code"></i> Software Development</a>
-                <a href="service-analytics.html" class="btn btn-outline" style="color: white; border-color: white;"><i
-                        class="fa-solid fa-chart-line"></i> Data Analytics</a>
-                <a href="service-campaign.html" class="btn btn-outline" style="color: white; border-color: white;"><i
-                        class="fa-solid fa-bullhorn"></i> Campaign Management</a>
-                <a href="service-training.html" class="btn btn-outline" style="color: white; border-color: white;"><i
-                        class="fa-solid fa-users-viewfinder"></i> Corporate Training</a>
-                <a href="service-surveys.html" class="btn btn-outline" style="color: white; border-color: white;"><i
-                        class="fa-solid fa-square-poll-vertical"></i> Political Surveys</a>
+    <!-- Hero: Our Services -->
+    <section class="services-hero">
+        <!-- Background Glowing Decorations from uploaded image -->
+        <div class="hero-bg-overlay">
+            <img src="assets/hero-globe.png" alt="" class="hero-art-left" aria-hidden="true">
+            <img src="assets/hero-waves.png" alt="" class="hero-art-right" aria-hidden="true">
+        </div>
+
+        <div class="container hero-center-content animate-on-scroll">
+            <h1 class="services-title">
+                Our <span class="cyan-gradient-text">Services</span>
+            </h1>
+            <div class="cyan-accent-bar"></div>
+
+            <!-- 2-Row Pill Buttons as seen in the image -->
+            <div class="services-pills-container">
+                <!-- Row 1 (3 items) -->
+                <div class="services-pill-row row-top">
+                    <a href="service-software.html" class="service-pill-btn">
+                        <i class="fa-solid fa-code pill-icon"></i>
+                        <span>Software Development</span>
+                    </a>
+                    <a href="service-analytics.html" class="service-pill-btn">
+                        <i class="fa-solid fa-chart-line pill-icon"></i>
+                        <span>Data Analytics</span>
+                    </a>
+                    <a href="service-campaign.html" class="service-pill-btn">
+                        <i class="fa-solid fa-bullhorn pill-icon"></i>
+                        <span>Campaign Management</span>
+                    </a>
+                </div>
+
+                <!-- Row 2 (2 items) -->
+                <div class="services-pill-row row-bottom">
+                    <a href="service-training.html" class="service-pill-btn">
+                        <i class="fa-solid fa-users-viewfinder pill-icon"></i>
+                        <span>Corporate Training</span>
+                    </a>
+                    <a href="service-surveys.html" class="service-pill-btn">
+                        <i class="fa-solid fa-square-poll-vertical pill-icon"></i>
+                        <span>Political Surveys</span>
+                    </a>
+                </div>
             </div>
-
-
         </div>
     </section>
 
-
-    <!-- Footer -->
-    <footer>
+    <!-- Footer as shown in the uploaded image -->
+    <footer class="site-footer">
         <div class="container">
-            <div class="footer-top">
-                <div class="footer-about">
-                    <a href="index.html" class="logo" style="color:white;">
-                        <i class="fa-solid fa-cube logo-icon" style="color:var(--accent);"></i>
-                        <span class="logo-text" style="color:white;">OIT_STACK</span>
+            <div class="footer-grid">
+                <!-- Column 1: Logo & Socials -->
+                <div class="footer-col footer-col-brand">
+                    <a href="index.html" class="footer-brand-logo">
+                        <i class="fa-solid fa-cube cube-icon"></i>
+                        <span class="footer-brand-name">OIT_STACK</span>
                     </a>
-                    <div class="social-links">
-                        <a href="https://www.linkedin.com" class="social-link"><i
-                                class="fa-brands fa-linkedin-in"></i></a>
-                        <a href="https://www.instagram.com/oit_stack?igsh=MTJ6Z29pdWJ3N2g3eg==" class="social-link"
-                            target="_blank"><i class="fa-brands fa-instagram"></i></a>
+                    <div class="footer-social-links">
+                        <a href="https://www.linkedin.com" class="social-circle-btn" target="_blank" aria-label="LinkedIn">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://www.instagram.com/oit_stack?igsh=MTJ6Z29pdWJ3N2g3eg==" class="social-circle-btn" target="_blank" aria-label="Instagram">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
                     </div>
                 </div>
 
-                <div class="footer-contact">
-                    <h4 class="footer-title">Contact Us</h4>
-                    <ul class="footer-links">
-                        <li style="display:flex; gap:0.5rem; color:var(--text-muted);">
-                            <i class="fa-solid fa-location-dot" style="margin-top:5px; color:var(--brand-light);"></i>
+                <!-- Column 2: Contact Us -->
+                <div class="footer-col footer-col-contact">
+                    <h4 class="footer-heading">Contact Us</h4>
+                    <ul class="footer-contact-list">
+                        <li>
+                            <i class="fa-solid fa-location-dot contact-icon"></i>
                             <span>Flat No.307, Goldcliff Society, Pune- 411015</span>
                         </li>
-                        <li style="display:flex; gap:0.5rem; color:var(--text-muted);">
-                            <i class="fa-solid fa-phone" style="margin-top:5px; color:var(--brand-light);"></i>
-                            +91 8983461569
+                        <li>
+                            <i class="fa-solid fa-phone contact-icon"></i>
+                            <a href="tel:+918983461569">+91 8983461569</a>
                         </li>
-                        <li style="display:flex; gap:0.5rem; color:var(--text-muted);">
-                            <i class="fa-solid fa-envelope" style="margin-top:5px; color:var(--brand-light);"></i>
-                            onkarholkar@oitstack.com
+                        <li>
+                            <i class="fa-solid fa-envelope contact-icon"></i>
+                            <a href="mailto:onkarholkar@oitstack.com">onkarholkar@oitstack.com</a>
                         </li>
                     </ul>
                 </div>
 
-                <div class="footer-action">
-                    <h4 class="footer-title">Get Started</h4>
-                    <a href="contact.html" class="btn btn-primary" style="padding: 0.75rem 1.5rem; font-size: 0.9rem;">
-                        <i class="fa-solid fa-paper-plane"></i> Request Service
-                    </a>
+                <!-- Column 3: Get Started -->
+                <div class="footer-col footer-col-action">
+                    <h4 class="footer-heading">Get Started</h4>
+                    <div class="footer-action-btns">
+                        <a href="contact.html" class="btn-request-service">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>Request Service</span>
+                            <i class="fa-solid fa-arrow-right arrow-icon"></i>
+                        </a>
+                        <a href="contact.html#clients" class="btn-our-clients">
+                            <i class="fa-solid fa-users"></i>
+                            <span>Our Clients</span>
+                            <i class="fa-solid fa-arrow-right arrow-icon"></i>
+                        </a>
+                    </div>
                 </div>
             </div>
-            <div class="footer-bottom">
+
+            <!-- Bottom Copyright -->
+            <div class="footer-bottom-bar">
                 &copy; 2026 OIT_STACK - OnYX Integrated Tech Stack. All Rights Reserved.
             </div>
         </div>
     </footer>
 
-    <!-- WhatsApp Floating Button -->
-    <a href="https://wa.me/918983461569" class="whatsapp-float" target="_blank" title="Chat with us on WhatsApp">
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/918983461569" class="whatsapp-float-btn" target="_blank" title="Chat with us on WhatsApp" aria-label="Chat on WhatsApp">
         <i class="fa-brands fa-whatsapp"></i>
     </a>
 
     <!-- Scripts -->
-    <script src="script.js"></script>
+    <script src="script.js?v=2.3"></script>
 </body>
 
 </html>
