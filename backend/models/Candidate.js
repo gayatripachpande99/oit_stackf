@@ -1,7 +1,7 @@
 const mongoose = require('mongoose');
 
 const CandidateSchema = new mongoose.Schema({
-  constituency_number: { type: Number, required: true },
+  constituency_number: { type: mongoose.Schema.Types.Mixed, required: true },
   candidate_name: { type: String, required: true },
   sex: { type: String },
   age: { type: Number },

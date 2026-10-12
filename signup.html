@@ -7,185 +7,167 @@
     <title>Create Account | OIT_Stack</title>
     <!-- Google Fonts -->
     <link
-        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700;800&display=swap"
+        href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap"
         rel="stylesheet">
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- CSS -->
     <link rel="stylesheet" href="style.css?v=light-theme">
     <style>
-        body.login-page-body {
+        .auth-page {
             min-height: 100vh;
-            margin: 0;
-            padding: 0;
             display: flex;
             align-items: center;
             justify-content: center;
-            font-family: 'Outfit', sans-serif;
-            background: linear-gradient(to bottom, #7462d0 78%, #ffffff 78%);
-            overflow-x: hidden;
-            position: relative;
-        }
-
-        .login-container {
-            display: grid;
-            grid-template-columns: 1.2fr 1fr;
-            width: 100%;
-            max-width: 1200px;
-            margin: 0 auto;
+            background: radial-gradient(circle at top right, rgba(0, 191, 255, 0.05), transparent),
+                radial-gradient(circle at bottom left, rgba(10, 25, 47, 0.03), transparent);
             padding: 2rem;
-            align-items: center;
-            gap: 4rem;
-            z-index: 10;
-        }
-
-        .login-illustration-column {
-            display: flex;
-            justify-content: center;
-            align-items: center;
-        }
-
-        .login-illustration-img {
-            max-width: 100%;
-            height: auto;
-            border-radius: 24px;
-            mix-blend-mode: multiply;
-            filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.08));
-        }
-
-        .login-card-column {
-            display: flex;
-            justify-content: center;
-            align-items: center;
         }
 
         .auth-card {
-            background: #ffffff;
-            padding: 3.5rem 3rem;
-            border-radius: 32px;
-            box-shadow: 0 20px 45px rgba(10, 25, 47, 0.12);
+            background: var(--bg-white);
+            padding: 3rem;
+            border-radius: var(--radius-lg);
+            box-shadow: var(--shadow-lg);
             width: 100%;
             max-width: 480px;
-            border: 1px solid rgba(255, 255, 255, 0.8);
+            border: 1px solid var(--border);
             animation: modalSlideUp 0.6s cubic-bezier(0.16, 1, 0.3, 1);
         }
 
         .auth-header {
-            text-align: left;
+            text-align: center;
             margin-bottom: 2.5rem;
         }
 
+        .auth-header .logo-icon {
+            font-size: 2.5rem;
+            color: var(--accent);
+            margin-bottom: 1rem;
+        }
+
         .auth-header h1 {
-            font-family: 'Outfit', sans-serif;
-            font-size: 2.4rem;
-            font-weight: 700;
-            color: #2F2A8A;
+            font-size: 2rem;
             margin-bottom: 0.5rem;
-            letter-spacing: -0.5px;
         }
 
         .auth-header p {
-            font-family: 'Inter', sans-serif;
-            color: #7a70a0;
+            color: var(--text-muted);
             font-size: 0.95rem;
-            line-height: 1.5;
-            margin: 0;
-            font-weight: 400;
         }
 
         .form-group {
-            margin-bottom: 1.5rem;
+            margin-bottom: 1.25rem;
+        }
+
+        .form-group label {
+            display: block;
+            margin-bottom: 0.5rem;
+            font-weight: 600;
+            font-size: 0.9rem;
+            color: var(--text-main);
         }
 
         .input-wrapper {
             position: relative;
-            display: flex;
-            align-items: center;
         }
 
-        .input-icon {
+        .input-wrapper i {
             position: absolute;
-            left: 1.2rem;
-            color: #2F2A8A;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
             font-size: 1.1rem;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-        }
-
-        #toggle-password-btn {
-            cursor: pointer;
-            transition: opacity 0.2s;
-            z-index: 5;
-        }
-
-        #toggle-password-btn:hover {
-            opacity: 0.7;
         }
 
         .input-wrapper input {
             width: 100%;
-            padding: 0.95rem 1rem 0.95rem 3.2rem;
-            border-radius: 30px;
-            border: 1.5px solid #dcdbe9;
+            padding: 0.8rem 1rem 0.8rem 3rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
             font-family: inherit;
             font-size: 1rem;
-            transition: all 0.3s ease;
-            background: #ffffff;
-            color: #2F2A8A;
-        }
-
-        .input-wrapper input::placeholder {
-            color: #b0aec6;
+            transition: var(--transition);
+            background: #f8fafc;
         }
 
         .input-wrapper input:focus {
             outline: none;
-            border-color: #7462d0;
-            box-shadow: 0 0 0 4px rgba(116, 98, 208, 0.15);
+            border-color: var(--accent);
+            background: #fff;
+            box-shadow: 0 0 0 4px rgba(0, 191, 255, 0.1);
         }
 
-        .btn-login {
+        .auth-btn {
             width: 100%;
             padding: 1rem;
-            border: none;
-            border-radius: 30px;
-            background-color: #2F2A8A;
-            color: #ffffff;
-            font-family: inherit;
-            font-size: 1.05rem;
+            border-radius: var(--radius-sm);
+            font-weight: 700;
+            font-size: 1rem;
+            margin-top: 1rem;
+            margin-bottom: 1.5rem;
+        }
+
+        .social-auth {
+            text-align: center;
+        }
+
+        .social-divider {
+            display: flex;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+        }
+
+        .social-divider::before,
+        .social-divider::after {
+            content: "";
+            flex: 1;
+            height: 1px;
+            background: var(--border);
+        }
+
+        .social-btns {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .social-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.75rem;
+            padding: 0.75rem;
+            border-radius: var(--radius-sm);
+            border: 1px solid var(--border);
+            background: white;
+            color: var(--text-main);
             font-weight: 600;
+            font-size: 0.85rem;
             cursor: pointer;
-            transition: all 0.3s ease;
-            box-shadow: 0 4px 15px rgba(47, 42, 138, 0.2);
-            margin-top: 0.5rem;
+            transition: var(--transition);
         }
 
-        .btn-login:hover {
-            background-color: #1e1a66;
-            transform: translateY(-2px);
-            box-shadow: 0 6px 20px rgba(47, 42, 138, 0.3);
-        }
-
-        .btn-login:active {
-            transform: translateY(0);
+        .social-btn:hover {
+            background: #f8fafc;
+            border-color: var(--text-muted);
         }
 
         .auth-footer {
             text-align: center;
             font-size: 0.9rem;
-            color: #7a70a0;
-            margin-top: 1.75rem;
+            color: var(--text-muted);
         }
 
         .auth-footer a {
-            color: #3F37C9;
+            color: var(--accent);
             font-weight: 700;
             text-decoration: none;
-        }
-
-        .auth-footer a:hover {
-            text-decoration: underline;
         }
 
         @keyframes modalSlideUp {
@@ -199,168 +181,58 @@
                 transform: translateY(0);
             }
         }
-
-        @media (max-width: 992px) {
-            .login-container {
-                grid-template-columns: 1fr;
-                justify-content: center;
-                max-width: 500px;
-                gap: 0;
-            }
-
-            .login-illustration-column {
-                display: none;
-            }
-
-            body.login-page-body {
-                background: #7462d0;
-                padding: 1.5rem;
-            }
-
-            .auth-card {
-                padding: 2.5rem 2rem;
-            }
-        }
     </style>
 </head>
 
-<body class="login-page-body">
-    <div class="login-container">
-        <!-- Left illustration column -->
-        <div class="login-illustration-column">
-            <img src="assets/login_illustration.jpg" alt="Login Illustration" class="login-illustration-img">
+<body class="auth-page">
+    <div class="auth-card">
+        <div class="auth-header">
+            <div class="logo-icon"><i class="fa-solid fa-user-plus"></i></div>
+            <h1>Create Account</h1>
+            <p>Join OIT_Stack and start your journey</p>
         </div>
 
-        <!-- Right card column -->
-        <div class="login-card-column">
-            <div class="auth-card">
-                <div class="auth-header">
-                    <h1>Create Account</h1>
-                    <p>Join OIT_Stack and start your journey</p>
-                </div>
-
-                <form action="#">
-                    <div class="form-group">
-                        <div class="input-wrapper">
-                            <span class="input-icon"><i class="fa-solid fa-user"></i></span>
-                            <input type="text" id="name" placeholder="Full Name" required>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="input-wrapper">
-                            <span class="input-icon"><i class="fa-regular fa-envelope"></i></span>
-                            <input type="email" id="email" placeholder="Email Address" required>
-                        </div>
-                    </div>
-
-                    <div class="form-group">
-                        <div class="input-wrapper">
-                            <span class="input-icon" id="toggle-password-btn"><i class="fa-regular fa-eye" id="password-eye-icon"></i></span>
-                            <input type="password" id="password" placeholder="Password" required>
-                        </div>
-                    </div>
-
-                    <div id="signup-alert" style="display:none; padding: 0.8rem; border-radius: 8px; margin-bottom: 1.5rem; text-align: center; font-size: 0.9rem; font-weight: 600;"></div>
-
-                    <button type="submit" class="btn-login">Sign Up</button>
-                </form>
-
-                <div class="auth-footer">
-                    Already have an account? <a href="login.html">Sign in here</a>
+        <form action="#">
+            <div class="form-group">
+                <label for="name">Full Name</label>
+                <div class="input-wrapper">
+                    <i class="fa-regular fa-user"></i>
+                    <input type="text" id="name" placeholder=" " required>
                 </div>
             </div>
+
+            <div class="form-group">
+                <label for="email">Email Address</label>
+                <div class="input-wrapper">
+                    <i class="fa-regular fa-envelope"></i>
+                    <input type="email" id="email" placeholder=" " required>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <label for="password">Password</label>
+                <div class="input-wrapper">
+                    <i class="fa-solid fa-lock"></i>
+                    <input type="password" id="password" placeholder=" " required>
+                </div>
+            </div>
+
+            <button type="submit" class="btn btn-primary auth-btn"
+                onclick="event.preventDefault(); window.location.href='index.html'">Sign Up</button>
+        </form>
+
+        <div class="social-auth">
+            <div class="social-divider">Or register with</div>
+            <div class="social-btns">
+                <button class="social-btn"><i class="fa-brands fa-google" style="color: #DB4437;"></i> Google</button>
+                <button class="social-btn"><i class="fa-brands fa-apple"></i> Apple</button>
+            </div>
+        </div>
+
+        <div class="auth-footer">
+            Already have an account? <a href="login.html">Sign in here</a>
         </div>
     </div>
-
-    <script>
-        document.addEventListener("DOMContentLoaded", function() {
-            const signupForm = document.querySelector("form");
-            const alertDiv = document.getElementById("signup-alert");
-
-            if (signupForm) {
-                signupForm.addEventListener("submit", function(event) {
-                    event.preventDefault();
-
-                    const nameInput = document.getElementById("name").value.trim();
-                    const emailInput = document.getElementById("email").value.trim().toLowerCase();
-                    const passwordInput = document.getElementById("password").value;
-
-                    if (!nameInput || !emailInput || !passwordInput) {
-                        showAlert("Please fill in all fields.", "#d32f2f", "#ffebee");
-                        return;
-                    }
-
-                    // Get existing users
-                    let users = [];
-                    try {
-                        const storedUsers = localStorage.getItem("oit_stack_users");
-                        if (storedUsers) {
-                            users = JSON.parse(storedUsers);
-                        }
-                    } catch (e) {
-                        console.error("Error reading localStorage users list:", e);
-                    }
-
-                    // Check if user already exists
-                    const userExists = users.some(u => u.email === emailInput);
-                    if (userExists) {
-                        showAlert("An account with this email already exists.", "#d32f2f", "#ffebee");
-                        return;
-                    }
-
-                    // Add new user
-                    const newUser = {
-                        name: nameInput,
-                        email: emailInput,
-                        password: passwordInput
-                    };
-                    users.push(newUser);
-
-                    try {
-                        localStorage.setItem("oit_stack_users", JSON.stringify(users));
-                        showAlert("Account created successfully! Redirecting to login...", "#388e3c", "#e8f5e9");
-                        
-                        // Redirect after 1.5s
-                        setTimeout(function() {
-                            window.location.href = "login.html";
-                        }, 1500);
-                    } catch (e) {
-                        console.error("Error saving user to localStorage:", e);
-                        showAlert("Failed to save credentials. Please try again.", "#d32f2f", "#ffebee");
-                    }
-                });
-            }
-
-            function showAlert(message, textColor, bgColor) {
-                if (alertDiv) {
-                    alertDiv.textContent = message;
-                    alertDiv.style.color = textColor;
-                    alertDiv.style.backgroundColor = bgColor;
-                    alertDiv.style.display = "block";
-                }
-            }
-
-            // Handle Password Visibility Toggle
-            const passwordInput = document.getElementById("password");
-            const togglePasswordBtn = document.getElementById("toggle-password-btn");
-            const passwordEyeIcon = document.getElementById("password-eye-icon");
-
-            if (togglePasswordBtn && passwordInput && passwordEyeIcon) {
-                togglePasswordBtn.addEventListener("click", function () {
-                    if (passwordInput.type === "password") {
-                        passwordInput.type = "text";
-                        passwordEyeIcon.classList.remove("fa-eye");
-                        passwordEyeIcon.classList.add("fa-eye-slash");
-                    } else {
-                        passwordInput.type = "password";
-                        passwordEyeIcon.classList.remove("fa-eye-slash");
-                        passwordEyeIcon.classList.add("fa-eye");
-                    }
-                });
-            }
-        });
-    </script>
     <script src="script.js"></script>
 </body>
 

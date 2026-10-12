@@ -13,7 +13,6 @@ const errorHandler = require('./middleware/errorHandler');
 const constituencyRoutes = require('./routes/constituencyRoutes');
 const voterRoutes = require('./routes/voterRoutes');
 const dataEntryRoutes = require('./routes/dataEntryRoutes');
-const { ensureAdmin01Account, ensureAdmin02Account } = require('./controllers/dataEntryController');
 
 // Corporate Training Routes
 const authRoutes = require('./routes/authRoutes');
@@ -31,10 +30,7 @@ const app = express();
 const PORT = process.env.PORT || config.port || 3000;
 
 // Connect to MongoDB
-connectDB().then(() => {
-  ensureAdmin01Account();
-  ensureAdmin02Account();
-});
+connectDB();
 
 // Middleware
 app.use(helmet({
@@ -64,21 +60,9 @@ app.use(cors({
 }));
 
 app.use(mongoSanitize());
-app.use(express.json({ limit: '25mb' }));
-app.use(express.urlencoded({ extended: true, limit: '25mb' }));
+app.use(express.json({ limit: '10mb' }));
+app.use(express.urlencoded({ extended: true, limit: '10mb' }));
 app.use(cookieParser());
-
-// Middleware to guarantee MongoDB Atlas connection before API calls (critical for serverless)
-app.use(async (req, res, next) => {
-  if (req.path.startsWith('/api') && req.path !== '/api/health') {
-    try {
-      await connectDB();
-    } catch (e) {
-      console.error('Middleware database connection error:', e);
-    }
-  }
-  next();
-});
 
 // Original API Routes
 app.use('/api', constituencyRoutes);
