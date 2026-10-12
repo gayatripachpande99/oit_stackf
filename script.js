@@ -1,4 +1,4 @@
-// Loader
+﻿// Loader
 window.addEventListener('load', () => {
   const loader = document.querySelector('.loader-wrapper');
   if (loader) {
@@ -553,7 +553,7 @@ function initSiteAssistant() {
   const widget = document.createElement('div');
   widget.className = 'chatbot-widget';
   widget.innerHTML = `
-    <button class="chatbot-launcher" type="button" aria-label="Open OIT assistant">
+    <button class="chatbot-launcher animate-launcher" type="button" aria-label="Open OIT assistant">
       <span class="chatbot-dance-robot" aria-hidden="true">
         <span class="astro-bot-head">
           <span class="astro-bot-ear left"></span>
@@ -579,17 +579,18 @@ function initSiteAssistant() {
         <i class="fa-solid fa-xmark"></i>
       </button>
       <div class="chatbot-header">
-        <div class="chatbot-avatar" aria-hidden="true">
-          <span class="chatbot-robot-face mini">
+        <div class="chatbot-header-avatar">
+          <span class="chatbot-robot-face mini" aria-hidden="true">
             <span class="chatbot-antenna"></span>
             <span class="chatbot-eye left"></span>
             <span class="chatbot-eye right"></span>
             <span class="chatbot-smile"></span>
           </span>
+          <span class="chatbot-header-status-dot"></span>
         </div>
-        <div>
+        <div class="chatbot-header-details">
           <h3>OIT Bot</h3>
-          <p>Records and service helper</p>
+          <p>Records & Service Helper</p>
         </div>
         <button class="chatbot-close" type="button" aria-label="Close assistant">
           <i class="fa-solid fa-xmark"></i>
@@ -631,7 +632,7 @@ function initSiteAssistant() {
     }
   });
 
-  addBotActionMessage(messages, "Welcome to OIT_Stack. How may I help you?", getWelcomeActions());
+  addBotActionMessage(messages, "<strong>Welcome to OIT_Stack! 👋</strong><br>How can I help you today? Please choose an option below or type a query:", getWelcomeActions());
 
   const pendingInsight = getStoredBotInsight();
   if (pendingInsight) {
@@ -657,10 +658,11 @@ function addBotMessage(container, text) {
 
 function addBotActionMessage(container, text, actions) {
   const message = document.createElement('div');
-  message.className = 'chatbot-message bot chatbot-action-message';
+  message.className = 'chatbot-message bot chatbot-action-message animate-message';
 
   const body = document.createElement('p');
-  body.textContent = text;
+  body.className = 'chatbot-message-text';
+  body.innerHTML = text;
   message.appendChild(body);
 
   const actionList = document.createElement('div');
@@ -669,7 +671,9 @@ function addBotActionMessage(container, text, actions) {
   actions.forEach(action => {
     const link = document.createElement(action.query ? 'button' : 'a');
     link.className = 'chatbot-action-link';
-    link.textContent = action.label;
+    if (action.desc) {
+      link.classList.add('has-desc');
+    }
 
     if (action.query) {
       link.type = 'button';
@@ -678,17 +682,45 @@ function addBotActionMessage(container, text, actions) {
       link.href = action.href;
     }
 
-    if (action.icon) {
-      const icon = document.createElement('i');
-      icon.className = action.icon;
-      link.prepend(icon);
+    // Circular icon wrapper
+    const iconWrapper = document.createElement('div');
+    iconWrapper.className = 'chatbot-action-icon-wrapper';
+    const icon = document.createElement('i');
+    icon.className = action.icon || 'fa-solid fa-circle';
+    iconWrapper.appendChild(icon);
+    link.appendChild(iconWrapper);
+
+    // Text column wrapper
+    const textWrapper = document.createElement('div');
+    textWrapper.className = 'chatbot-action-text-wrapper';
+    
+    const label = document.createElement('span');
+    label.className = 'chatbot-action-label';
+    label.textContent = action.label;
+    textWrapper.appendChild(label);
+
+    if (action.desc) {
+      const desc = document.createElement('span');
+      desc.className = 'chatbot-action-desc';
+      desc.textContent = action.desc;
+      textWrapper.appendChild(desc);
     }
+    link.appendChild(textWrapper);
+
+    // Chevron on the far right
+    const chevron = document.createElement('i');
+    chevron.className = 'fa-solid fa-chevron-right chatbot-action-chevron';
+    link.appendChild(chevron);
+
     actionList.appendChild(link);
   });
 
   message.appendChild(actionList);
   container.appendChild(message);
-  container.scrollTop = container.scrollHeight;
+  container.scrollTo({
+    top: container.scrollHeight,
+    behavior: 'smooth'
+  });
 }
 
 function addUserMessage(container, text) {
@@ -697,28 +729,333 @@ function addUserMessage(container, text) {
 
 function addChatMessage(container, text, type) {
   const message = document.createElement('div');
-  message.className = `chatbot-message ${type}`;
+  message.className = `chatbot-message ${type} animate-message`;
   message.textContent = text;
   container.appendChild(message);
-  container.scrollTop = container.scrollHeight;
+  container.scrollTo({
+    top: container.scrollHeight,
+    behavior: 'smooth'
+  });
 }
 
 function setAssistantTyping(container, isTyping) {
   let typing = container.querySelector('.chatbot-typing');
   if (isTyping && !typing) {
     typing = document.createElement('div');
-    typing.className = 'chatbot-message bot chatbot-typing';
-    typing.textContent = 'Checking the site data...';
+    typing.className = 'chatbot-message bot chatbot-typing animate-message';
+    typing.innerHTML = `
+      <div class="typing-indicator">
+        <span></span>
+        <span></span>
+        <span></span>
+      </div>
+    `;
     container.appendChild(typing);
-    container.scrollTop = container.scrollHeight;
+    container.scrollTo({
+      top: container.scrollHeight,
+      behavior: 'smooth'
+    });
   }
   if (!isTyping && typing) {
     typing.remove();
   }
 }
 
+async function addBotConstituencySelector(container) {
+  setAssistantTyping(container, true);
+  const index = await getConstituencyIndex();
+  setAssistantTyping(container, false);
+
+  const message = document.createElement('div');
+  message.className = 'chatbot-message bot chatbot-selector-message animate-message';
+
+  const body = document.createElement('p');
+  body.className = 'chatbot-message-text';
+  body.innerHTML = '<strong>Select a Constituency</strong><br>Choose a constituency from the list below to view its election records and dashboard:';
+  message.appendChild(body);
+
+  const form = document.createElement('form');
+  form.className = 'chatbot-selector-form';
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const select = form.querySelector('select');
+    const selectedId = select.value;
+    if (selectedId) {
+      const selectedItem = index.find(item => item.id === selectedId);
+      if (selectedItem) {
+        addUserMessage(container, `Selected: ${selectedItem.name}`);
+        handleAssistantQuery(selectedId, container);
+      }
+    }
+  });
+
+  const select = document.createElement('select');
+  select.className = 'chatbot-constituency-select';
+  select.required = true;
+
+  const defaultOption = document.createElement('option');
+  defaultOption.value = '';
+  defaultOption.textContent = '-- Choose a constituency --';
+  defaultOption.disabled = true;
+  defaultOption.selected = true;
+  select.appendChild(defaultOption);
+
+  if (typeof districtData === 'object' && districtData) {
+    Object.values(districtData).forEach(district => {
+      const optgroup = document.createElement('optgroup');
+      optgroup.label = district.name;
+      district.assemblies.forEach(assembly => {
+        const match = assembly.match(/^(\d{1,3})\s+-\s+(.+)$/);
+        if (match) {
+          const option = document.createElement('option');
+          option.value = match[1];
+          option.textContent = assembly;
+          optgroup.appendChild(option);
+        }
+      });
+      select.appendChild(optgroup);
+    });
+  } else {
+    index.forEach(item => {
+      const option = document.createElement('option');
+      option.value = item.id;
+      option.textContent = item.name;
+      select.appendChild(option);
+    });
+  }
+
+  form.appendChild(select);
+
+  const button = document.createElement('button');
+  button.type = 'submit';
+  button.className = 'chatbot-selector-btn';
+  button.innerHTML = 'View Records <i class="fa-solid fa-arrow-right"></i>';
+  form.appendChild(button);
+
+  message.appendChild(form);
+  container.appendChild(message);
+  container.scrollTo({
+    top: container.scrollHeight,
+    behavior: 'smooth'
+  });
+}
+
+function addBotDataAnalyticsSelector(container) {
+  addBotActionMessage(container, "Our Data Analytics service provides deep insights into candidate performance. Select a state to explore:", [
+    { label: 'Maharashtra State', query: 'maharashtra', icon: 'fa-solid fa-map-location-dot', desc: 'Browse region-wise records' }
+  ]);
+}
+
+// Maharashtra divisions and their districts mapping
+const maharashtraDivisions = {
+  nashik: {
+    name: "Nashik Division",
+    districts: [
+      { id: "nandurbar", name: "Nandurbar" },
+      { id: "dhule", name: "Dhule" },
+      { id: "jalgaon", name: "Jalgaon" },
+      { id: "nashik", name: "Nashik" },
+      { id: "ahmednagar", name: "Ahmednagar" }
+    ]
+  },
+  konkan: {
+    name: "Konkan Division",
+    districts: [
+      { id: "palghar", name: "Palghar" },
+      { id: "thane", name: "Thane" },
+      { id: "mumbai-suburban", name: "Mumbai Suburban" },
+      { id: "mumbai-city", name: "Mumbai City" },
+      { id: "raigad", name: "Raigad" },
+      { id: "ratnagiri", name: "Ratnagiri" },
+      { id: "sindhudurg", name: "Sindhudurg" }
+    ]
+  },
+  pune: {
+    name: "Pune Division",
+    districts: [
+      { id: "pune", name: "Pune" },
+      { id: "satara", name: "Satara" },
+      { id: "sangli", name: "Sangli" },
+      { id: "kolhapur", name: "Kolhapur" },
+      { id: "solapur", name: "Solapur" }
+    ]
+  },
+  aurangabad: {
+    name: "Aurangabad Division",
+    districts: [
+      { id: "aurangabad", name: "Aurangabad" },
+      { id: "jalna", name: "Jalna" },
+      { id: "beed", name: "Beed" },
+      { id: "osmanabad", name: "Usmanabad" },
+      { id: "parbhani", name: "Parbhani" },
+      { id: "latur", name: "Latur" },
+      { id: "hingoli", name: "Hingoli" },
+      { id: "nanded", name: "Nanded" }
+    ]
+  },
+  amravati: {
+    name: "Amravati Division",
+    districts: [
+      { id: "buldhana", name: "Buldhana" },
+      { id: "akola", name: "Akola" },
+      { id: "washim", name: "Washim" },
+      { id: "amravati", name: "Amravati" },
+      { id: "yavatmal", name: "Yavatmal" }
+    ]
+  },
+  nagpur: {
+    name: "Nagpur Division",
+    districts: [
+      { id: "wardha", name: "Wardha" },
+      { id: "nagpur", name: "Nagpur" },
+      { id: "chandrapur", name: "Chandrapur" },
+      { id: "bhandara", name: "Bhandara" },
+      { id: "gondia", name: "Gondia" },
+      { id: "gadchiroli", name: "Gadchiroli" }
+    ]
+  }
+};
+
+async function ensureDistrictData() {
+  if (typeof districtData !== 'undefined' && districtData) {
+    return districtData;
+  }
+  return new Promise((resolve, reject) => {
+    const script = document.createElement('script');
+    script.src = 'constituencies.js';
+    script.onload = () => {
+      if (typeof districtData !== 'undefined' && districtData) {
+        resolve(districtData);
+      } else {
+        reject(new Error('districtData is not defined after loading constituencies.js'));
+      }
+    };
+    script.onerror = () => {
+      reject(new Error('Failed to load constituencies.js dynamically'));
+    };
+    document.head.appendChild(script);
+  });
+}
+
+async function addBotDistrictConstituencySelector(container, districtId) {
+  setAssistantTyping(container, true);
+  let data;
+  try {
+    data = await ensureDistrictData();
+  } catch (err) {
+    console.error(err);
+  }
+  const index = await getConstituencyIndex();
+  setAssistantTyping(container, false);
+
+  if (!data || !data[districtId]) {
+    addBotMessage(container, "Sorry, I could not load the constituencies list for this district.");
+    return;
+  }
+
+  const district = data[districtId];
+  const message = document.createElement('div');
+  message.className = 'chatbot-message bot chatbot-selector-message animate-message';
+
+  const body = document.createElement('p');
+  body.className = 'chatbot-message-text';
+  body.innerHTML = `<strong>Select a Constituency in ${district.name} District</strong><br>Choose a constituency from the list below to view its election records:`;
+  message.appendChild(body);
+
+  const form = document.createElement('form');
+  form.className = 'chatbot-selector-form';
+  form.addEventListener('submit', (e) => {
+    e.preventDefault();
+    const select = form.querySelector('select');
+    const selectedId = select.value;
+    if (selectedId) {
+      const selectedItem = index.find(item => item.id === selectedId);
+      if (selectedItem) {
+        addUserMessage(container, `Selected: ${selectedItem.name}`);
+        handleAssistantQuery(selectedId, container);
+      }
+    }
+  });
+
+  const select = document.createElement('select');
+  select.className = 'chatbot-constituency-select';
+  select.required = true;
+
+  const defaultOption = document.createElement('option');
+  defaultOption.value = '';
+  defaultOption.textContent = '-- Choose a constituency --';
+  defaultOption.disabled = true;
+  defaultOption.selected = true;
+  select.appendChild(defaultOption);
+
+  district.assemblies.forEach(assembly => {
+    const match = assembly.match(/^(\d{1,3})\s+-\s+(.+)$/);
+    if (match) {
+      const option = document.createElement('option');
+      option.value = match[1];
+      option.textContent = assembly;
+      select.appendChild(option);
+    }
+  });
+
+  form.appendChild(select);
+
+  const button = document.createElement('button');
+  button.type = 'submit';
+  button.className = 'chatbot-selector-btn';
+  button.innerHTML = 'View Records <i class="fa-solid fa-arrow-right"></i>';
+  form.appendChild(button);
+
+  message.appendChild(form);
+  container.appendChild(message);
+  container.scrollTo({
+    top: container.scrollHeight,
+    behavior: 'smooth'
+  });
+}
+
 async function handleAssistantQuery(query, messages) {
   const normalized = query.toLowerCase();
+
+  // Handle Maharashtra division / district selection flows
+  if (normalized === 'maharashtra' || normalized === 'maharashtra state') {
+    addBotActionMessage(messages, "Select a region/division of Maharashtra State to view its districts:", [
+      { label: 'Nashik Division', query: 'maharashtra_division_nashik', icon: 'fa-solid fa-map' },
+      { label: 'Konkan Division', query: 'maharashtra_division_konkan', icon: 'fa-solid fa-map' },
+      { label: 'Pune Division', query: 'maharashtra_division_pune', icon: 'fa-solid fa-map' },
+      { label: 'Aurangabad Division', query: 'maharashtra_division_aurangabad', icon: 'fa-solid fa-map' },
+      { label: 'Amravati Division', query: 'maharashtra_division_amravati', icon: 'fa-solid fa-map' },
+      { label: 'Nagpur Division', query: 'maharashtra_division_nagpur', icon: 'fa-solid fa-map' }
+    ]);
+    return;
+  }
+
+  if (normalized.startsWith('maharashtra_division_')) {
+    const divisionId = normalized.replace('maharashtra_division_', '');
+    const division = maharashtraDivisions[divisionId];
+    if (division) {
+      const districtActions = division.districts.map(dist => ({
+        label: dist.name,
+        query: `maharashtra_district_${dist.id}`,
+        icon: 'fa-solid fa-location-dot'
+      }));
+      addBotActionMessage(messages, `Select a district in <strong>${division.name}</strong>:`, districtActions);
+    } else {
+      addBotMessage(messages, "Sorry, I could not find that division.");
+    }
+    return;
+  }
+
+  if (normalized.startsWith('maharashtra_district_')) {
+    const districtId = normalized.replace('maharashtra_district_', '');
+    await addBotDistrictConstituencySelector(messages, districtId);
+    return;
+  }
+
+  if (normalized === 'data_analytics' || normalized === 'data analytics' || normalized === 'analytics') {
+    addBotDataAnalyticsSelector(messages);
+    return;
+  }
 
   if (normalized.includes('insight') || normalized.includes('chart') || normalized.includes('pie')) {
     await answerInsightQuery(query, messages);
@@ -738,8 +1075,15 @@ async function handleAssistantQuery(query, messages) {
     return;
   }
 
-  if (normalized === 'records' || normalized === 'record' || normalized === 'constituency') {
-    addBotMessage(messages, "Please enter a constituency number or name. Example: 208, Vadgaon Sheri, or Kasba Peth.");
+  const isRecordRequest = normalized === 'records' || 
+                           normalized === 'record' || 
+                           normalized === 'constituency' ||
+                           normalized === 'show records' ||
+                           normalized === 'view records' ||
+                           normalized === 'list constituencies' ||
+                           normalized === 'constituency list';
+  if (isRecordRequest) {
+    addBotConstituencySelector(messages);
     return;
   }
 
@@ -749,7 +1093,12 @@ async function handleAssistantQuery(query, messages) {
     return;
   }
 
-  if (normalized.includes('record') || normalized.includes('constituency') || /\b\d{1,3}\b/.test(normalized)) {
+  if (normalized.includes('record') || normalized.includes('constituency')) {
+    addBotConstituencySelector(messages);
+    return;
+  }
+
+  if (/\b\d{1,3}\b/.test(normalized)) {
     addBotMessage(messages, "Please enter a valid Maharashtra assembly constituency number from 1 to 288, or type the constituency name.");
     return;
   }
@@ -769,9 +1118,9 @@ async function handleAssistantQuery(query, messages) {
 
 function getWelcomeActions() {
   return [
-    { label: 'Services', query: 'services', icon: 'fa-solid fa-list' },
-    { label: 'Records', query: 'records', icon: 'fa-solid fa-table' },
-    { label: 'Contact', query: 'contact', icon: 'fa-solid fa-address-book' }
+    { label: 'Services', query: 'services', icon: 'fa-solid fa-list', desc: 'Explore tech solutions' },
+    { label: 'Records', query: 'records', icon: 'fa-solid fa-table', desc: 'Browse election data' },
+    { label: 'Contact', query: 'contact', icon: 'fa-solid fa-address-book', desc: 'Get in touch with us' }
   ];
 }
 
@@ -866,8 +1215,7 @@ async function answerRecordQuery(query, messages) {
   setAssistantTyping(messages, true);
 
   try {
-    const response = await fetch(`${getApiBaseUrl()}/api/constituency/${constituencyId}`);
-    if (!response.ok) throw new Error('Unable to fetch constituency records');
+    const response = await fetchWithFallback(`${getApiBaseUrl()}/api/constituency/${constituencyId}`);
 
     const data = await response.json();
     const latestYear = ['2024', '2019', '2014', '2009'].find(year => Array.isArray(data[`records_${year}`]) && data[`records_${year}`].length);
@@ -912,8 +1260,7 @@ async function answerInsightQuery(query, messages) {
   setAssistantTyping(messages, true);
 
   try {
-    const response = await fetch(`${getApiBaseUrl()}/api/constituency/${constituency.id}`);
-    if (!response.ok) throw new Error('Unable to fetch insight data');
+    const response = await fetchWithFallback(`${getApiBaseUrl()}/api/constituency/${constituency.id}`);
 
     const data = await response.json();
     const summary = buildYearWiseInsightSummary(data, constituency);
@@ -1059,11 +1406,11 @@ function formatNumber(value) {
 
 function getServiceActions() {
   return [
-    { label: 'Software Development', href: 'service-software.html', icon: 'fa-solid fa-code' },
-    { label: 'Data Analytics', href: 'service-analytics.html', icon: 'fa-solid fa-chart-line' },
-    { label: 'Campaign Management', href: 'service-campaign.html', icon: 'fa-solid fa-bullhorn' },
-    { label: 'Corporate Training', href: 'service-training.html', icon: 'fa-solid fa-users-viewfinder' },
-    { label: 'Political Surveys', href: 'service-surveys.html', icon: 'fa-solid fa-square-poll-vertical' }
+    { label: 'Software Development', href: 'service-software.html', icon: 'fa-solid fa-code', desc: 'Custom apps & platforms' },
+    { label: 'Data Analytics', query: 'data_analytics', icon: 'fa-solid fa-chart-line', desc: 'Political data analytics' },
+    { label: 'Campaign Management', href: 'service-campaign.html', icon: 'fa-solid fa-bullhorn', desc: 'End-to-end campaigns' },
+    { label: 'Corporate Training', href: 'service-training.html', icon: 'fa-solid fa-users-viewfinder', desc: 'Skill growth programs' },
+    { label: 'Political Surveys', href: 'service-surveys.html', icon: 'fa-solid fa-square-poll-vertical', desc: 'Ground public surveys' }
   ];
 }
 
