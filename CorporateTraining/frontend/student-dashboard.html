@@ -23,9 +23,7 @@
         <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 bg-slate-900 dark:bg-[#0d1117] border-r border-slate-800/60 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
             <div class="h-16 flex items-center justify-between px-5 border-b border-slate-800/60">
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
-                        <i data-lucide="zap" class="w-4 h-4 text-white"></i>
-                    </div>
+                    <img src="./image/logo.jpg" alt="OIT_STACK" class="w-8 h-8 object-cover rounded-xl shadow-md" />
                     <div>
                         <h1 class="font-bold text-white text-sm leading-none">OIT_STACK</h1>
                         <p class="text-[10px] text-slate-500 font-medium mt-0.5">Student Portal</p>
@@ -36,7 +34,7 @@
                 </button>
             </div>
             
-                                    <nav class="flex-1 py-3 px-3 overflow-y-auto space-y-0.5">
+            <nav class="flex-1 py-3 px-3 overflow-y-auto space-y-0.5">
                 <a href="/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
                     <i data-lucide="home" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Home
                 </a>
@@ -46,30 +44,37 @@
                 </a>
                 <a href="student-aptitude.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
                     <i data-lucide="brain" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Aptitude Hub
+                    
                 </a>
                 <a href="student-technical.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
                     <i data-lucide="terminal" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Technical MCQ
+                    
                 </a>
                 <a href="student-coding.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
                     <i data-lucide="code" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Coding Challenges
+                    
                 </a>
                 <a href="student-interview-setup.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
                     <i data-lucide="mic" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Mock Interview
+                    
                 </a>
                 <a href="student-leaderboard.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
                     <i data-lucide="trophy" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Leaderboard
+                    
                 </a>
                 <a href="student-results.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
                     <i data-lucide="clipboard-list" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> My Results
+                    
                 </a>
                 <a href="student-profile.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
                     <i data-lucide="user" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Profile
+                    
                 </a>
             </nav>
 
             <div class="p-3 border-t border-slate-800/60">
                 <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-800/50 border border-slate-700/40">
-                    <div id="userInitialsSidebar" class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm overflow-hidden">S</div>
+                    <div id="userInitialsSidebar" class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm">S</div>
                     <div class="flex-1 min-w-0">
                         <p id="userNameSidebar" class="text-sm font-semibold text-white truncate">Student</p>
                         <p id="userEmailSidebar" class="text-[10px] text-slate-500 truncate">student@example.com</p>
@@ -80,9 +85,10 @@
                 </div>
             </div>
         </aside>
-
         <!-- Overlay for mobile sidebar -->
         <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 hidden lg:hidden cursor-pointer"></div>
+
+        
 
         <!-- Main Content -->
         <div class="flex-1 lg:ml-64 flex flex-col min-w-0 h-full">
@@ -280,7 +286,7 @@
             const sidebar = document.getElementById('sidebar');
             const overlay = document.getElementById('sidebarOverlay');
             sidebar.classList.toggle('-translate-x-full');
-            overlay.classList.toggle('hidden');
+            if (overlay) overlay.classList.toggle('hidden');
         }
 
         function logout() {
@@ -293,11 +299,68 @@
             dropdown.classList.toggle('hidden');
         }
 
+        let activeNotifications = [];
+
+        function markNotifRead(id, link) {
+            const readNotifications = JSON.parse(localStorage.getItem('read_notifications') || '[]');
+            if (!readNotifications.includes(id)) {
+                readNotifications.push(id);
+                localStorage.setItem('read_notifications', JSON.stringify(readNotifications));
+            }
+            window.location.href = link;
+        }
+
+        function dismissNotif(e, id) {
+            if (e) e.stopPropagation();
+            const readNotifications = JSON.parse(localStorage.getItem('read_notifications') || '[]');
+            if (!readNotifications.includes(id)) {
+                readNotifications.push(id);
+                localStorage.setItem('read_notifications', JSON.stringify(readNotifications));
+            }
+            activeNotifications = activeNotifications.filter(n => n.id !== id);
+            updateNotifsUI();
+        }
+
         function clearNotifs() {
-            const badge = document.getElementById('notifBadge');
-            if (badge) badge.classList.add('hidden');
-            const list = document.querySelector('#notifDropdown .divide-y');
-            if (list) list.innerHTML = '<p class="p-6 text-center text-slate-400 text-xs">No new notifications</p>';
+            const readNotifications = JSON.parse(localStorage.getItem('read_notifications') || '[]');
+            activeNotifications.forEach(n => {
+                if (!readNotifications.includes(n.id)) {
+                    readNotifications.push(n.id);
+                }
+            });
+            localStorage.setItem('read_notifications', JSON.stringify(readNotifications));
+            activeNotifications = [];
+            updateNotifsUI();
+        }
+
+        function updateNotifsUI() {
+            const notifList = document.querySelector('#notifDropdown .divide-y');
+            const notifBadge = document.getElementById('notifBadge');
+            
+            if (activeNotifications.length > 0) {
+                notifBadge.classList.remove('hidden');
+                notifBadge.textContent = activeNotifications.length;
+                notifList.innerHTML = activeNotifications.map(n => `
+                    <div onclick="markNotifRead('${n.id}', '${n.link}')" class="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer flex items-center justify-between gap-3 group">
+                        <div class="flex gap-3 flex-1 min-w-0">
+                            <div class="w-8 h-8 rounded-lg ${n.bg} flex items-center justify-center shrink-0">
+                                <i data-lucide="${n.icon}" class="w-4 h-4"></i>
+                            </div>
+                            <div class="min-w-0 flex-1">
+                                <p class="text-xs font-bold text-slate-800 dark:text-white truncate">${n.title}</p>
+                                <p class="text-[10px] text-slate-400 mt-0.5 truncate">${n.desc}</p>
+                            </div>
+                        </div>
+                        <button onclick="dismissNotif(event, '${n.id}')" class="p-1 rounded-lg hover:bg-slate-200 dark:hover:bg-slate-700/80 text-slate-400 hover:text-rose-550 shrink-0 transition-colors" title="Dismiss">
+                            <i data-lucide="x" class="w-3.5 h-3.5"></i>
+                        </button>
+                    </div>
+                `).join('');
+            } else {
+                notifBadge.classList.add('hidden');
+                notifList.innerHTML = '<p class="p-6 text-center text-slate-400 text-xs">No new notifications</p>';
+            }
+            lucide.createIcons();
         }
 
         // Close dropdown when clicking outside
@@ -442,9 +505,8 @@
                 document.getElementById('stat-rank').textContent = rank !== '--' ? '#' + rank : '--';
 
                 // Populate Dynamic Notifications
-                const notifList = document.querySelector('#notifDropdown .divide-y');
-                const notifBadge = document.getElementById('notifBadge');
-                let notifications = [];
+                const readNotifications = JSON.parse(localStorage.getItem('read_notifications') || '[]');
+                activeNotifications = [];
 
                 // 1. Check for unattempted active tests
                 const now = new Date();
@@ -460,7 +522,10 @@
                 });
 
                 unattemptedActive.forEach(t => {
-                    notifications.push({
+                    const id = `test_${t._id}`;
+                    if (readNotifications.includes(id)) return;
+                    activeNotifications.push({
+                        id,
                         title: 'New test assigned',
                         desc: `${t.name} is now open for attempt.`,
                         icon: 'clipboard-list',
@@ -472,7 +537,10 @@
                 // 2. Check for recent test results
                 recentResults.slice(0, 3).forEach(r => {
                     const testName = r.test?.name || 'Aptitude/Technical Exam';
-                    notifications.push({
+                    const id = `result_${r._id}`;
+                    if (readNotifications.includes(id)) return;
+                    activeNotifications.push({
+                        id,
                         title: 'Test result ready',
                         desc: `You scored ${r.obtainedMarks}/${r.totalMarks} (${Math.round(r.percentage)}%) in ${testName}.`,
                         icon: 'award',
@@ -481,25 +549,7 @@
                     });
                 });
 
-                if (notifications.length > 0) {
-                    notifBadge.classList.remove('hidden');
-                    notifBadge.textContent = notifications.length;
-                    notifList.innerHTML = notifications.map(n => `
-                        <div onclick="window.location.href='${n.link}'" class="p-4 hover:bg-slate-50 dark:hover:bg-slate-800/50 cursor-pointer flex gap-3">
-                            <div class="w-8 h-8 rounded-lg ${n.bg} flex items-center justify-center shrink-0">
-                                <i data-lucide="${n.icon}" class="w-4 h-4"></i>
-                            </div>
-                            <div>
-                                <p class="text-xs font-bold text-slate-800 dark:text-white">${n.title}</p>
-                                <p class="text-[10px] text-slate-400 mt-0.5">${n.desc}</p>
-                            </div>
-                        </div>
-                    `).join('');
-                } else {
-                    notifBadge.classList.add('hidden');
-                    notifList.innerHTML = '<p class="p-6 text-center text-slate-400 text-xs">No new notifications</p>';
-                }
-                lucide.createIcons();
+                updateNotifsUI();
 
                 // Populate Recent Activities List
                 const listEl = document.getElementById('recentResultsList');

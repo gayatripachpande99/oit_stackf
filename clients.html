@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explore OIT_Stack's trusted client partners — Yohesa Marketing Solutions and PayMagic PVT LTD — powered by innovative data-driven solutions.">
+    <title>Our Clients | OIT_Stack</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css?v=2.6">
+</head>
+
+<body class="clients-page-body">
+    <!-- Loader -->
+    <div class="loader-wrapper">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header / Navbar matching mockup -->
+    <header class="navbar-wrapper clients-navbar-wrapper">
+        <div class="container navbar clients-navbar">
+            <a href="index.html" class="logo">
+                <img src="assets/Logo2.png" alt="OIT_Stack" class="logo-img" style="width: 50px; height: 50px; max-width: 50px; max-height: 50px; object-fit: cover; border-radius: 50%;">
+                <div class="logo-meta">
+                    <span class="logo-text">OIT_Stack</span>
+                    <span class="logo-tagline">OnYX Integrated Tech Stack</span>
+                </div>
+            </a>
+
+            <!-- Center Nav Links -->
+            <nav class="navbar-center-links">
+                <a href="index.html" class="nav-menu-link">Home</a>
+                <a href="oit-service.html" class="nav-menu-link">About</a>
+                <a href="services.html" class="nav-menu-link">Services</a>
+                <a href="clients.html" class="nav-menu-link active">Our Clients</a>
+                <a href="contact.html" class="nav-menu-link">Contact</a>
+            </nav>
+
+            <!-- Right Auth Buttons -->
+            <div class="nav-actions clients-nav-actions">
+                <a href="login.html" class="btn-nav-login">
+                    <i class="fa-solid fa-arrow-right-to-bracket"></i>
+                    <span>Login</span>
+                </a>
+                <a href="signup.html" class="btn-nav-register">
+                    <i class="fa-solid fa-user-plus"></i>
+                    <span>Register</span>
+                </a>
+                <!-- Hamburger (mobile only) -->
+                <button class="clients-nav-hamburger" id="clientsHamburger" aria-label="Open navigation menu" aria-expanded="false">
+                    <span></span>
+                    <span></span>
+                    <span></span>
+                </button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Mobile Full-Screen Nav Overlay -->
+    <nav class="clients-mobile-nav" id="clientsMobileNav" aria-hidden="true">
+        <button class="clients-mobile-nav-close" id="clientsMobileNavClose" aria-label="Close navigation">
+            <i class="fa-solid fa-xmark"></i>
+        </button>
+        <a href="index.html">Home</a>
+        <a href="oit-service.html">About</a>
+        <a href="services.html">Services</a>
+        <a href="clients.html" class="active">Our Clients</a>
+        <a href="contact.html">Contact</a>
+        <div style="display:flex;gap:1rem;margin-top:1rem;">
+            <a href="login.html" style="font-size:1rem;padding:0.6rem 1.4rem;border-radius:9999px;border:1.5px solid rgba(255,255,255,0.3);">
+                <i class="fa-solid fa-arrow-right-to-bracket" style="margin-right:0.4rem;"></i>Login
+            </a>
+            <a href="signup.html" style="font-size:1rem;padding:0.6rem 1.4rem;border-radius:9999px;background:linear-gradient(135deg,#00b4d8,#0077b6);">
+                <i class="fa-solid fa-user-plus" style="margin-right:0.4rem;"></i>Register
+            </a>
+        </div>
+    </nav>
+
+    <!-- Main Clients Hero Section with Background -->
+    <main class="clients-main-section">
+        <div class="container clients-container">
+            <!-- Header Text Block -->
+            <div class="clients-header-block animate-on-scroll">
+                <div class="clients-badge-tag">TRUSTED PARTNERS</div>
+                <h1 class="clients-main-title">
+                    Our <span class="cyan-gradient-text">Clients</span>
+                </h1>
+                <div class="clients-accent-bar"></div>
+                <p class="clients-lead-text">
+                    We collaborate with forward-thinking organizations to deliver innovative, data-driven solutions that create real business impact.
+                </p>
+            </div>
+
+            <!-- Client Cards Grid -->
+            <div class="clients-cards-grid">
+                <!-- Card 1: Yohesa Marketing Solutions -->
+                <div class="client-card animate-on-scroll">
+                    <div class="client-card-icon-badge" title="Marketing & Analytics">
+                        <i class="fa-solid fa-chart-column"></i>
+                    </div>
+                    <div class="client-logo-circle">
+                        <img src="assets/client-yohesa.png" alt="Yohesa Marketing Solutions PVT LTD" class="client-logo-img">
+                    </div>
+                    <h3 class="client-name">Yohesa Marketing Solutions</h3>
+                    <p class="client-desc">
+                        A dynamic marketing agency focused on innovative strategies, creative campaigns, and data-driven solutions to help businesses grow their brand presence and achieve measurable results.
+                    </p>
+                    <button type="button" class="client-read-more-btn" onclick="openClientModal('yohesa')">
+                        <span>Read More</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+
+                <!-- Card 2: PayMagic PVT LTD -->
+                <div class="client-card animate-on-scroll">
+                    <div class="client-card-icon-badge" title="Financial Technologies">
+                        <i class="fa-solid fa-building-columns"></i>
+                    </div>
+                    <div class="client-logo-circle">
+                        <img src="assets/client-paymagic.png" alt="PayMagic PVT LTD" class="client-logo-img">
+                    </div>
+                    <h3 class="client-name">PayMagic PVT LTD</h3>
+                    <p class="client-desc">
+                        A technology-enabled financial services company focused on data-driven solutions, operational efficiency, process automation, and smart loan recovery solutions.
+                    </p>
+                    <button type="button" class="client-read-more-btn" onclick="openClientModal('paymagic')">
+                        <span>Read More</span>
+                        <i class="fa-solid fa-arrow-right"></i>
+                    </button>
+                </div>
+            </div>
+        </div>
+    </main>
+
+    <!-- Client Detail Modal -->
+    <div id="clientModal" class="client-modal-backdrop" onclick="closeClientModal(event)">
+        <div class="client-modal-card" onclick="event.stopPropagation()">
+            <button class="client-modal-close" onclick="closeClientModal()" aria-label="Close modal">
+                <i class="fa-solid fa-xmark"></i>
+            </button>
+            <div class="client-modal-header">
+                <div class="client-modal-logo-wrapper">
+                    <img id="modalLogo" src="" alt="Client Logo">
+                </div>
+                <div>
+                    <span id="modalIndustry" class="client-modal-industry">Industry</span>
+                    <h3 id="modalTitle" class="client-modal-title">Client Name</h3>
+                </div>
+            </div>
+            <div class="client-modal-body">
+                <p id="modalDesc" class="client-modal-desc"></p>
+                <div class="client-modal-highlights">
+                    <h4>Solutions Delivered by OIT_Stack</h4>
+                    <ul id="modalHighlights"></ul>
+                </div>
+            </div>
+            <div class="client-modal-footer">
+                <a href="contact.html" class="btn-request-service">
+                    <i class="fa-solid fa-paper-plane"></i>
+                    <span>Partner With Us</span>
+                    <i class="fa-solid fa-arrow-right arrow-icon"></i>
+                </a>
+            </div>
+        </div>
+    </div>
+
+    <!-- Site Footer -->
+    <footer class="site-footer clients-site-footer">
+        <div class="container footer-content-container">
+            <div class="footer-grid">
+                <!-- Column 1: Brand & Social -->
+                <div class="footer-col footer-col-brand">
+                    <a href="index.html" class="footer-brand-logo">
+                        <i class="fa-solid fa-cube cube-icon"></i>
+                        <span class="footer-brand-name">OIT_Stack</span>
+                    </a>
+                    <div class="footer-social-links">
+                        <a href="https://wa.me/918983461569" class="social-circle-btn" target="_blank" aria-label="WhatsApp">
+                            <i class="fa-brands fa-whatsapp"></i>
+                        </a>
+                        <a href="https://www.linkedin.com/company/oit-stack/" class="social-circle-btn" target="_blank" aria-label="LinkedIn">
+                            <i class="fa-brands fa-linkedin-in"></i>
+                        </a>
+                        <a href="https://www.instagram.com/oit_stack?igsh=MTJ6Z29pdWJ3N2g3eg==" class="social-circle-btn" target="_blank" aria-label="Instagram">
+                            <i class="fa-brands fa-instagram"></i>
+                        </a>
+                    </div>
+                </div>
+
+                <!-- Column 2: Contact Us -->
+                <div class="footer-col footer-col-contact">
+                    <h4 class="footer-heading">Contact Us</h4>
+                    <ul class="footer-contact-list">
+                        <li>
+                            <i class="fa-solid fa-location-dot contact-icon"></i>
+                            <span>Flat No.307, Goldcliff Society, Pune- 411015</span>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-phone contact-icon"></i>
+                            <a href="tel:+918983461569">+91 8983461569</a>
+                        </li>
+                        <li>
+                            <i class="fa-solid fa-envelope contact-icon"></i>
+                            <a href="mailto:onkarholkar@oitstack.com">onkarholkar@oitstack.com</a>
+                        </li>
+                    </ul>
+                </div>
+
+                <!-- Column 3: Get Started -->
+                <div class="footer-col footer-col-action">
+                    <h4 class="footer-heading">Get Started</h4>
+                    <div class="footer-action-btns">
+                        <a href="contact.html" class="btn-request-service">
+                            <i class="fa-solid fa-paper-plane"></i>
+                            <span>Request Service</span>
+                            <i class="fa-solid fa-arrow-right arrow-icon"></i>
+                        </a>
+                        <a href="clients.html" class="btn-our-clients">
+                            <i class="fa-solid fa-users"></i>
+                            <span>Our Clients</span>
+                            <i class="fa-solid fa-arrow-right arrow-icon"></i>
+                        </a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Bottom Copyright -->
+            <div class="footer-bottom-bar">
+                &copy; 2026 OIT_STACK - OnYX Integrated Tech Stack. All Rights Reserved.
+            </div>
+        </div>
+    </footer>
+
+    <!-- Floating WhatsApp Button -->
+    <a href="https://wa.me/918983461569" class="whatsapp-float-btn" target="_blank" title="Chat with us on WhatsApp" aria-label="Chat on WhatsApp">
+        <i class="fa-brands fa-whatsapp"></i>
+    </a>
+
+    <!-- Scripts -->
+    <script src="script.js?v=2.4"></script>
+    <script>
+        const clientData = {
+            yohesa: {
+                title: "Yohesa Marketing Solutions PVT LTD",
+                industry: "Digital Marketing & Brand Strategy",
+                logo: "assets/client-yohesa.png",
+                desc: "Yohesa Marketing Solutions is an innovative marketing firm empowering brands through performance campaigns, digital footprint expansion, and data-backed creative storytelling.",
+                highlights: [
+                    "Data-Driven Marketing Analytics Dashboard",
+                    "Custom Campaign Management & Audience Segmentation Tools",
+                    "Real-Time Conversion Tracking & KPI Reporting Infrastructure",
+                    "Automated Lead Funnel Pipelines and CRM Integrations"
+                ]
+            },
+            paymagic: {
+                title: "PayMagic PVT LTD",
+                industry: "Fintech & Financial Process Automation",
+                logo: "assets/client-paymagic.png",
+                desc: "PayMagic is a cutting-edge financial services enterprise streamlining lending, verification, and recovery operations through robust technology workflows and intelligent automation.",
+                highlights: [
+                    "Intelligent Loan Recovery Workflow Optimization Engine",
+                    "Automated Risk Assessment & Verification Microservices",
+                    "High-Availability Secure Cloud API Architecture",
+                    "Interactive Executive Analytics & Portals"
+                ]
+            }
+        };
+
+        function openClientModal(clientId) {
+            const data = clientData[clientId];
+            if (!data) return;
+
+            document.getElementById('modalLogo').src = data.logo;
+            document.getElementById('modalTitle').textContent = data.title;
+            document.getElementById('modalIndustry').textContent = data.industry;
+            document.getElementById('modalDesc').textContent = data.desc;
+
+            const list = document.getElementById('modalHighlights');
+            list.innerHTML = data.highlights.map(item => `<li><i class="fa-solid fa-check-circle"></i> <span>${item}</span></li>`).join('');
+
+            const modal = document.getElementById('clientModal');
+            modal.classList.add('is-active');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeClientModal(e) {
+            if (e && e.target !== e.currentTarget && !e.target.closest('.client-modal-close')) return;
+            const modal = document.getElementById('clientModal');
+            modal.classList.remove('is-active');
+            document.body.style.overflow = '';
+        }
+
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') closeClientModal();
+        });
+
+        // Mobile hamburger nav
+        const hamburger = document.getElementById('clientsHamburger');
+        const mobileNav = document.getElementById('clientsMobileNav');
+        const mobileNavClose = document.getElementById('clientsMobileNavClose');
+
+        function openMobileNav() {
+            mobileNav.classList.add('is-open');
+            hamburger.classList.add('is-open');
+            hamburger.setAttribute('aria-expanded', 'true');
+            mobileNav.setAttribute('aria-hidden', 'false');
+            document.body.style.overflow = 'hidden';
+        }
+
+        function closeMobileNav() {
+            mobileNav.classList.remove('is-open');
+            hamburger.classList.remove('is-open');
+            hamburger.setAttribute('aria-expanded', 'false');
+            mobileNav.setAttribute('aria-hidden', 'true');
+            document.body.style.overflow = '';
+        }
+
+        hamburger.addEventListener('click', openMobileNav);
+        mobileNavClose.addEventListener('click', closeMobileNav);
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') { closeMobileNav(); }
+        });
+    </script>
+</body>
+
+</html>

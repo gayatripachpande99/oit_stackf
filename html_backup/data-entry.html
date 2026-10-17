@@ -1,0 +1,1349 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Employee Data Entry Dashboard | OIT_Stack</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&family=Outfit:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- Base Styling -->
+    <link rel="stylesheet" href="style.css?v=light-theme">
+    <style>
+        :root {
+            --primary: #4F46E5;
+            --primary-hover: #4338CA;
+            --secondary: #0EA5E9;
+            --bg-dark: #0F172A;
+            --card-bg: #FFFFFF;
+            --card-border: #E2E8F0;
+            --text-dark: #1E293B;
+            --text-muted: #64748B;
+            --accent-green: #10B981;
+            --accent-red: #EF4444;
+            --accent-amber: #F59E0B;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #F8FAFC;
+            color: var(--text-dark);
+            margin: 0;
+            padding: 0;
+            min-height: 100vh;
+        }
+
+        /* Top Navbar */
+        .dashboard-nav {
+            background: linear-gradient(135deg, #1E1B4B 0%, #312E81 100%);
+            color: #FFFFFF;
+            padding: 1rem 2rem;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            box-shadow: 0 4px 20px rgba(0, 0, 0, 0.15);
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .nav-brand {
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+        }
+
+        .nav-brand i {
+            font-size: 1.6rem;
+            color: #38BDF8;
+        }
+
+        .nav-brand h1 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.35rem;
+            font-weight: 700;
+            margin: 0;
+            letter-spacing: -0.5px;
+            color: #FFFFFF;
+        }
+
+        .nav-user {
+            display: flex;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        .db-status {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            background: rgba(255, 255, 255, 0.1);
+            padding: 0.4rem 0.8rem;
+            border-radius: 20px;
+            font-size: 0.825rem;
+            font-weight: 500;
+            backdrop-filter: blur(10px);
+        }
+
+        .status-dot {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: var(--accent-green);
+            box-shadow: 0 0 8px var(--accent-green);
+        }
+
+        .status-dot.offline {
+            background-color: var(--accent-amber);
+            box-shadow: 0 0 8px var(--accent-amber);
+        }
+
+        .user-badge {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            background: rgba(255, 255, 255, 0.15);
+            padding: 0.4rem 0.9rem;
+            border-radius: 20px;
+        }
+
+        .btn-logout {
+            background: rgba(239, 68, 68, 0.2);
+            color: #FCA5A5;
+            border: 1px solid rgba(239, 68, 68, 0.3);
+            padding: 0.45rem 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn-logout:hover {
+            background: rgba(239, 68, 68, 0.4);
+            color: #FFFFFF;
+            transform: translateY(-1px);
+        }
+
+        /* Main Container */
+        .dashboard-container {
+            max-width: 1350px;
+            margin: 2rem auto;
+            padding: 0 1.5rem;
+        }
+
+        /* Stats Grid */
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.25rem;
+            margin-bottom: 2rem;
+        }
+
+        .stat-card {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 16px;
+            padding: 1.25rem 1.5rem;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+            transition: transform 0.2s ease, box-shadow 0.2s ease;
+        }
+
+        .stat-card:hover {
+            transform: translateY(-3px);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.06);
+        }
+
+        .stat-info h4 {
+            margin: 0 0 0.3rem 0;
+            color: var(--text-muted);
+            font-size: 0.85rem;
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.5px;
+        }
+
+        .stat-info .stat-value {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.8rem;
+            font-weight: 700;
+            color: var(--text-dark);
+            margin: 0;
+        }
+
+        .stat-icon {
+            width: 52px;
+            height: 52px;
+            border-radius: 14px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.4rem;
+        }
+
+        .icon-blue { background: #EEF2FF; color: #4F46E5; }
+        .icon-green { background: #ECFDF5; color: #10B981; }
+        .icon-purple { background: #F3E8FF; color: #9333EA; }
+        .icon-orange { background: #FFF7ED; color: #EA580C; }
+
+        /* Main Content Layout */
+        .content-grid {
+            display: grid;
+            grid-template-columns: 380px 1fr;
+            gap: 1.75rem;
+            align-items: start;
+        }
+
+        @media (max-width: 1024px) {
+            .content-grid {
+                grid-template-columns: 1fr;
+            }
+        }
+
+        /* Form Card */
+        .card-box {
+            background: var(--card-bg);
+            border: 1px solid var(--card-border);
+            border-radius: 20px;
+            padding: 1.75rem;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.04);
+        }
+
+        .card-header {
+            display: flex;
+            align-items: center;
+            gap: 0.6rem;
+            margin-bottom: 1.5rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 2px solid #F1F5F9;
+        }
+
+        .card-header i {
+            color: var(--primary);
+            font-size: 1.25rem;
+        }
+
+        .card-header h2 {
+            font-family: 'Outfit', sans-serif;
+            font-size: 1.2rem;
+            font-weight: 700;
+            margin: 0;
+            color: var(--text-dark);
+        }
+
+        /* Form Controls */
+        .form-group {
+            margin-bottom: 1.2rem;
+        }
+
+        .form-group label {
+            display: block;
+            font-size: 0.85rem;
+            font-weight: 600;
+            color: #334155;
+            margin-bottom: 0.4rem;
+        }
+
+        .form-group label span {
+            color: var(--accent-red);
+        }
+
+        .input-box {
+            position: relative;
+            display: flex;
+            align-items: center;
+        }
+
+        .input-box i {
+            position: absolute;
+            left: 0.9rem;
+            color: #94A3B8;
+            font-size: 0.95rem;
+        }
+
+        .input-box input,
+        .input-box textarea {
+            width: 100%;
+            padding: 0.75rem 0.9rem 0.75rem 2.5rem;
+            border: 1.5px solid #CBD5E1;
+            border-radius: 12px;
+            font-size: 0.925rem;
+            color: var(--text-dark);
+            background: #FFFFFF;
+            transition: all 0.2s ease;
+            font-family: inherit;
+        }
+
+        .input-box textarea {
+            padding-left: 2.5rem;
+            min-height: 70px;
+            resize: vertical;
+        }
+
+        .input-box input:focus,
+        .input-box textarea:focus {
+            outline: none;
+            border-color: var(--primary);
+            box-shadow: 0 0 0 4px rgba(79, 70, 229, 0.12);
+        }
+
+        .btn-submit {
+            width: 100%;
+            background: linear-gradient(135deg, #4F46E5 0%, #3730A3 100%);
+            color: #FFFFFF;
+            border: none;
+            padding: 0.9rem;
+            border-radius: 14px;
+            font-weight: 600;
+            font-size: 0.975rem;
+            cursor: pointer;
+            transition: all 0.25 ease;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 0.5rem;
+            box-shadow: 0 4px 14px rgba(79, 70, 229, 0.3);
+            margin-top: 1.5rem;
+        }
+
+        .btn-submit:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 6px 20px rgba(79, 70, 229, 0.4);
+            background: linear-gradient(135deg, #4338CA 0%, #312E81 100%);
+        }
+
+        .btn-submit:active {
+            transform: translateY(0);
+        }
+
+        /* Data Table Styling */
+        .table-toolbar {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            margin-bottom: 1.25rem;
+            flex-wrap: wrap;
+        }
+
+        .search-box {
+            position: relative;
+            flex: 1;
+            min-width: 250px;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: #94A3B8;
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.65rem 1rem 0.65rem 2.6rem;
+            border: 1.5px solid #CBD5E1;
+            border-radius: 12px;
+            font-size: 0.9rem;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+        .search-box input:focus {
+            border-color: var(--primary);
+            box-shadow: 0 0 0 3px rgba(79, 70, 229, 0.12);
+        }
+
+        .toolbar-actions {
+            display: flex;
+            gap: 0.6rem;
+        }
+
+        .btn-secondary {
+            background: #F1F5F9;
+            color: #475569;
+            border: 1px solid #CBD5E1;
+            padding: 0.65rem 1rem;
+            border-radius: 12px;
+            font-weight: 600;
+            font-size: 0.85rem;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            align-items: center;
+            gap: 0.4rem;
+        }
+
+        .btn-secondary:hover {
+            background: #E2E8F0;
+            color: var(--text-dark);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+            border-radius: 14px;
+            border: 1px solid #E2E8F0;
+            background: #FFFFFF;
+        }
+
+        .data-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.885rem;
+        }
+
+        .data-table th {
+            background: #F8FAFC;
+            color: #475569;
+            font-weight: 700;
+            padding: 0.9rem 1rem;
+            border-bottom: 1.5px solid #E2E8F0;
+            white-space: nowrap;
+            text-transform: uppercase;
+            font-size: 0.75rem;
+            letter-spacing: 0.5px;
+        }
+
+        .data-table td {
+            padding: 0.9rem 1rem;
+            border-bottom: 1px solid #F1F5F9;
+            color: #334155;
+            vertical-align: middle;
+        }
+
+        .data-table tbody tr {
+            transition: background-color 0.15s ease;
+        }
+
+        .data-table tbody tr:hover {
+            background-color: #F8FAFC;
+        }
+
+        .badge-constituency {
+            background: #EEF2FF;
+            color: #4F46E5;
+            font-weight: 700;
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+
+        .badge-booth {
+            background: #F0FDF4;
+            color: #166534;
+            font-weight: 700;
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+
+        .badge-relation {
+            background: #EFF6FF;
+            color: #1E40AF;
+            font-weight: 600;
+            padding: 0.25rem 0.6rem;
+            border-radius: 6px;
+            font-size: 0.8rem;
+        }
+
+        .btn-action {
+            width: 32px;
+            height: 32px;
+            border-radius: 8px;
+            border: none;
+            display: inline-flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            margin-right: 0.2rem;
+        }
+
+        .btn-edit {
+            background: #EFF6FF;
+            color: #2563EB;
+        }
+
+        .btn-edit:hover {
+            background: #2563EB;
+            color: #FFFFFF;
+        }
+
+        .btn-delete {
+            background: #FEF2F2;
+            color: #DC2626;
+        }
+
+        .btn-delete:hover {
+            background: #DC2626;
+            color: #FFFFFF;
+        }
+
+        .empty-state {
+            text-align: center;
+            padding: 3rem 1.5rem;
+            color: var(--text-muted);
+        }
+
+        .empty-state i {
+            font-size: 3rem;
+            color: #CBD5E1;
+            margin-bottom: 1rem;
+        }
+
+        .empty-state h3 {
+            font-size: 1.1rem;
+            margin: 0 0 0.4rem 0;
+            color: var(--text-dark);
+        }
+
+        /* Edit Modal */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            bottom: 0;
+            background: rgba(15, 23, 42, 0.6);
+            backdrop-filter: blur(4px);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            z-index: 1000;
+            opacity: 0;
+            visibility: hidden;
+            transition: all 0.25s ease;
+        }
+
+        .modal-overlay.active {
+            opacity: 1;
+            visibility: visible;
+        }
+
+        .modal-content {
+            background: #FFFFFF;
+            width: 90%;
+            max-width: 500px;
+            border-radius: 20px;
+            padding: 2rem;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.2);
+            transform: translateY(20px);
+            transition: transform 0.25s ease;
+        }
+
+        .modal-overlay.active .modal-content {
+            transform: translateY(0);
+        }
+
+        .modal-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 1.25rem;
+            padding-bottom: 0.75rem;
+            border-bottom: 1px solid #E2E8F0;
+        }
+
+        .modal-header h3 {
+            font-family: 'Outfit', sans-serif;
+            margin: 0;
+            font-size: 1.25rem;
+            color: var(--text-dark);
+        }
+
+        .btn-close-modal {
+            background: none;
+            border: none;
+            font-size: 1.2rem;
+            color: var(--text-muted);
+            cursor: pointer;
+        }
+
+        /* Toast Notification */
+        .toast-notification {
+            position: fixed;
+            bottom: 2rem;
+            right: 2rem;
+            background: #1E293B;
+            color: #FFFFFF;
+            padding: 1rem 1.5rem;
+            border-radius: 14px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.2);
+            display: flex;
+            align-items: center;
+            gap: 0.75rem;
+            z-index: 2000;
+            transform: translateY(100px);
+            opacity: 0;
+            transition: all 0.3s cubic-bezier(0.16, 1, 0.3, 1);
+        }
+
+        .toast-notification.show {
+            transform: translateY(0);
+            opacity: 1;
+        }
+
+        .toast-success i { color: var(--accent-green); }
+        .toast-error i { color: var(--accent-red); }
+    </style>
+</head>
+
+<body>
+    <!-- Navigation Bar -->
+    <nav class="dashboard-nav">
+        <div class="nav-brand">
+            <i class="fa-solid fa-layer-group"></i>
+            <div>
+                <h1>Employee Data Entry Dashboard</h1>
+                <span style="font-size: 0.75rem; opacity: 0.8; font-weight: 400;">Constituency Candidate Records Management</span>
+            </div>
+        </div>
+        <div class="nav-user">
+            <div class="db-status" id="db-status-badge">
+                <span class="status-dot" id="status-dot"></span>
+                <span id="status-text">MongoDB Connected</span>
+            </div>
+            <div class="user-badge">
+                <i class="fa-solid fa-user-shield" style="color: #38BDF8;"></i>
+                <span id="user-email-display">admin01@gmail.com</span>
+            </div>
+            <button class="btn-logout" id="btn-logout" onclick="handleLogout()">
+                <i class="fa-solid fa-right-from-bracket"></i> Logout
+            </button>
+        </div>
+    </nav>
+
+    <!-- Dashboard Container -->
+    <main class="dashboard-container">
+        <!-- Summary Stats Cards -->
+        <section class="stats-grid">
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h4>Total Candidate Entries</h4>
+                    <div class="stat-value" id="stat-total">0</div>
+                </div>
+                <div class="stat-icon icon-blue">
+                    <i class="fa-solid fa-id-card"></i>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h4>Booths Covered</h4>
+                    <div class="stat-value" id="stat-booths">0</div>
+                </div>
+                <div class="stat-icon icon-green">
+                    <i class="fa-solid fa-box-archive"></i>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h4>Constituencies</h4>
+                    <div class="stat-value" id="stat-constituencies">0</div>
+                </div>
+                <div class="stat-icon icon-purple">
+                    <i class="fa-solid fa-landmark"></i>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-info">
+                    <h4>Average Age</h4>
+                    <div class="stat-value" id="stat-avg-age">0</div>
+                </div>
+                <div class="stat-icon icon-orange">
+                    <i class="fa-solid fa-users"></i>
+                </div>
+            </div>
+        </section>
+
+        <!-- Form and Table Grid -->
+        <section class="content-grid">
+            <!-- Data Entry Form Column -->
+            <div class="card-box">
+                <div class="card-header">
+                    <i class="fa-solid fa-pen-to-square"></i>
+                    <h2>Add Candidate Entry</h2>
+                </div>
+                <form id="data-entry-form">
+                    <div class="form-group">
+                        <label for="constituency_number">Constituency Number <span>*</span></label>
+                        <div class="input-box">
+                            <i class="fa-solid fa-hashtag"></i>
+                            <input type="number" id="constituency_number" placeholder="e.g. 208" required min="1">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="booth_number">Booth Number <span>*</span></label>
+                        <div class="input-box">
+                            <i class="fa-solid fa-door-open"></i>
+                            <input type="text" id="booth_number" placeholder="e.g. Booth #42" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="candidate_name">Candidate Name <span>*</span></label>
+                        <div class="input-box">
+                            <i class="fa-solid fa-user"></i>
+                            <input type="text" id="candidate_name" placeholder="Full candidate name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="relation_type">Relation Type <span>*</span></label>
+                        <div class="input-box">
+                            <select id="relation_type" required style="width:100%;border:none;outline:none;font-size:0.92rem;font-family:'Inter',sans-serif;background:transparent;color:var(--text-dark);padding:0.1rem 0;padding-left:0.5rem;">
+                                <option value="Father">Father</option>
+                                <option value="Husband">Husband</option>
+                            </select>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="father_name" id="relation_label">Father Name <span>*</span></label>
+                        <div class="input-box">
+                            <i class="fa-solid fa-user-group"></i>
+                            <input type="text" id="father_name" placeholder="Father's full name" required>
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="age">Age <span>*</span></label>
+                        <div class="input-box">
+                            <i class="fa-solid fa-cake-candles"></i>
+                            <input type="number" id="age" placeholder="Age (e.g. 35)" required min="18" max="120">
+                        </div>
+                    </div>
+
+                    <div class="form-group">
+                        <label for="address">Address <span>*</span></label>
+                        <div class="input-box">
+                            <i class="fa-solid fa-location-dot"></i>
+                            <textarea id="address" placeholder="Full residential/booth address..." required></textarea>
+                        </div>
+                    </div>
+
+                    <button type="submit" class="btn-submit" id="btn-save-entry">
+                        <i class="fa-solid fa-database"></i> Save to MongoDB
+                    </button>
+                </form>
+            </div>
+
+            <!-- Data Table Column -->
+            <div class="card-box">
+                <div class="table-toolbar">
+                    <div class="search-box">
+                        <i class="fa-solid fa-magnifying-glass"></i>
+                        <input type="text" id="search-input" placeholder="Search by Candidate Name, Booth #, or Constituency #...">
+                    </div>
+                    <div class="toolbar-actions">
+                        <button class="btn-secondary" onclick="exportToCSV()">
+                            <i class="fa-solid fa-file-csv"></i> Export CSV
+                        </button>
+                        <button class="btn-secondary" onclick="fetchEntries()">
+                            <i class="fa-solid fa-rotate"></i> Refresh
+                        </button>
+                    </div>
+                </div>
+
+                <div class="table-responsive">
+                    <table class="data-table">
+                        <thead>
+                            <tr>
+                                <th>#</th>
+                                <th>Constituency</th>
+                                <th>Booth No.</th>
+                                <th>Candidate Name</th>
+                                <th>Relation</th>
+                                <th>Father/Husband Name</th>
+                                <th>Age</th>
+                                <th>Address</th>
+                                <th>Actions</th>
+                            </tr>
+                        </thead>
+                        <tbody id="entries-tbody">
+                            <!-- Dynamically loaded rows -->
+                        </tbody>
+                    </table>
+                    <div id="empty-state" class="empty-state" style="display: none;">
+                        <i class="fa-solid fa-folder-open"></i>
+                        <h3>No Candidate Records Found</h3>
+                        <p>Enter data using the form on the left to save entries directly into MongoDB.</p>
+                    </div>
+                </div>
+            </div>
+        </section>
+    </main>
+
+    <!-- Edit Modal -->
+    <div class="modal-overlay" id="edit-modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3><i class="fa-solid fa-pen-to-square" style="color: var(--primary);"></i> Edit Candidate Entry</h3>
+                <button class="btn-close-modal" onclick="closeEditModal()"><i class="fa-solid fa-xmark"></i></button>
+            </div>
+            <form id="edit-entry-form">
+                <input type="hidden" id="edit_id">
+                <div class="form-group">
+                    <label>Constituency Number</label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-hashtag"></i>
+                        <input type="number" id="edit_constituency_number" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Booth Number</label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-door-open"></i>
+                        <input type="text" id="edit_booth_number" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Candidate Name</label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-user"></i>
+                        <input type="text" id="edit_candidate_name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Relation Type</label>
+                    <div class="input-box">
+                        <select id="edit_relation_type" required style="width:100%;border:none;outline:none;font-size:0.92rem;font-family:'Inter',sans-serif;background:transparent;color:var(--text-dark);padding:0.1rem 0;padding-left:0.5rem;">
+                            <option value="Father">Father</option>
+                            <option value="Husband">Husband</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label id="edit_relation_label">Father/Husband Name</label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-user-group"></i>
+                        <input type="text" id="edit_father_name" required>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Age</label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-cake-candles"></i>
+                        <input type="number" id="edit_age" required min="18" max="120">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label>Address</label>
+                    <div class="input-box">
+                        <i class="fa-solid fa-location-dot"></i>
+                        <textarea id="edit_address" required></textarea>
+                    </div>
+                </div>
+                <button type="submit" class="btn-submit">
+                    <i class="fa-solid fa-check"></i> Update in MongoDB
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <!-- Toast Notification -->
+    <div id="toast" class="toast-notification">
+        <i class="fa-solid fa-circle-check"></i>
+        <span id="toast-message">Notification message</span>
+    </div>
+
+    <script>
+        let allEntries = [];
+        let resolvedApiBase = null;
+
+        // Auto-detect working API endpoint base by probing Express health endpoint
+        async function getApiBaseUrl(forceRefresh = false) {
+            if (!forceRefresh && resolvedApiBase !== null) return resolvedApiBase;
+
+            const targets = [];
+            if (window.location.protocol !== 'file:') {
+                targets.push('/api/health');
+            }
+            targets.push(
+                'http://localhost:3000/api/health',
+                'http://127.0.0.1:3000/api/health',
+                'http://localhost:5000/api/health',
+                'http://127.0.0.1:5000/api/health'
+            );
+
+            for (const target of targets) {
+                try {
+                    const res = await fetch(target, { method: 'GET' });
+                    if (res.ok) {
+                        const ct = res.headers.get('content-type') || '';
+                        if (ct.includes('application/json')) {
+                            const health = await res.json();
+                            if (health && health.status === 'ok') {
+                                if (target === '/api/health') {
+                                    resolvedApiBase = '';
+                                } else {
+                                    resolvedApiBase = target.replace('/api/health', '');
+                                }
+                                return resolvedApiBase;
+                            }
+                        }
+                    }
+                } catch (e) {}
+            }
+
+            resolvedApiBase = null;
+            return null;
+        }
+
+        async function getApiUrl(forceRefresh = false) {
+            const base = await getApiBaseUrl(forceRefresh);
+            if (base === null) return null;
+            return `${base}/api/data-entries`;
+        }
+
+        // Safe JSON response parser
+        async function safeParseJson(res) {
+            const text = await res.text();
+            if (!text || !text.trim()) return {};
+            try {
+                return JSON.parse(text);
+            } catch (err) {
+                const isHtml = text.trim().startsWith('<');
+                if (isHtml) {
+                    throw new Error(`Server returned non-JSON response (HTTP ${res.status}). Ensure Node backend server is running.`);
+                }
+                throw new Error(`Invalid JSON response from server (HTTP ${res.status}).`);
+            }
+        }
+
+        document.addEventListener('DOMContentLoaded', () => {
+            // Check authorization
+            const userStr = localStorage.getItem('oit_logged_in_user');
+            if (userStr) {
+                try {
+                    const user = JSON.parse(userStr);
+                    document.getElementById('user-email-display').innerText = user.email || 'admin01@gmail.com';
+                } catch (e) {}
+            }
+
+            fetchEntries();
+
+            // Form Submit Listener
+            document.getElementById('data-entry-form').addEventListener('submit', handleAddEntry);
+
+            // Edit Form Submit Listener
+            document.getElementById('edit-entry-form').addEventListener('submit', handleUpdateEntry);
+
+            // Search Listener
+            document.getElementById('search-input').addEventListener('input', (e) => {
+                filterTable(e.target.value);
+            });
+
+            // Relation Type Change Listeners
+            const relType = document.getElementById('relation_type');
+            const relLabel = document.getElementById('relation_label');
+            if (relType && relLabel) {
+                relType.addEventListener('change', (e) => {
+                    relLabel.innerHTML = `${e.target.value} Name <span>*</span>`;
+                    document.getElementById('father_name').placeholder = `${e.target.value}'s full name`;
+                });
+            }
+
+            const editRelType = document.getElementById('edit_relation_type');
+            const editRelLabel = document.getElementById('edit_relation_label');
+            if (editRelType && editRelLabel) {
+                editRelType.addEventListener('change', (e) => {
+                    editRelLabel.innerText = `${e.target.value} Name`;
+                });
+            }
+        });
+
+        // Fetch All Data Entries directly from MongoDB API
+        async function fetchEntries() {
+            try {
+                const apiUrl = await getApiUrl(true);
+                if (!apiUrl) {
+                    updateDbStatus(false, 'Backend Offline');
+                    showToast('Backend server is offline. Please run "npm start" in backend folder.', 'error');
+                    allEntries = [];
+                    renderTable(allEntries);
+                    updateStats(allEntries);
+                    return;
+                }
+
+                const response = await fetch(apiUrl);
+                if (response.ok) {
+                    const result = await safeParseJson(response);
+                    allEntries = result.data || [];
+                    updateDbStatus(true, 'MongoDB Connected');
+                } else {
+                    const errObj = await safeParseJson(response).catch(() => ({}));
+                    throw new Error(errObj.message || `Server returned status ${response.status}`);
+                }
+            } catch (err) {
+                console.error('MongoDB API unreachable:', err);
+                updateDbStatus(false, 'MongoDB Disconnected / Offline');
+                allEntries = [];
+                showToast('Failed to reach MongoDB server. Please ensure backend server is running.', 'error');
+            }
+
+            renderTable(allEntries);
+            updateStats(allEntries);
+            checkLegacyLocalEntries();
+        }
+
+        // Check if old local storage entries exist and offer sync option
+        function checkLegacyLocalEntries() {
+            const cached = localStorage.getItem('oit_data_entries_cache');
+            if (!cached) return;
+            try {
+                const localData = JSON.parse(cached);
+                const localOnly = localData.filter(item => String(item._id).startsWith('local_'));
+                if (localOnly.length > 0) {
+                    let banner = document.getElementById('legacy-sync-banner');
+                    if (!banner) {
+                        banner = document.createElement('div');
+                        banner.id = 'legacy-sync-banner';
+                        banner.style.cssText = 'background: #FEF3C7; color: #92400E; padding: 0.75rem 1rem; border-radius: 10px; margin-bottom: 1rem; display: flex; align-items: center; justify-content: space-between; font-size: 0.9rem; font-weight: 500; border: 1px solid #FCD34D;';
+                        banner.innerHTML = `
+                            <span><i class="fa-solid fa-triangle-exclamation"></i> Found <strong>${localOnly.length}</strong> unsynced entry(ies) in local browser cache.</span>
+                            <button onclick="syncLocalEntriesToMongo()" style="background: #D97706; color: white; border: none; padding: 0.4rem 0.8rem; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                                <i class="fa-solid fa-cloud-arrow-up"></i> Upload to MongoDB
+                            </button>
+                        `;
+                        const tableToolbar = document.querySelector('.table-toolbar');
+                        if (tableToolbar) tableToolbar.parentNode.insertBefore(banner, tableToolbar);
+                    }
+                }
+            } catch (e) {}
+        }
+
+        async function syncLocalEntriesToMongo() {
+            const cached = localStorage.getItem('oit_data_entries_cache');
+            if (!cached) return;
+            try {
+                const localData = JSON.parse(cached);
+                const localOnly = localData.filter(item => String(item._id).startsWith('local_'));
+                const apiUrl = await getApiUrl(true);
+                if (!apiUrl) {
+                    showToast('Backend server is offline. Please run "npm start" in backend folder.', 'error');
+                    return;
+                }
+
+                let syncedCount = 0;
+                for (const item of localOnly) {
+                    const payload = {
+                        constituency_number: item.constituency_number,
+                        booth_number: item.booth_number,
+                        candidate_name: item.candidate_name,
+                        father_name: item.father_name,
+                        relation_type: item.relation_type || 'Father',
+                        age: item.age,
+                        address: item.address,
+                        created_by: item.created_by || 'admin01@gmail.com'
+                    };
+                    const res = await fetch(apiUrl, {
+                        method: 'POST',
+                        headers: { 'Content-Type': 'application/json' },
+                        body: JSON.stringify(payload)
+                    });
+                    if (res.ok) syncedCount++;
+                }
+
+                localStorage.removeItem('oit_data_entries_cache');
+                const banner = document.getElementById('legacy-sync-banner');
+                if (banner) banner.remove();
+
+                showToast(`Successfully uploaded ${syncedCount} legacy entries to MongoDB!`, 'success');
+                await fetchEntries();
+            } catch (e) {
+                showToast('Failed to sync legacy entries to MongoDB.', 'error');
+            }
+        }
+
+        // Render Table Rows
+        function renderTable(entries) {
+            const tbody = document.getElementById('entries-tbody');
+            const emptyState = document.getElementById('empty-state');
+
+            tbody.innerHTML = '';
+
+            if (!entries || entries.length === 0) {
+                emptyState.style.display = 'block';
+                return;
+            }
+
+            emptyState.style.display = 'none';
+
+            entries.forEach((entry, idx) => {
+                const tr = document.createElement('tr');
+                tr.innerHTML = `
+                    <td><strong>${idx + 1}</strong></td>
+                    <td><span class="badge-constituency">#${escapeHtml(entry.constituency_number)}</span></td>
+                    <td><span class="badge-booth">${escapeHtml(entry.booth_number)}</span></td>
+                    <td><strong>${escapeHtml(entry.candidate_name)}</strong></td>
+                    <td><span class="badge-relation">${escapeHtml(entry.relation_type || 'Father')}</span></td>
+                    <td>${escapeHtml(entry.father_name)}</td>
+                    <td>${escapeHtml(entry.age)} yrs</td>
+                    <td style="max-width: 200px; white-space: normal;">${escapeHtml(entry.address)}</td>
+                    <td>
+                        <button class="btn-action btn-edit" title="Edit Record" onclick="openEditModal('${entry._id || idx}')">
+                            <i class="fa-solid fa-pen"></i>
+                        </button>
+                        <button class="btn-action btn-delete" title="Delete Record" onclick="handleDeleteEntry('${entry._id || idx}')">
+                            <i class="fa-solid fa-trash"></i>
+                        </button>
+                    </td>
+                `;
+                tbody.appendChild(tr);
+            });
+        }
+
+        // Add New Candidate Entry directly to MongoDB Database ONLY
+        async function handleAddEntry(e) {
+            e.preventDefault();
+
+            const btnSave = document.getElementById('btn-save-entry');
+            btnSave.disabled = true;
+            btnSave.innerHTML = '<i class="fa-solid fa-spinner fa-spin"></i> Saving to MongoDB...';
+
+            const payload = {
+                constituency_number: document.getElementById('constituency_number').value,
+                booth_number: document.getElementById('booth_number').value,
+                candidate_name: document.getElementById('candidate_name').value,
+                relation_type: document.getElementById('relation_type').value,
+                father_name: document.getElementById('father_name').value,
+                age: document.getElementById('age').value,
+                address: document.getElementById('address').value,
+                created_by: 'admin01@gmail.com'
+            };
+
+            try {
+                const apiUrl = await getApiUrl(true);
+                if (!apiUrl) {
+                    throw new Error('Backend server is offline. Please run "npm start" in backend folder to save entries to MongoDB.');
+                }
+
+                const res = await fetch(apiUrl, {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+
+                const data = await safeParseJson(res);
+
+                if (res.ok && data.success) {
+                    showToast('Candidate saved to MongoDB database successfully!', 'success');
+                    document.getElementById('data-entry-form').reset();
+                    document.getElementById('relation_label').innerHTML = 'Father Name <span>*</span>';
+                    await fetchEntries();
+                } else {
+                    throw new Error(data.message || `Failed to save entry to MongoDB database (HTTP ${res.status})`);
+                }
+            } catch (err) {
+                console.error('MongoDB save error:', err);
+                showToast(`Error: ${err.message || 'Could not connect to MongoDB server'}. Data was NOT saved locally.`, 'error');
+            } finally {
+                btnSave.disabled = false;
+                btnSave.innerHTML = '<i class="fa-solid fa-database"></i> Save to MongoDB';
+            }
+        }
+
+        // Edit Modal Handlers
+        function openEditModal(id) {
+            const item = allEntries.find(e => (e._id === id || String(e._id) === String(id)));
+            if (!item) return;
+
+            document.getElementById('edit_id').value = item._id;
+            document.getElementById('edit_constituency_number').value = item.constituency_number;
+            document.getElementById('edit_booth_number').value = item.booth_number;
+            document.getElementById('edit_candidate_name').value = item.candidate_name;
+            document.getElementById('edit_relation_type').value = item.relation_type || 'Father';
+            document.getElementById('edit_relation_label').innerText = `${item.relation_type || 'Father'} Name`;
+            document.getElementById('edit_father_name').value = item.father_name;
+            document.getElementById('edit_age').value = item.age;
+            document.getElementById('edit_address').value = item.address;
+
+            document.getElementById('edit-modal').classList.add('active');
+        }
+
+        function closeEditModal() {
+            document.getElementById('edit-modal').classList.remove('active');
+        }
+
+        async function handleUpdateEntry(e) {
+            e.preventDefault();
+            const id = document.getElementById('edit_id').value;
+
+            const payload = {
+                constituency_number: document.getElementById('edit_constituency_number').value,
+                booth_number: document.getElementById('edit_booth_number').value,
+                candidate_name: document.getElementById('edit_candidate_name').value,
+                relation_type: document.getElementById('edit_relation_type').value,
+                father_name: document.getElementById('edit_father_name').value,
+                age: document.getElementById('edit_age').value,
+                address: document.getElementById('edit_address').value
+            };
+
+            try {
+                const apiUrl = await getApiUrl(true);
+                if (!apiUrl) throw new Error('Backend server is offline. Run "npm start" in backend folder.');
+
+                const res = await fetch(`${apiUrl}/${id}`, {
+                    method: 'PUT',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify(payload)
+                });
+                const data = await safeParseJson(res);
+                if (!res.ok || !data.success) throw new Error(data.message || 'Failed to update record in MongoDB');
+
+                showToast('Entry updated successfully in MongoDB database!', 'success');
+                closeEditModal();
+                await fetchEntries();
+            } catch (err) {
+                showToast(err.message || 'Error updating entry in MongoDB', 'error');
+            }
+        }
+
+        // Delete Candidate Entry directly from MongoDB
+        async function handleDeleteEntry(id) {
+            if (!confirm('Are you sure you want to delete this candidate entry from MongoDB database?')) return;
+
+            try {
+                const apiUrl = await getApiUrl(true);
+                if (!apiUrl) throw new Error('Backend server is offline. Run "npm start" in backend folder.');
+
+                const res = await fetch(`${apiUrl}/${id}`, { method: 'DELETE' });
+                const data = await safeParseJson(res);
+                if (!res.ok || !data.success) throw new Error(data.message || 'Failed to delete entry from MongoDB');
+
+                showToast('Candidate entry deleted successfully from MongoDB database.', 'success');
+                await fetchEntries();
+            } catch (err) {
+                showToast(err.message || 'Error deleting entry from MongoDB', 'error');
+            }
+        }
+
+        // Search Filter
+        function filterTable(query) {
+            if (!query.trim()) {
+                renderTable(allEntries);
+                return;
+            }
+            const term = query.toLowerCase();
+            const filtered = allEntries.filter(item => {
+                return (
+                    String(item.candidate_name).toLowerCase().includes(term) ||
+                    String(item.father_name).toLowerCase().includes(term) ||
+                    String(item.booth_number).toLowerCase().includes(term) ||
+                    String(item.constituency_number).includes(term) ||
+                    String(item.address).toLowerCase().includes(term)
+                );
+            });
+            renderTable(filtered);
+        }
+
+        // Update Statistics
+        function updateStats(entries) {
+            document.getElementById('stat-total').innerText = entries.length;
+
+            const booths = new Set(entries.map(e => String(e.booth_number).trim()));
+            document.getElementById('stat-booths').innerText = booths.size;
+
+            const constituencies = new Set(entries.map(e => String(e.constituency_number)));
+            document.getElementById('stat-constituencies').innerText = constituencies.size;
+
+            if (entries.length > 0) {
+                const totalAge = entries.reduce((acc, curr) => acc + (Number(curr.age) || 0), 0);
+                const avgAge = Math.round(totalAge / entries.length);
+                document.getElementById('stat-avg-age').innerText = avgAge + ' yrs';
+            } else {
+                document.getElementById('stat-avg-age').innerText = '0';
+            }
+        }
+
+        // Status Badge Helper
+        function updateDbStatus(isConnected, text) {
+            const dot = document.getElementById('status-dot');
+            const label = document.getElementById('status-text');
+
+            label.innerText = text;
+            if (isConnected) {
+                dot.classList.remove('offline');
+            } else {
+                dot.classList.add('offline');
+            }
+        }
+
+        // Export to CSV
+        function exportToCSV() {
+            if (!allEntries || allEntries.length === 0) {
+                showToast('No data available to export.', 'error');
+                return;
+            }
+
+            const headers = ['Constituency Number', 'Booth Number', 'Candidate Name', 'Relation Type', 'Father/Husband Name', 'Age', 'Address', 'Created Date'];
+            const rows = allEntries.map(e => [
+                `"${e.constituency_number || ''}"`,
+                `"${e.booth_number || ''}"`,
+                `"${(e.candidate_name || '').replace(/"/g, '""')}"`,
+                `"${e.relation_type || 'Father'}"`,
+                `"${(e.father_name || '').replace(/"/g, '""')}"`,
+                `"${e.age || ''}"`,
+                `"${(e.address || '').replace(/"/g, '""')}"`,
+                `"${e.createdAt ? new Date(e.createdAt).toLocaleString() : ''}"`
+            ]);
+
+            const csvContent = "data:text/csv;charset=utf-8," + [headers.join(','), ...rows.map(r => r.join(','))].join('\n');
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement('a');
+            link.setAttribute('href', encodedUri);
+            link.setAttribute('download', `Candidate_Data_Entries_${new Date().toISOString().slice(0, 10)}.csv`);
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+
+            showToast('Exported CSV successfully!', 'success');
+        }
+
+        // Logout
+        function handleLogout() {
+            localStorage.removeItem('oit_logged_in_user');
+            localStorage.removeItem('oit_token');
+            sessionStorage.removeItem('data_entry_access');
+            window.location.href = 'login.html';
+        }
+
+        // Toast Helper
+        function showToast(msg, type = 'success') {
+            const toast = document.getElementById('toast');
+            const msgSpan = document.getElementById('toast-message');
+
+            msgSpan.innerText = msg;
+            toast.className = `toast-notification toast-${type} show`;
+
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3500);
+        }
+
+        // Helper XSS Escape
+        function escapeHtml(str) {
+            if (str === null || str === undefined) return '';
+            return String(str)
+                .replace(/&/g, '&amp;')
+                .replace(/</g, '&lt;')
+                .replace(/>/g, '&gt;')
+                .replace(/"/g, '&quot;')
+                .replace(/'/g, '&#039;');
+        }
+    </script>
+</body>
+
+</html>

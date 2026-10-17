@@ -242,8 +242,7 @@
 
         function handleCopyPaste(e) {
             e.preventDefault();
-            showToast('Copy/Paste attempt detected! Test auto-submitted.', 'error');
-            submitTest(true);
+            submitTest(true, true);
         }
 
         function preventContextMenu(e) {
@@ -411,13 +410,19 @@
             document.getElementById('submitModal').classList.add('hidden');
         }
 
-        async function submitTest(isAuto = false) {
+        async function submitTest(isAuto = false, copyPasteViolation = false) {
             recordTime();
             const btn = document.getElementById('btnFinalSubmit');
             if(btn) btn.disabled = true;
             document.getElementById('submitSpinner').classList.remove('hidden');
 
-            if (isAuto) showToast('Time is up! Auto-submitting test.', 'error');
+            if (isAuto) {
+                if (copyPasteViolation) {
+                    showToast('Copy/Paste attempt detected! Test auto-submitted.', 'error');
+                } else {
+                    showToast('Time is up! Auto-submitting test.', 'error');
+                }
+            }
 
             const payloadAnswers = questions.map(q => ({
                 question: q._id,
@@ -434,7 +439,8 @@
                         resultId,
                         answers: payloadAnswers,
                         timeTaken: totalTimeElapsed,
-                        autoSubmitted: isAuto
+                        autoSubmitted: isAuto,
+                        copyPasteViolation: copyPasteViolation
                     })
                 });
                 

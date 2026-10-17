@@ -57,6 +57,14 @@ const resultSchema = new mongoose.Schema(
       type: Boolean,
       default: false,
     },
+    copyPasteViolation: {
+      type: Boolean,
+      default: false,
+    },
+    reattemptAllowed: {
+      type: Boolean,
+      default: false,
+    },
   },
   {
     timestamps: true,

@@ -198,10 +198,27 @@ const getResultStats = async (req, res) => {
   }
 };
 
+const allowReattempt = async (req, res) => {
+  try {
+    const resultId = req.params.id;
+    const result = await Result.findById(resultId);
+    if (!result) {
+      return errorResponse(res, 404, 'Result not found');
+    }
+    result.reattemptAllowed = true;
+    await result.save();
+    return successResponse(res, 200, 'Reattempt allowed successfully', result);
+  } catch (error) {
+    console.error('Allow reattempt error:', error.message);
+    return errorResponse(res, 500, 'Server error allowing reattempt');
+  }
+};
+
 module.exports = {
   getMyResults,
   getResultDetail,
   getAllResults,
-  getResultStats
+  getResultStats,
+  allowReattempt,
 };
 

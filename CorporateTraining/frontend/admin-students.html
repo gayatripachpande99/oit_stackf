@@ -21,49 +21,60 @@
         <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 bg-slate-900 dark:bg-[#0d1117] border-r border-slate-800/60 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
             <div class="h-16 flex items-center justify-between px-5 border-b border-slate-800/60">
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-indigo-500 to-purple-600 flex items-center justify-center shadow-lg shadow-indigo-500/30">
-                        <i data-lucide="shield-check" class="w-4 h-4 text-white"></i>
-                    </div>
+                    <img src="./image/logo.jpg" alt="OIT_STACK" class="w-8 h-8 object-cover rounded-xl shadow-md" />
                     <div>
                         <h1 class="font-bold text-white text-sm leading-none">OIT_STACK</h1>
                         <p class="text-[10px] text-slate-500 font-medium mt-0.5">Admin Portal</p>
                     </div>
                 </div>
+                <button onclick="toggleSidebar()" class="lg:hidden p-1.5 rounded-lg hover:bg-slate-800 text-slate-400">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
             </div>
             
             <nav class="flex-1 py-3 px-3 overflow-y-auto space-y-0.5">
                 <a href="/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
                     <i data-lucide="home" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Home
                 </a>
-                <a href="admin-dashboard.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
-                    <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0"></i> Dashboard
+                <a href="admin-dashboard.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
+                    <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Dashboard
+                    
                 </a>
-                <a href="admin-students.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-white bg-indigo-500/15 text-indigo-400 border border-indigo-500/20">
-                    <i data-lucide="users" class="w-4 h-4 shrink-0 text-indigo-450"></i> Students
+                <a href="admin-students.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium bg-indigo-500/15 text-indigo-400 border border-indigo-500/20 group">
+                    <i data-lucide="users" class="w-4 h-4 shrink-0 text-indigo-400"></i> Students
+                    <span class="ml-auto w-1.5 h-1.5 rounded-full bg-indigo-400"></span>
                 </a>
-                <a href="admin-categories.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
-                    <i data-lucide="folder-tree" class="w-4 h-4 shrink-0"></i> Categories
+                <a href="admin-categories.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
+                    <i data-lucide="folder-tree" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Categories
+                    
                 </a>
-                <a href="admin-questions.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
-                    <i data-lucide="database" class="w-4 h-4 shrink-0"></i> Question Pool
+                <a href="admin-questions.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
+                    <i data-lucide="database" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Question Pool
+                    
                 </a>
-                <a href="admin-technical-mcq.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
-                    <i data-lucide="terminal" class="w-4 h-4 shrink-0"></i> Technical MCQs
+                <a href="admin-technical-mcq.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
+                    <i data-lucide="terminal" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Technical MCQs
+                    
                 </a>
-                <a href="admin-tests.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
-                    <i data-lucide="file-text" class="w-4 h-4 shrink-0"></i> Tests
+                <a href="admin-tests.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
+                    <i data-lucide="file-text" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Tests
+                    
                 </a>
-                <a href="admin-coding.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
-                    <i data-lucide="code" class="w-4 h-4 shrink-0"></i> Coding Challenges
+                <a href="admin-coding.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
+                    <i data-lucide="code" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Coding Challenges
+                    
                 </a>
-                <a href="admin-interviews.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
-                    <i data-lucide="mic" class="w-4 h-4 shrink-0"></i> Mock Interviews
+                <a href="admin-interviews.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
+                    <i data-lucide="mic" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Mock Interviews
+                    
                 </a>
-                <a href="admin-results.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
-                    <i data-lucide="award" class="w-4 h-4 shrink-0"></i> Results
+                <a href="admin-results.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
+                    <i data-lucide="award" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Results
+                    
                 </a>
-                <a href="admin-analytics.html" class="nav-link flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200">
-                    <i data-lucide="bar-chart-3" class="w-4 h-4 shrink-0"></i> Analytics
+                <a href="admin-analytics.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
+                    <i data-lucide="bar-chart-3" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Analytics
+                    
                 </a>
             </nav>
             <div class="p-3 border-t border-slate-800/60">
@@ -73,9 +84,10 @@
                 </button>
             </div>
         </aside>
-
         <!-- Overlay for mobile sidebar -->
-        <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 hidden lg:hidden"></div>
+        <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 hidden lg:hidden cursor-pointer"></div>
+
+        
 
         <!-- Main Content -->
         <div class="flex-1 lg:ml-64 flex flex-col min-w-0 h-full">
@@ -130,7 +142,7 @@
                     <!-- Main Table -->
                     <div id="tableContainer" class="hidden w-full flex-col gap-4">
                         <div class="w-full overflow-x-auto rounded-3xl border border-slate-100 dark:border-slate-800 bg-white dark:bg-slate-900 shadow-sm">
-                            <table class="w-full text-left border-collapse text-sm">
+                            <table class="w-full text-left border-collapse text-sm min-w-[800px]">
                                 <thead>
                                     <tr class="bg-slate-50 dark:bg-slate-800/40 border-b border-slate-100 dark:border-slate-800 text-slate-500 dark:text-slate-400 font-bold uppercase tracking-wider text-xs">
                                         <th class="px-6 py-4">Name</th>
@@ -253,8 +265,10 @@
         }
 
         function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
-            document.getElementById('sidebarOverlay').classList.toggle('hidden');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('-translate-x-full');
+            if (overlay) overlay.classList.toggle('hidden');
         }
 
         function logout() {

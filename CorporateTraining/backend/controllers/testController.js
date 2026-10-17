@@ -60,6 +60,7 @@ const getTests = async (req, res) => {
       const results = await Result.find({ user: req.user._id });
       const resultsMap = {};
       results.forEach(r => {
+        if (r.reattemptAllowed) return;
         resultsMap[r.test.toString()] = r;
       });
 
@@ -230,6 +231,12 @@ const startTest = async (req, res) => {
       return errorResponse(res, 400, `This test has ended on ${new Date(test.endDate).toLocaleString()}`);
     }
 
+    const completedResults = await Result.find({ user: req.user._id, test: test._id, status: 'completed' });
+    const hasActiveBlock = completedResults.length > 0 && completedResults.every(r => !r.reattemptAllowed);
+    if (hasActiveBlock) {
+      return errorResponse(res, 400, 'You have already completed this test.');
+    }
+
     let testQuestions = [];
     let result = await Result.findOne({ user: req.user._id, test: test._id, status: 'in_progress' });
     
@@ -350,7 +357,7 @@ const saveAnswer = async (req, res) => {
 const submitTest = async (req, res) => {
   try {
     const testId = req.params.id;
-    const { resultId, answers, timeTaken, autoSubmitted } = req.body;
+    const { resultId, answers, timeTaken, autoSubmitted, copyPasteViolation } = req.body;
 
     const test = await Test.findById(testId);
     if (!test) {
@@ -453,6 +460,7 @@ const submitTest = async (req, res) => {
     result.passed = passed;
     result.timeTaken = timeTaken || 0;
     result.autoSubmitted = autoSubmitted || false;
+    result.copyPasteViolation = copyPasteViolation || false;
     result.status = 'completed';
     result.submittedAt = Date.now();
     await result.save();

@@ -18,25 +18,28 @@
         <aside id="sidebar" class="fixed inset-y-0 left-0 z-40 w-64 bg-slate-900 dark:bg-[#0d1117] border-r border-slate-800/60 transform -translate-x-full lg:translate-x-0 transition-transform duration-300 flex flex-col">
             <div class="h-16 flex items-center justify-between px-5 border-b border-slate-800/60">
                 <div class="flex items-center gap-3">
-                    <div class="w-8 h-8 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center shadow-lg shadow-blue-500/30">
-                        <i data-lucide="graduation-cap" class="w-4 h-4 text-white"></i>
-                    </div>
+                    <img src="./image/logo.jpg" alt="OIT_STACK" class="w-8 h-8 object-cover rounded-xl shadow-md" />
                     <div>
                         <h1 class="font-bold text-white text-sm leading-none">OIT_STACK</h1>
                         <p class="text-[10px] text-slate-500 font-medium mt-0.5">Student Portal</p>
                     </div>
                 </div>
+                <button onclick="toggleSidebar()" class="lg:hidden p-1.5 rounded-lg hover:bg-slate-800 text-slate-400">
+                    <i data-lucide="x" class="w-4 h-4"></i>
+                </button>
             </div>
             
-                                    <nav class="flex-1 py-3 px-3 overflow-y-auto space-y-0.5">
+            <nav class="flex-1 py-3 px-3 overflow-y-auto space-y-0.5">
                 <a href="/" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
                     <i data-lucide="home" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Home
                 </a>
                 <a href="student-dashboard.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
                     <i data-lucide="layout-dashboard" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Dashboard
+                    
                 </a>
                 <a href="student-aptitude.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
                     <i data-lucide="brain" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Aptitude Hub
+                    
                 </a>
                 <a href="student-technical.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium bg-blue-500/15 text-blue-400 border border-blue-500/20 group">
                     <i data-lucide="terminal" class="w-4 h-4 shrink-0 text-blue-400"></i> Technical MCQ
@@ -44,21 +47,41 @@
                 </a>
                 <a href="student-coding.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
                     <i data-lucide="code" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Coding Challenges
+                    
                 </a>
                 <a href="student-interview-setup.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
                     <i data-lucide="mic" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Mock Interview
+                    
                 </a>
                 <a href="student-leaderboard.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
                     <i data-lucide="trophy" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Leaderboard
+                    
                 </a>
                 <a href="student-results.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
                     <i data-lucide="clipboard-list" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> My Results
+                    
                 </a>
                 <a href="student-profile.html" class="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:bg-slate-800/60 hover:text-slate-200 group">
                     <i data-lucide="user" class="w-4 h-4 shrink-0 text-slate-500 group-hover:text-slate-300"></i> Profile
+                    
                 </a>
             </nav>
+
+            <div class="p-3 border-t border-slate-800/60">
+                <div class="flex items-center gap-3 p-3 rounded-xl bg-slate-800/50 border border-slate-700/40">
+                    <div id="userInitialsSidebar" class="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-indigo-600 flex items-center justify-center text-white font-bold text-sm">S</div>
+                    <div class="flex-1 min-w-0">
+                        <p id="userNameSidebar" class="text-sm font-semibold text-white truncate">Student</p>
+                        <p id="userEmailSidebar" class="text-[10px] text-slate-500 truncate">student@example.com</p>
+                    </div>
+                    <button onclick="logout()" class="p-1.5 rounded-lg hover:bg-slate-700 transition-colors">
+                        <i data-lucide="log-out" class="w-4 h-4 text-slate-500 hover:text-rose-400"></i>
+                    </button>
+                </div>
+            </div>
         </aside>
+        <!-- Overlay for mobile sidebar -->
+        <div id="sidebarOverlay" onclick="toggleSidebar()" class="fixed inset-0 bg-black/60 backdrop-blur-sm z-30 hidden lg:hidden cursor-pointer"></div>
 
         <!-- Main Content -->
         <div class="flex-1 lg:ml-64 flex flex-col min-w-0 h-full">
@@ -130,6 +153,30 @@
     <script>
         lucide.createIcons();
 
+        
+        async function loadUserProfile() {
+            try {
+                const profileRes = await api.auth.getProfile();
+                const user = profileRes.data.user;
+                const initials = user.name.charAt(0).toUpperCase();
+                
+                const initialsSidebarEl = document.getElementById('userInitialsSidebar');
+                const initialsTopbarEl = document.getElementById('userInitialsTopbar');
+                if (initialsSidebarEl) initialsSidebarEl.textContent = initials;
+                if (initialsTopbarEl) initialsTopbarEl.textContent = initials;
+
+                document.getElementById('userNameSidebar').textContent = user.name;
+                document.getElementById('userEmailSidebar').textContent = user.email;
+            } catch (e) {
+                console.error('Error fetching profile:', e);
+            }
+        }
+
+        function logout() {
+            api.removeToken();
+            window.location.href = 'login.html';
+        }
+
         function toggleTheme() {
             const html = document.documentElement;
             html.classList.toggle('dark');
@@ -140,12 +187,17 @@
         }
 
         function toggleSidebar() {
-            document.getElementById('sidebar').classList.toggle('-translate-x-full');
+            const sidebar = document.getElementById('sidebar');
+            const overlay = document.getElementById('sidebarOverlay');
+            sidebar.classList.toggle('-translate-x-full');
+            if (overlay) overlay.classList.toggle('hidden');
         }
 
         let categoriesMap = {};
 
         document.addEventListener('DOMContentLoaded', async () => {
+            loadUserProfile();
+            lucide.createIcons();
             const token = api.getToken();
             if(!token) { window.location.href='login.html'; return; }
             

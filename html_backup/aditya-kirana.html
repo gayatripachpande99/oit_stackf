@@ -1,0 +1,400 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Aditya Kirana | OIT_Stack</title>
+    <!-- Google Fonts -->
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&family=Outfit:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <!-- Font Awesome -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <!-- CSS -->
+    <link rel="stylesheet" href="style.css?v=light-theme">
+    <style>
+        .dashboard-container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 3rem 1.5rem;
+        }
+
+        .stats-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .stat-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius);
+            padding: 1.5rem;
+            display: flex;
+            align-items: center;
+            gap: 1.25rem;
+            box-shadow: var(--shadow-sm);
+            transition: var(--transition);
+        }
+
+        .stat-card:hover {
+            transform: translateY(-5px);
+            box-shadow: var(--shadow-md);
+        }
+
+        .stat-icon {
+            width: 54px;
+            height: 54px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .stat-icon.primary { background: rgba(10, 25, 47, 0.05); color: var(--primary); }
+        .stat-icon.success { background: rgba(76, 175, 80, 0.1); color: #4caf50; }
+        .stat-icon.warning { background: rgba(255, 152, 0, 0.1); color: #ff9800; }
+        .stat-icon.danger { background: rgba(244, 67, 54, 0.1); color: #f44336; }
+
+        .stat-info h3 {
+            font-size: 1.75rem;
+            margin-bottom: 2px;
+            color: var(--text-heading);
+        }
+
+        .stat-info p {
+            font-size: 0.85rem;
+            color: var(--text-muted);
+            margin: 0;
+            font-weight: 500;
+        }
+
+        .content-card {
+            background: var(--bg-white);
+            border: 1px solid var(--border);
+            border-radius: var(--radius-lg);
+            padding: 2.5rem;
+            box-shadow: var(--shadow-md);
+            margin-bottom: 3rem;
+        }
+
+        .card-header-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 1rem;
+            margin-bottom: 2rem;
+        }
+
+        .search-box {
+            position: relative;
+            max-width: 380px;
+            width: 100%;
+        }
+
+        .search-box i {
+            position: absolute;
+            left: 1.2rem;
+            top: 50%;
+            transform: translateY(-50%);
+            color: var(--text-muted);
+        }
+
+        .search-box input {
+            width: 100%;
+            padding: 0.75rem 1rem 0.75rem 2.8rem;
+            border-radius: 30px;
+            border: 1.5px solid #dcdbe9;
+            font-family: inherit;
+            font-size: 0.95rem;
+            transition: all 0.3s ease;
+        }
+
+        .search-box input:focus {
+            outline: none;
+            border-color: var(--accent);
+            box-shadow: 0 0 0 4px rgba(0, 191, 255, 0.1);
+        }
+
+        .table-responsive {
+            overflow-x: auto;
+        }
+
+        .inventory-table {
+            width: 100%;
+            border-collapse: collapse;
+            text-align: left;
+            font-size: 0.95rem;
+        }
+
+        .inventory-table th {
+            padding: 1rem 1.2rem;
+            background: #f8fafc;
+            color: var(--text-heading);
+            font-weight: 700;
+            border-bottom: 2px solid var(--border);
+        }
+
+        .inventory-table td {
+            padding: 1.1rem 1.2rem;
+            border-bottom: 1px solid var(--border);
+            color: var(--text-main);
+        }
+
+        .inventory-table tr:hover td {
+            background: #fafbff;
+        }
+
+        .badge {
+            padding: 0.35rem 0.75rem;
+            border-radius: 20px;
+            font-size: 0.75rem;
+            font-weight: 700;
+            text-transform: uppercase;
+            display: inline-block;
+        }
+
+        .badge.in-stock { background: rgba(76, 175, 80, 0.1); color: #388e3c; }
+        .badge.low-stock { background: rgba(255, 152, 0, 0.1); color: #f57c00; }
+        .badge.out-of-stock { background: rgba(244, 67, 54, 0.1); color: #d32f2f; }
+    </style>
+</head>
+
+<body>
+    <!-- Loader -->
+    <div class="loader-wrapper">
+        <div class="loader"></div>
+    </div>
+
+    <!-- Header -->
+    <header>
+        <div class="container navbar">
+            <a href="index.html" class="logo"
+                style="display:flex; align-items:center; gap:0.75rem; text-decoration:none;">
+                <img src="assets/Logo2.png" alt="OIT_Stack"
+                    style="height:45px; width:45px; object-fit:cover; border-radius:50%; box-shadow:0 0 10px rgba(0,191,255,0.5);">
+                <div style="display:flex; flex-direction:column; justify-content:center;">
+                    <span class="logo-text" style="line-height:1; margin-bottom:2px;">OIT_Stack</span>
+                    <span
+                        style="font-size:0.65rem; color:var(--text-muted); font-weight:700; letter-spacing:0.5px; text-transform:uppercase;">OnYX
+                        Integrated Tech Stack</span>
+                </div>
+            </a>
+            <div class="nav-actions" style="display:flex; align-items:center; gap:1.5rem;">
+                <!-- Dynamically updated via JS session checker -->
+                <div style="display:flex; align-items:center; gap:1.2rem;">
+                    <span style="color:var(--text-main); font-weight:600; font-size:0.95rem;">
+                        Welcome, <strong style="color:#0062ff;">Onkar Holkar</strong>
+                    </span>
+                    <a href="#" id="logout-btn" style="color:var(--text-muted); font-weight:600; font-size:0.95rem; text-decoration:none; display:flex; align-items:center; gap:0.4rem; transition:var(--transition);">
+                        <i class="fa-solid fa-right-from-bracket"></i> Logout
+                    </a>
+                </div>
+            </div>
+        </div>
+    </header>
+
+    <!-- Page Header -->
+    <section class="page-header"
+        style="background: url('https://images.unsplash.com/photo-1542838132-92c53300491e?q=80&w=2074&auto=format&fit=crop') center/cover; position:relative; overflow:hidden;">
+        <div style="position:absolute; top:0; left:0; right:0; bottom:0; background:rgba(10, 25, 47, 0.88); z-index:0;">
+        </div>
+        <div class="container animate-on-scroll" style="position:relative; z-index:1;">
+            <h1>Aditya Kirana</h1>
+            <p style="font-size:1.25rem; color:rgba(255,255,255,0.9); max-width:600px; margin:0 auto;">Grocery & Retail Store Management Dashboard</p>
+        </div>
+    </section>
+
+    <!-- Dashboard Content -->
+    <div class="dashboard-container">
+        <!-- Stats Row -->
+        <div class="stats-grid animate-on-scroll">
+            <div class="stat-card">
+                <div class="stat-icon primary"><i class="fa-solid fa-boxes-stacked"></i></div>
+                <div class="stat-info">
+                    <h3 id="total-items-val">312</h3>
+                    <p>Total Products</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon success"><i class="fa-solid fa-indian-rupee-sign"></i></div>
+                <div class="stat-info">
+                    <h3>₹14,820</h3>
+                    <p>Revenue Today</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon warning"><i class="fa-solid fa-cart-shopping"></i></div>
+                <div class="stat-info">
+                    <h3>14</h3>
+                    <p>Orders Today</p>
+                </div>
+            </div>
+            <div class="stat-card">
+                <div class="stat-icon danger"><i class="fa-solid fa-triangle-exclamation"></i></div>
+                <div class="stat-info">
+                    <h3 id="alert-items-val">8</h3>
+                    <p>Low/Out of Stock</p>
+                </div>
+            </div>
+        </div>
+
+        <!-- Inventory List -->
+        <div class="content-card animate-on-scroll">
+            <div class="card-header-actions">
+                <h3 style="margin:0; font-size:1.5rem; color:var(--primary);">Store Inventory</h3>
+                <div class="search-box">
+                    <i class="fa-solid fa-magnifying-glass"></i>
+                    <input type="text" id="inventory-search" placeholder="Search by item name or category...">
+                </div>
+            </div>
+
+            <div class="table-responsive">
+                <table class="inventory-table">
+                    <thead>
+                        <tr>
+                            <th>Item ID</th>
+                            <th>Product Name</th>
+                            <th>Category</th>
+                            <th>Stock Level</th>
+                            <th>Price</th>
+                            <th>Status</th>
+                        </tr>
+                    </thead>
+                    <tbody id="inventory-tbody">
+                        <tr>
+                            <td style="font-weight: 600;">AK-101</td>
+                            <td style="font-weight: 600; color: var(--primary);">Basmati Rice (Premium)</td>
+                            <td>Grains & Pulses</td>
+                            <td>45 kg</td>
+                            <td>₹95 / kg</td>
+                            <td><span class="badge in-stock">In Stock</span></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 600;">AK-102</td>
+                            <td style="font-weight: 600; color: var(--primary);">Fortune Mustard Oil</td>
+                            <td>Edible Oils</td>
+                            <td>24 L</td>
+                            <td>₹165 / L</td>
+                            <td><span class="badge in-stock">In Stock</span></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 600;">AK-103</td>
+                            <td style="font-weight: 600; color: var(--primary);">Tata Salt (Lite)</td>
+                            <td>Grocery</td>
+                            <td>0 kg</td>
+                            <td>₹28 / kg</td>
+                            <td><span class="badge out-of-stock">Out of Stock</span></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 600;">AK-104</td>
+                            <td style="font-weight: 600; color: var(--primary);">Everest Garam Masala</td>
+                            <td>Spices</td>
+                            <td>5 packs</td>
+                            <td>₹45 / pack</td>
+                            <td><span class="badge low-stock">Low Stock</span></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 600;">AK-105</td>
+                            <td style="font-weight: 600; color: var(--primary);">Amul Butter (100g)</td>
+                            <td>Dairy</td>
+                            <td>35 packs</td>
+                            <td>₹56 / pack</td>
+                            <td><span class="badge in-stock">In Stock</span></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 600;">AK-106</td>
+                            <td style="font-weight: 600; color: var(--primary);">Maggi 2-Min Noodles</td>
+                            <td>Snacks</td>
+                            <td>120 packs</td>
+                            <td>₹14 / pack</td>
+                            <td><span class="badge in-stock">In Stock</span></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 600;">AK-107</td>
+                            <td style="font-weight: 600; color: var(--primary);">Surf Excel Easy Wash (1kg)</td>
+                            <td>Household</td>
+                            <td>3 packs</td>
+                            <td>₹140 / pack</td>
+                            <td><span class="badge low-stock">Low Stock</span></td>
+                        </tr>
+                        <tr>
+                            <td style="font-weight: 600;">AK-108</td>
+                            <td style="font-weight: 600; color: var(--primary);">Britannia Marie Gold</td>
+                            <td>Snacks</td>
+                            <td>0 packs</td>
+                            <td>₹30 / pack</td>
+                            <td><span class="badge out-of-stock">Out of Stock</span></td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </div>
+
+        <div style="text-align: center;">
+            <a href="index.html" class="btn" style="background:#f1f5f9; color:var(--text-main); text-decoration:none; border-radius: 30px; padding: 0.8rem 2rem;">← Go to Home Page</a>
+        </div>
+    </div>
+
+    <!-- Scripts -->
+    <script>
+        document.addEventListener("DOMContentLoaded", function() {
+            // Verify access control
+            const sessionUserStr = localStorage.getItem("oit_logged_in_user");
+            if (!sessionUserStr) {
+                // If not logged in at all, redirect to login page
+                window.location.href = "login.html";
+                return;
+            }
+
+            try {
+                const user = JSON.parse(sessionUserStr);
+                // Make sure the greeting displays correct user name
+                const welcomeContainer = document.querySelector(".nav-actions strong");
+                if (welcomeContainer && user && user.name) {
+                    welcomeContainer.textContent = user.name;
+                }
+            } catch (e) {
+                console.error("Error reading session user:", e);
+            }
+
+            // Handle Logout
+            const logoutBtn = document.getElementById("logout-btn");
+            if (logoutBtn) {
+                logoutBtn.addEventListener("click", function(e) {
+                    e.preventDefault();
+                    localStorage.removeItem("oit_logged_in_user");
+                    window.location.href = "index.html";
+                });
+            }
+
+            // Inventory Search logic
+            const searchInput = document.getElementById("inventory-search");
+            const tableRows = document.querySelectorAll("#inventory-tbody tr");
+
+            if (searchInput) {
+                searchInput.addEventListener("input", function() {
+                    const query = this.value.trim().toLowerCase();
+                    let matchCount = 0;
+
+                    tableRows.forEach(row => {
+                        const productName = row.cells[1].textContent.toLowerCase();
+                        const category = row.cells[2].textContent.toLowerCase();
+
+                        if (productName.includes(query) || category.includes(query)) {
+                            row.style.display = "";
+                            matchCount++;
+                        } else {
+                            row.style.display = "none";
+                        }
+                    });
+                });
+            }
+        });
+    </script>
+    <script src="script.js"></script>
+</body>
+
+</html>
