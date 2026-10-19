@@ -10,20 +10,6 @@ voterSchema.index({ segment: 1 });
 voterSchema.index({ ward: 1 });
 voterSchema.index({ area: 1 });
 
-// Create a separate connection specifically pointing to 'electionDB' database where the user actually added the records
-const voterDbUri = (process.env.MONGODB_URI || '').includes('/oit_stack')
-    ? process.env.MONGODB_URI.replace('/oit_stack', '/electionDB')
-    : process.env.MONGODB_URI;
+// Connects to the 'voters' collection on the primary oit_stack database
+module.exports = mongoose.models.Voter || mongoose.model('Voter', voterSchema);
 
-console.log(`[Voter Model] Initializing Voters collection on electionDB database...`);
-const connection = mongoose.createConnection(voterDbUri);
-
-connection.on('connected', () => {
-    console.log('[Voter Model] MongoDB Connected successfully to database: electionDB');
-});
-
-connection.on('error', (err) => {
-    console.error('[Voter Model] MongoDB connection error for database electionDB:', err);
-});
-
-module.exports = connection.model('Voter', voterSchema);
