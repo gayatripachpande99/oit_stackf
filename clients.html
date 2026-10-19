@@ -11,7 +11,7 @@
     <!-- Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     <!-- CSS -->
-    <link rel="stylesheet" href="style.css?v=2.6">
+    <link rel="stylesheet" href="style.css?v=3.0">
 </head>
 
 <body class="clients-page-body">
@@ -109,7 +109,7 @@
                     <p class="client-desc">
                         A dynamic marketing agency focused on innovative strategies, creative campaigns, and data-driven solutions to help businesses grow their brand presence and achieve measurable results.
                     </p>
-                    <button type="button" class="client-read-more-btn" onclick="openClientModal('yohesa')">
+                    <button type="button" class="client-read-more-btn" data-client="yohesa" onclick="openClientModal('yohesa')">
                         <span>Read More</span>
                         <i class="fa-solid fa-arrow-right"></i>
                     </button>
@@ -127,7 +127,7 @@
                     <p class="client-desc">
                         A technology-enabled financial services company focused on data-driven solutions, operational efficiency, process automation, and smart loan recovery solutions.
                     </p>
-                    <button type="button" class="client-read-more-btn" onclick="openClientModal('paymagic')">
+                    <button type="button" class="client-read-more-btn" data-client="paymagic" onclick="openClientModal('paymagic')">
                         <span>Read More</span>
                         <i class="fa-solid fa-arrow-right"></i>
                     </button>
@@ -243,87 +243,113 @@
     <!-- Scripts -->
     <script src="script.js?v=2.4"></script>
     <script>
-        const clientData = {
-            yohesa: {
-                title: "Yohesa Marketing Solutions PVT LTD",
-                industry: "Digital Marketing & Brand Strategy",
-                logo: "assets/client-yohesa.png",
-                desc: "Yohesa Marketing Solutions is an innovative marketing firm empowering brands through performance campaigns, digital footprint expansion, and data-backed creative storytelling.",
-                highlights: [
-                    "Data-Driven Marketing Analytics Dashboard",
-                    "Custom Campaign Management & Audience Segmentation Tools",
-                    "Real-Time Conversion Tracking & KPI Reporting Infrastructure",
-                    "Automated Lead Funnel Pipelines and CRM Integrations"
-                ]
-            },
-            paymagic: {
-                title: "PayMagic PVT LTD",
-                industry: "Fintech & Financial Process Automation",
-                logo: "assets/client-paymagic.png",
-                desc: "PayMagic is a cutting-edge financial services enterprise streamlining lending, verification, and recovery operations through robust technology workflows and intelligent automation.",
-                highlights: [
-                    "Intelligent Loan Recovery Workflow Optimization Engine",
-                    "Automated Risk Assessment & Verification Microservices",
-                    "High-Availability Secure Cloud API Architecture",
-                    "Interactive Executive Analytics & Portals"
-                ]
+        (function() {
+            const clientData = {
+                yohesa: {
+                    title: "Yohesa Marketing Solutions PVT LTD",
+                    industry: "Digital Marketing & Brand Strategy",
+                    logo: "assets/client-yohesa.png",
+                    desc: "Yohesa Marketing Solutions is an innovative marketing firm empowering brands through performance campaigns, digital footprint expansion, and data-backed creative storytelling.",
+                    highlights: [
+                        "Data-Driven Marketing Analytics Dashboard",
+                        "Custom Campaign Management & Audience Segmentation Tools",
+                        "Real-Time Conversion Tracking & KPI Reporting Infrastructure",
+                        "Automated Lead Funnel Pipelines and CRM Integrations"
+                    ]
+                },
+                paymagic: {
+                    title: "PayMagic PVT LTD",
+                    industry: "Fintech & Financial Process Automation",
+                    logo: "assets/client-paymagic.png",
+                    desc: "PayMagic is a cutting-edge financial services enterprise streamlining lending, verification, and recovery operations through robust technology workflows and intelligent automation.",
+                    highlights: [
+                        "Intelligent Loan Recovery Workflow Optimization Engine",
+                        "Automated Risk Assessment & Verification Microservices",
+                        "High-Availability Secure Cloud API Architecture",
+                        "Interactive Executive Analytics & Portals"
+                    ]
+                }
+            };
+
+            window.openClientModal = function(clientId) {
+                const data = clientData[clientId];
+                if (!data) return;
+
+                const logoEl = document.getElementById('modalLogo');
+                const titleEl = document.getElementById('modalTitle');
+                const industryEl = document.getElementById('modalIndustry');
+                const descEl = document.getElementById('modalDesc');
+                const listEl = document.getElementById('modalHighlights');
+                const modalEl = document.getElementById('clientModal');
+
+                if (logoEl) logoEl.src = data.logo;
+                if (titleEl) titleEl.textContent = data.title;
+                if (industryEl) industryEl.textContent = data.industry;
+                if (descEl) descEl.textContent = data.desc;
+
+                if (listEl) {
+                    listEl.innerHTML = data.highlights.map(item => `<li><i class="fa-solid fa-check-circle"></i> <span>${item}</span></li>`).join('');
+                }
+
+                if (modalEl) {
+                    modalEl.classList.add('is-active');
+                    document.body.style.overflow = 'hidden';
+                }
+            };
+
+            window.closeClientModal = function(e) {
+                if (e && e.target !== e.currentTarget && !e.target.closest('.client-modal-close')) return;
+                const modalEl = document.getElementById('clientModal');
+                if (modalEl) {
+                    modalEl.classList.remove('is-active');
+                }
+                document.body.style.overflow = '';
+            };
+
+            // Direct event listener binding to Read More buttons as fallback
+            document.querySelectorAll('.client-read-more-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    e.preventDefault();
+                    const client = btn.getAttribute('data-client');
+                    if (client) {
+                        window.openClientModal(client);
+                    }
+                });
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    window.closeClientModal();
+                    closeMobileNav();
+                }
+            });
+
+            // Mobile hamburger nav - namespaced to avoid collision with script.js
+            const clientsNavHamburger = document.getElementById('clientsHamburger');
+            const clientsMobileNavOverlay = document.getElementById('clientsMobileNav');
+            const clientsMobileNavCloseBtn = document.getElementById('clientsMobileNavClose');
+
+            function openMobileNav() {
+                if (!clientsMobileNavOverlay || !clientsNavHamburger) return;
+                clientsMobileNavOverlay.classList.add('is-open');
+                clientsNavHamburger.classList.add('is-open');
+                clientsNavHamburger.setAttribute('aria-expanded', 'true');
+                clientsMobileNavOverlay.setAttribute('aria-hidden', 'false');
+                document.body.style.overflow = 'hidden';
             }
-        };
 
-        function openClientModal(clientId) {
-            const data = clientData[clientId];
-            if (!data) return;
+            function closeMobileNav() {
+                if (!clientsMobileNavOverlay || !clientsNavHamburger) return;
+                clientsMobileNavOverlay.classList.remove('is-open');
+                clientsNavHamburger.classList.remove('is-open');
+                clientsNavHamburger.setAttribute('aria-expanded', 'false');
+                clientsMobileNavOverlay.setAttribute('aria-hidden', 'true');
+                document.body.style.overflow = '';
+            }
 
-            document.getElementById('modalLogo').src = data.logo;
-            document.getElementById('modalTitle').textContent = data.title;
-            document.getElementById('modalIndustry').textContent = data.industry;
-            document.getElementById('modalDesc').textContent = data.desc;
-
-            const list = document.getElementById('modalHighlights');
-            list.innerHTML = data.highlights.map(item => `<li><i class="fa-solid fa-check-circle"></i> <span>${item}</span></li>`).join('');
-
-            const modal = document.getElementById('clientModal');
-            modal.classList.add('is-active');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeClientModal(e) {
-            if (e && e.target !== e.currentTarget && !e.target.closest('.client-modal-close')) return;
-            const modal = document.getElementById('clientModal');
-            modal.classList.remove('is-active');
-            document.body.style.overflow = '';
-        }
-
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') closeClientModal();
-        });
-
-        // Mobile hamburger nav
-        const hamburger = document.getElementById('clientsHamburger');
-        const mobileNav = document.getElementById('clientsMobileNav');
-        const mobileNavClose = document.getElementById('clientsMobileNavClose');
-
-        function openMobileNav() {
-            mobileNav.classList.add('is-open');
-            hamburger.classList.add('is-open');
-            hamburger.setAttribute('aria-expanded', 'true');
-            mobileNav.setAttribute('aria-hidden', 'false');
-            document.body.style.overflow = 'hidden';
-        }
-
-        function closeMobileNav() {
-            mobileNav.classList.remove('is-open');
-            hamburger.classList.remove('is-open');
-            hamburger.setAttribute('aria-expanded', 'false');
-            mobileNav.setAttribute('aria-hidden', 'true');
-            document.body.style.overflow = '';
-        }
-
-        hamburger.addEventListener('click', openMobileNav);
-        mobileNavClose.addEventListener('click', closeMobileNav);
-        document.addEventListener('keydown', (e) => {
-            if (e.key === 'Escape') { closeMobileNav(); }
-        });
+            if (clientsNavHamburger) clientsNavHamburger.addEventListener('click', openMobileNav);
+            if (clientsMobileNavCloseBtn) clientsMobileNavCloseBtn.addEventListener('click', closeMobileNav);
+        })();
     </script>
 </body>
 
